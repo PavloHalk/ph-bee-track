@@ -1,0 +1,7 @@
+/.idea
+/build
+/dist
+/working_assets
+*.spec
+*.exe
+*.bin
