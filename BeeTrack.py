@@ -10,10 +10,33 @@ class DB_API:
         self._setup_db()
 
     def _setup_db(self):
-        # Створюємо таблицю, якщо її ще немає
         conn = sqlite3.connect(self.db_path)
-        conn.execute('''CREATE TABLE IF NOT EXISTS logs 
-                        (id INTEGER PRIMARY KEY, task TEXT, duration INTEGER, date TEXT)''')
+        conn.execute('''CREATE TABLE IF NOT EXISTS users
+                        (id INTEGER PRIMARY KEY, username TEXT, created_at TEXT)''')
+                        
+        conn.execute('''CREATE TABLE IF NOT EXISTS projects
+                        (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, name TEXT, description TEXT, color TEXT, created_at TEXT)''')
+                        
+        conn.execute('''CREATE TABLE IF NOT EXISTS categories
+                                (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, name TEXT, description TEXT, color TEXT, created_at TEXT)''')
+                                
+        conn.execute('''CREATE TABLE IF NOT EXISTS tasks
+                                (id INTEGER PRIMARY KEY,
+                                user_id INTEGER NOT NULL,
+                                project_id INTEGER,
+                                category_id INTEGER,
+                                name TEXT,
+                                description TEXT,
+                                color TEXT,
+                                created_at TEXT)''')
+                                
+        conn.execute('''CREATE TABLE IF NOT EXISTS tracks
+                                (id INTEGER PRIMARY KEY,
+                                user_id INTEGER NOT NULL,
+                                task_id INTEGER,
+                                category_id INTEGER,
+                                started_at TEXT,
+                                duration INTEGER)''')
         conn.close()
 
     def execute_sql(self, query, params=()):
