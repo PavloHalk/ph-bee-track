@@ -66,11 +66,11 @@ def get_resource_path(relative_path):
 html_file = get_resource_path('index.html')
 
 window = webview.create_window(
-    'BeeTrack',
+    'BeeTrack - трекер часу для зайнятих бджілок',
     html_file,
     width=1000,
     height=700,
     js_api=api
 )
 
-webview.start(http_server=True, debug=False, user_agent='pywebview-client')
+webview.start(http_server=True, debug=True, user_agent='pywebview-client')
