@@ -1,7 +1,9 @@
 header, main, footer {
     padding: 5px;
 }
-
 header .logo {
     width: 75px;
+}
+header .profile img {
+    width: 45px;
 }
