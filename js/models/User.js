@@ -6,8 +6,14 @@ export default class User extends Model {
         return 'users';
     }
     
-    save() {
+    async save() {
         const date = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
-        executeSql(`INSERT INTO users (username, created_at) VALUES("${this.username}", "${date}")`);
+        
+        try {
+            const result = await executeSql(`INSERT INTO users (username, created_at) VALUES("${this.username}", "${date}")`);
+            return result.status === 'success';
+        } catch (err) {
+            throw err;
+        }
     }
 }

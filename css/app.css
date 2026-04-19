@@ -16,3 +16,12 @@ header .profile img {
 main form .row {
     margin-bottom: 10px;
 }
+form .invalid {
+    border: 2px solid red;
+    box-shadow: 0 0 5px red;
+}
+form .field-error-msg {
+    margin: 0;
+    color: red;
+    font-size: 80%;
+}

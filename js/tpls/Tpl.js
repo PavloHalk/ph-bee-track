@@ -21,7 +21,7 @@ export default class Tpl {
         return 'base';
     }
 
-    static get classAttr() {
+    get classAttr() {
         return 'tpl';
     }
     
@@ -39,5 +39,10 @@ export default class Tpl {
     
     hide() {
         this.#el.hidden = true;
+    }
+    
+    delete() {
+        this.#el.remove();
+        this.#el = null;
     }
 }
