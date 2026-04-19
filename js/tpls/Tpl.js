@@ -13,6 +13,7 @@ export default class Tpl {
     static async create() {
         const tpl = new this();
         tpl.getElement().innerHTML = await loadHtml(this.htmlPath);
+        tpl.init();
         return tpl;
     }
 
@@ -26,6 +27,10 @@ export default class Tpl {
     
     getElement() {
         return this.#el;
+    }
+    
+    init() {
+        throw new Error('You have to implement this method in child class.');
     }
     
     show() {

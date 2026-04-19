@@ -12,7 +12,7 @@ class API:
     def _setup_db(self):
         conn = sqlite3.connect(self.db_path)
         conn.execute('''CREATE TABLE IF NOT EXISTS users
-                        (id INTEGER PRIMARY KEY, username TEXT, created_at TEXT)''')
+                        (id INTEGER PRIMARY KEY, username TEXT UNIQUE, created_at TEXT)''')
                         
         conn.execute('''CREATE TABLE IF NOT EXISTS projects
                         (id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL, name TEXT, description TEXT, color TEXT, created_at TEXT)''')
