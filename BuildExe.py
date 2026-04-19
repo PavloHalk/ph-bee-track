@@ -6,6 +6,7 @@ command = (
     '--add-data "favicon.ico;." '
     '--add-data "css;css" '
     '--add-data "js;js" '
+    '--add-data "html;html;. "'
     '--add-data "img;img" '
     '--version-file=version.txt '
     '--icon="favicon.ico" '

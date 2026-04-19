@@ -24,6 +24,14 @@ export async function executeSql(sql) {
     return result;
 }
 
+export async function loadHtml(path) {
+    const result = await pywebview.api.load_html_content(path);
+
+    if (result.status && result.status === 'error') throw new SqliteError(result.message);
+    
+    return result.content;
+}
+
 class SqliteError extends Error {
     name = 'SqliteError';
 }

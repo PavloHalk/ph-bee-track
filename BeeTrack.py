@@ -4,7 +4,7 @@ import os
 import sys
 import json
 
-class DB_API:
+class API:
     def __init__(self):
         self.db_path = "beetrack.db"
         self._setup_db()
@@ -54,8 +54,17 @@ class DB_API:
                     return {"status": "success"}
         except Exception as e:
             return {"status": "error", "message": str(e)}
+            
+    def load_html_content(self, filename):
+        try:
+            file_path = get_resource_path(os.path.join('html', filename + '.html'))
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return {"content": f.read(), "status": "success", "message": ""}
+        except Exception as e:
+            return {"content": "", "status": "error", "message": str(e)}
 
-api = DB_API()
+
+api = API()
 
 # Correct getting file paths (important for exe)
 def get_resource_path(relative_path):
