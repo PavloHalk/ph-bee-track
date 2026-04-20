@@ -25,3 +25,17 @@ form .field-error-msg {
     color: red;
     font-size: 80%;
 }
+
+.tpl-select-user .user {
+    width: 200px;
+    height: 130px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer
+}
+.tpl-select-user .user:hover {
+    box-shadow: 0 0 5px lightskyblue;
+}
+.tpl-select-user .user img {
+    width: 75px;
+}

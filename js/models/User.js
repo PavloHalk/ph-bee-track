@@ -1,5 +1,5 @@
 import Model from './Model.js'
-import { executeSql } from "../pyapi.js";
+import {executeSql} from "../pyapi.js";
 
 export default class User extends Model {
     get table() {
@@ -12,6 +12,14 @@ export default class User extends Model {
         try {
             const result = await executeSql(`INSERT INTO users (username, created_at) VALUES("${this.username}", "${date}")`);
             return result.status === 'success';
+        } catch (err) {
+            throw err;
+        }
+    }
+    
+    static async all() {
+        try {
+            return await executeSql("SELECT * FROM users");
         } catch (err) {
             throw err;
         }
