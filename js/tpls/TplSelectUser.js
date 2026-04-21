@@ -1,5 +1,6 @@
 import Tpl from './Tpl.js';
 import User from '../Models/User.js';
+import { showCreateUser } from "../tplFunctions.js";
 
 export default class TplSelectUser extends Tpl {
     static get htmlPath() {
@@ -24,5 +25,10 @@ export default class TplSelectUser extends Tpl {
 
             container.prepend(userElement);
         }
+        
+        template.addEventListener('click', () => {
+            this.delete();
+            showCreateUser();
+        })
     }
 }
