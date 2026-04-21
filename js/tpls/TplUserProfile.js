@@ -1,6 +1,7 @@
 import Tpl from './Tpl.js';
-import { showSelectUser } from '../tplFunctions.js';
 import User from '../models/User.js';
+import { showSelectUser } from '../tplFunctions.js';
+import { notify } from '../utils.js';
 
 export default class TplUserProfile extends Tpl {
     static get htmlPath() {
@@ -48,6 +49,12 @@ export default class TplUserProfile extends Tpl {
                 await user.save();
                 profileElement.dataset.username = user.username;
                 profileElement.querySelector('.username').innerText = user.username;
+                
+                notify(
+                    'Бджілка оновлена',
+                    'Дані вашої бджілки були успішно оновлені.',
+                    'success'
+                );
             } catch {
                 form.elements['username'].classList.add('invalid');
                 form.elements['username'].nextElementSibling.innerText = "Така бджілка вже існує.";

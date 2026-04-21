@@ -8,10 +8,9 @@ export default class User extends Model {
     
     async save() {
         const date = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
-        
+
+        const result = { status: 'pending' }
         try {
-            console.log(this.id);
-            const result = { status: 'pending' }
             if (!this.id) {
                 const result = await executeSql(`INSERT INTO users (username, created_at) VALUES("${this.username}", "${date}")`);
             } else {
