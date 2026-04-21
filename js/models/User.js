@@ -24,4 +24,18 @@ export default class User extends Model {
             throw err;
         }
     }
+    
+    static async getById(id) {
+        try {
+            const result = await executeSql("SELECT * FROM users WHERE id=" + id);
+            
+            if (Array.isArray(result) && result.length) {
+                return result[0];
+            } else {
+                throw new Error("No such user.");
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
 }

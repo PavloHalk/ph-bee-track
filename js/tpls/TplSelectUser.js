@@ -25,6 +25,18 @@ export default class TplSelectUser extends Tpl {
 
             container.prepend(userElement);
         }
+
+        container.addEventListener('click', async (event) => {
+            if (!event.target.closest('.user')) return;
+
+            const user = await User.getById(event.target.closest('.user').dataset.userId);
+            const profile = document.querySelector('header .profile');
+            profile.querySelector('.username').innerText = user.username;
+            profile.dataset.userId = user.id;
+            profile.hidden = false;
+            
+            this.delete();
+        });
         
         template.addEventListener('click', () => {
             this.delete();
