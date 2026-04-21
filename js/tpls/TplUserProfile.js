@@ -35,15 +35,23 @@ export default class TplUserProfile extends Tpl {
         });
         
         form.elements['btn-update'].addEventListener('click', async () => {
+            await handleUpdate();
+        });
+        form.elements['btn-update-close'].addEventListener('click', async () => {
+            await handleUpdate();
+            this.delete();
+        });
+        
+        async function handleUpdate() {
             if (!form.elements['username'].value) {
                 form.elements['username'].classList.add('invalid');
                 form.elements['username'].nextElementSibling.innerText = "У бджілки має бути ім'я.";
                 return;
             }
-            
+
             const profileElement = document.querySelector('header .profile');
             const user = await User.getById(profileElement.dataset.userId);
-            
+
             user.username = form.elements['username'].value;
             try {
                 await user.save();
@@ -59,6 +67,6 @@ export default class TplUserProfile extends Tpl {
                 form.elements['username'].classList.add('invalid');
                 form.elements['username'].nextElementSibling.innerText = "Така бджілка вже існує.";
             }
-        });
+        }
     }
 }

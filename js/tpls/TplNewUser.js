@@ -1,5 +1,6 @@
 import Tpl from './Tpl.js';
 import User from '../Models/User.js';
+import {notify} from "../utils.js";
 
 export default class TplNewUser extends Tpl {
     static get htmlPath() {
@@ -23,15 +24,31 @@ export default class TplNewUser extends Tpl {
                 return;
             }
 
-            const user = new User();
+            let user = new User();
             user.username = currentTarget.elements['username'].value;
-            user.save()
-                .then(() => {
+            user.save() //@todo: use async/await
+                .then(async () => {
                     const ev = new CustomEvent(
                         'user-created',
                         { bubbles: true }
                     );
                     form.closest('.tpl').dispatchEvent(ev);
+                    
+                    const profile = document.querySelector('header .profile');
+                    user = await User.getByUserName(user.username);
+                    profile.querySelector('.username').innerText = user.username;
+                    profile.dataset.userId = user.id;
+                    profile.dataset.username = user.username;
+                    profile.dataset.registrationDate = user.created_at;
+                    profile.hidden = false;
+                    
+                    this.delete();
+
+                    notify(
+                        'Бджілка створена',
+                        'Вітаю! Ви щойно створили нову бджілку з іменем "'+user.username+'" і увійшли в систему.',
+                        'success'
+                    );
                 })
                 .catch(err => {
                     console.error(err);

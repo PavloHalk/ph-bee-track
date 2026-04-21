@@ -34,19 +34,32 @@ export default class User extends Model {
     static async getById(id) {
         try {
             const result = await executeSql("SELECT * FROM users WHERE id=" + id);
-            
-            if (Array.isArray(result) && result.length) {
-                const user = new User();
-                user.id = result[0].id;
-                user.username = result[0].username;
-                user.created_at = result[0].created_at;
-                
-                return user;
-            } else {
-                throw new Error("No such user.");
-            }
+            return this.#fillUser(result);
         } catch (err) {
             throw err;
+        }
+    }
+
+    static async getByUserName(username) {
+        try {
+            const result = await executeSql("SELECT * FROM users WHERE username='" + username + "'");
+
+            return this.#fillUser(result);
+        } catch (err) {
+            throw err;
+        }
+    }
+    
+    static #fillUser(result) {
+        if (Array.isArray(result) && result.length) {
+            const user = new User();
+            user.id = result[0].id;
+            user.username = result[0].username;
+            user.created_at = result[0].created_at;
+
+            return user;
+        } else {
+            throw new Error("No such user.");
         }
     }
 }
