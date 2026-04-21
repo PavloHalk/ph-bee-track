@@ -10,7 +10,14 @@ export default class User extends Model {
         const date = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
         
         try {
-            const result = await executeSql(`INSERT INTO users (username, created_at) VALUES("${this.username}", "${date}")`);
+            console.log(this.id);
+            const result = { status: 'pending' }
+            if (!this.id) {
+                const result = await executeSql(`INSERT INTO users (username, created_at) VALUES("${this.username}", "${date}")`);
+            } else {
+                const result = await executeSql(`UPDATE users SET username="${this.username}" WHERE id=${this.id}`);
+            }
+            
             return result.status === 'success';
         } catch (err) {
             throw err;
@@ -30,7 +37,12 @@ export default class User extends Model {
             const result = await executeSql("SELECT * FROM users WHERE id=" + id);
             
             if (Array.isArray(result) && result.length) {
-                return result[0];
+                const user = new User();
+                user.id = result[0].id;
+                user.username = result[0].username;
+                user.created_at = result[0].created_at;
+                
+                return user;
             } else {
                 throw new Error("No such user.");
             }

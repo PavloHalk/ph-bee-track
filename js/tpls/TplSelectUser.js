@@ -28,11 +28,14 @@ export default class TplSelectUser extends Tpl {
 
         container.addEventListener('click', async (event) => {
             if (!event.target.closest('.user')) return;
-
+            if (!event.target.closest('.user').dataset.userId) return;
+            
             const user = await User.getById(event.target.closest('.user').dataset.userId);
             const profile = document.querySelector('header .profile');
             profile.querySelector('.username').innerText = user.username;
             profile.dataset.userId = user.id;
+            profile.dataset.username = user.username;
+            profile.dataset.registrationDate = user.created_at;
             profile.hidden = false;
             
             this.delete();

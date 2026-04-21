@@ -10,6 +10,9 @@ header, main, footer {
 header .logo {
     width: 75px;
 }
+header .profile {
+    cursor: pointer;
+}
 header .profile img {
     width: 45px;
 }

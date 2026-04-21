@@ -1,5 +1,5 @@
 import { executeSql } from "./pyapi.js";
-import { showCreateUser, showSelectUser } from "./tplFunctions.js";
+import {showCreateUser, showSelectUser, showUserProfile} from "./tplFunctions.js";
 
 const app = document.getElementById('app');
 app.innerHTML = '';
@@ -10,3 +10,7 @@ if (checkUsers[0].users_count === 0) {
 } else {
     await showSelectUser();
 }
+
+document.querySelector('header .profile').addEventListener('click', async () => {
+    await showUserProfile();
+});

@@ -20,7 +20,10 @@ export async function executeSql(sql) {
     const result = await pywebview.api.execute_sql(sql);
     console.log(result);
     
-    if (result.status && result.status === 'error') throw new SqliteError(result.message);
+    if (result.status && result.status === 'error') {
+        console.warn(sql);
+        throw new SqliteError(result.message);
+    }
     
     return result;
 }
