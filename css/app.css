@@ -4,6 +4,16 @@
 .w-300 {
     width: 300px;
 }
+footer .github {
+    margin-top: -41px;
+}
+footer .github img {
+    width: 20px;
+    opacity: 0.3;
+}
+footer .github img:hover {
+    opacity: 1;
+}
 header, main, footer {
     padding: 5px;
 }
