@@ -1,0 +1,80 @@
+<div class="no-tasks text-center" hidden>
+    <p>У вас наразі немає задач для відстежування часу.</p>
+    <p><span class="btn btn-primary btn-create-task">Створити першу задачу</span></p>
+</div>
+<div class="have-tasks" hidden>
+    <div class="row m-0">
+        <div class="col col-8">
+            <label for="tasklist">Задача: </label>
+            <select id="tasklist"></select>
+            <span class="btn btn-primary">Старт</span>
+            <span class="btn btn-secondary">Стоп</span>
+        </div>
+        <div class="col col-4 text-end">
+            <div class="timer">--:--:--</div>
+        </div>
+    </div>
+</div>
+<div class="edit-task" hidden>
+    <h4 class="h4 text-center">Створення нової задачі</h4>
+    <form name="create-task" class="w-600 mx-auto">
+        <div class="row mx-0">
+            <div class="col col-3"><label for="new-task-name">Назва</label></div>
+            <div class="col col-9">
+                <input id="new-task-name" name="name" type="text" value="" autofocus />
+                <p class="field-error-msg"></p>
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3"><label for="new-task-description">Опис</label></div>
+            <div class="col col-9">
+                <textarea id="new-task-description" name="description" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3"><label for="new-task-color">Колір</label></div>
+            <div class="col col-9">
+                <div class="d-flex flex-wrap justify-content-start">
+                    <div class="color-sample me-2 mb-2 selected" style="background-color: blue;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: deepskyblue"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: aqua"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: purple"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: mediumpurple"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: red;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: deeppink;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: yellow;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: greenyellow"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: green;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: lightseagreen"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: mediumaquamarine"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: silver"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: grey"></div>
+                </div>
+                <input id="new-task-color" name="color" type="text" value="blue" disabled />
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3">&nbsp;</div>
+            <div class="col col-9">
+                <span class="btn btn-primary btn-create-task-submit">Створити</span>
+                <span class="btn btn-primary btn-create-task-cancel">Скасувати</span>
+            </div>
+        </div>
+    </form>
+</div>
+<hr />
+<style lang="text/css">
+    .tpl-current-task .color-sample {
+        width: 20px;
+        height: 20px;
+        border: 2px solid black;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .tpl-current-task .color-sample:hover {
+        box-shadow: 0 0 4px black;
+    }
+    .tpl-current-task .color-sample.selected {
+        box-shadow: 1px 1px 10px black;
+    }
+</style>

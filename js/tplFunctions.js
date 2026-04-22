@@ -1,6 +1,7 @@
 import TplNewUser from "./tpls/TplNewUser.js";
 import TplSelectUser from "./tpls/TplSelectUser.js";
 import TplUserProfile from "./tpls/TplUserProfile.js";
+import TplCurrentTask from "./tpls/TplCurrentTask.js";
 
 const app = document.getElementById('app');
 
@@ -10,12 +11,20 @@ export async function showCreateUser() {
 }
 
 export async function showSelectUser() {
+    app.innerHTML = '';
     const tpl = await TplSelectUser.create();
     app.append(tpl.getElement());
 }
 
 export async function showUserProfile() {
-    app.innerHTML = '';
+    app.querySelector('.tpl-user-profile')?.remove();
     const tpl = await TplUserProfile.create();
+    app.append(tpl.getElement());
+}
+
+export async function showCurrentTask(userId) {
+    app.querySelector('.tpl-current-task')?.remove();
+    
+    const tpl = await TplCurrentTask.create(userId);
     app.append(tpl.getElement());
 }

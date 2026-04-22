@@ -10,10 +10,10 @@ export default class Tpl {
         this.#el.className = this.classAttr;
     }
     
-    static async create() {
+    static async create(initArguments) {
         const tpl = new this();
         tpl.getElement().innerHTML = await loadHtml(this.htmlPath);
-        tpl.init();
+        tpl.init(initArguments);
         return tpl;
     }
 
@@ -29,7 +29,7 @@ export default class Tpl {
         return this.#el;
     }
     
-    init() {
+    init(initArguments) {
         throw new Error('You have to implement this method in child class.');
     }
     
