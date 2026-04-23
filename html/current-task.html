@@ -4,18 +4,19 @@
 </div>
 <div class="have-tasks" hidden>
     <div class="row m-0">
-        <div class="col col-8">
+        <div class="col col-10">
             <label class="task-label" for="tasklist">Задача: </label>
             <select id="tasklist"></select>
-            <span class="btn btn-primary">Старт</span>
-            <span class="btn btn-secondary">Стоп</span>
+            <span class="btn btn-success btn-start">Старт</span>
+            <span class="btn btn-outline-danger btn-stop disabled">Стоп</span>
+            <span class="btn btn-outline-primary btn-create-task">Створити нову задачу</span>
         </div>
-        <div class="col col-4 text-end">
+        <div class="col col-2 text-end">
             <div class="timer">--:--:--</div>
         </div>
     </div>
 </div>
-<div class="edit-task" hidden>
+<div class="edit-task mt-2" hidden>
     <h4 class="h4 text-center">Створення нової задачі</h4>
     <form name="create-task" class="w-600 mx-auto">
         <div class="row mx-0">

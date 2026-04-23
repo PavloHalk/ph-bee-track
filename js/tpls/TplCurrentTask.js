@@ -42,7 +42,14 @@ export default class TplCurrentTask extends Tpl {
     #listenBtnCreateTaskClick() {
         this.#tplNoTasks.querySelector('.btn-create-task').addEventListener('click', () => {
             this.#tplNoTasks.hidden = true;
-            this.#tplHaveTasks.hidden = true;
+            //this.#tplHaveTasks.hidden = true;
+            this.#tplCreateTask.hidden = false;
+            this.#tplCreateTask.querySelector('[name="name"]').focus();
+        });
+
+        this.#tplHaveTasks.querySelector('.btn-create-task').addEventListener('click', () => {
+            this.#tplNoTasks.hidden = true;
+            //this.#tplHaveTasks.hidden = true;
             this.#tplCreateTask.hidden = false;
             this.#tplCreateTask.querySelector('[name="name"]').focus();
         });
@@ -121,6 +128,7 @@ export default class TplCurrentTask extends Tpl {
     
     #fillTaskList() {
         const selectEl = this.#tplHaveTasks.querySelector('#tasklist');
+        selectEl.options.length = 0;
         
         for (const task of this.#tasks) {
             const optionEl = new Option(task.name, task.id.toString(), false, false);
