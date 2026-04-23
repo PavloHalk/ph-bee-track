@@ -114,16 +114,22 @@ export default class TplCurrentTask extends Tpl {
     #listenTaskSelect() {
         const selectEl = this.#tplHaveTasks.querySelector('#tasklist');
         const labelEl = this.#tplHaveTasks.querySelector('.task-label');
+        const timerEl = this.#tplHaveTasks.querySelector('.timer');
         
-        if (selectEl.options.length) {
-            labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
-        }
+        handle();
         
-        this.#tplHaveTasks.querySelector('#tasklist').addEventListener('change', () => {
+        this.#tplHaveTasks.querySelector('#tasklist').addEventListener('change', handle);
+        
+        function handle() {
             if (selectEl.options.length) {
                 labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
             }
-        });
+            
+            timerEl.innerText = '00:00:00';
+            timerEl.dataset.taskId = selectEl.options[selectEl.selectedIndex].dataset.taskId;
+            timerEl.style.boxShadow = '0 0 25px ' + selectEl.options[selectEl.selectedIndex].dataset.color;
+            timerEl.style.backgroundColor = 'color-mix(in srgb, ' + selectEl.options[selectEl.selectedIndex].dataset.color + ' 10%, transparent)';
+        }
     }
     
     #fillTaskList() {
@@ -133,12 +139,13 @@ export default class TplCurrentTask extends Tpl {
         for (const task of this.#tasks) {
             const optionEl = new Option(task.name, task.id.toString(), false, false);
             optionEl.dataset.color = task.color;
+            optionEl.dataset.taskId =task.id;
             selectEl.add(optionEl);
         }
         
         if (selectEl.options.length) {
-            selectEl.options[0].selected = true;
-            this.#tplHaveTasks.querySelector('.task-label').style.borderColor = selectEl.options[0].dataset.color;
+            selectEl.options[selectEl.options.length - 1].selected = true;
+            selectEl.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
         }
     }
 }
