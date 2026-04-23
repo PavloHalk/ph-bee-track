@@ -18,12 +18,12 @@ export default class TplCurrentTask extends Tpl {
     }
     
     async init(userId) {
-        this.#tasks = await Task.allForUser(userId);
-        this.#fillTaskList();
-        
         this.#tplNoTasks = this.getElement().querySelector('.no-tasks');
         this.#tplHaveTasks = this.getElement().querySelector('.have-tasks');
         this.#tplCreateTask = this.getElement().querySelector('.edit-task');
+
+        this.#tasks = await Task.allForUser(userId);
+        this.#fillTaskList();
 
         if (this.#tasks.length === 0) {
             this.#tplNoTasks.hidden = false;
@@ -31,6 +31,7 @@ export default class TplCurrentTask extends Tpl {
             this.#tplHaveTasks.hidden = false;
         }
         
+        this.#listenTaskSelect();
         this.#listenBtnCreateTaskClick();
         this.#listenTaskNameInput();
         this.#listenColorSampleClick();
@@ -103,13 +104,28 @@ export default class TplCurrentTask extends Tpl {
         });
     }
     
+    #listenTaskSelect() {
+        const selectEl = this.#tplHaveTasks.querySelector('#tasklist');
+        const labelEl = this.#tplHaveTasks.querySelector('.task-label');
+        
+        labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
+        
+        this.#tplHaveTasks.querySelector('#tasklist').addEventListener('change', () => {
+            labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
+        });
+    }
+    
     #fillTaskList() {
-        const selectEl = document.getElementById('tasklist');
+        const selectEl = this.#tplHaveTasks.querySelector('#tasklist');
         
         for (const task of this.#tasks) {
             const optionEl = new Option(task.name, task.id.toString(), false, false);
             optionEl.dataset.color = task.color;
             selectEl.add(optionEl);
+        }
+        
+        if (selectEl.options.length) {
+            selectEl.options[0].selected = true;
         }
     }
 }

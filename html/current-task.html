@@ -5,7 +5,7 @@
 <div class="have-tasks" hidden>
     <div class="row m-0">
         <div class="col col-8">
-            <label for="tasklist">Задача: </label>
+            <label class="task-label" for="tasklist">Задача: </label>
             <select id="tasklist"></select>
             <span class="btn btn-primary">Старт</span>
             <span class="btn btn-secondary">Стоп</span>
@@ -76,5 +76,8 @@
     }
     .tpl-current-task .color-sample.selected {
         box-shadow: 1px 1px 10px black;
+    }
+    .tpl-current-task .task-label {
+        border-bottom: 6px solid transparent;
     }
 </style>
