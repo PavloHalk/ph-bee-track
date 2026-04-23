@@ -108,10 +108,14 @@ export default class TplCurrentTask extends Tpl {
         const selectEl = this.#tplHaveTasks.querySelector('#tasklist');
         const labelEl = this.#tplHaveTasks.querySelector('.task-label');
         
-        labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
+        if (selectEl.options.length) {
+            labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
+        }
         
         this.#tplHaveTasks.querySelector('#tasklist').addEventListener('change', () => {
-            labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
+            if (selectEl.options.length) {
+                labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
+            }
         });
     }
     
@@ -126,6 +130,7 @@ export default class TplCurrentTask extends Tpl {
         
         if (selectEl.options.length) {
             selectEl.options[0].selected = true;
+            this.#tplHaveTasks.querySelector('.task-label').style.borderColor = selectEl.options[0].dataset.color;
         }
     }
 }

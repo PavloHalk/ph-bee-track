@@ -13,10 +13,12 @@ export default class TplNewUser extends Tpl {
     
     init() {
         const form = this.getElement().querySelector('form');
+        const btn = this.getElement().querySelector('.btn-submit');
         
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const currentTarget = event.currentTarget;
+        form.addEventListener('submit', (event) => event.preventDefault());
+        
+        btn.addEventListener('click', (event) => {
+            const currentTarget = event.target.closest('form');
             
             if (!currentTarget.elements['username'].value) {
                 currentTarget.elements['username'].classList.add('invalid');
@@ -32,7 +34,7 @@ export default class TplNewUser extends Tpl {
                         'user-created',
                         { bubbles: true }
                     );
-                    form.closest('.tpl').dispatchEvent(ev);
+                    btn.closest('.tpl').dispatchEvent(ev);
                     
                     const profile = document.querySelector('header .profile');
                     user = await User.getByUserName(user.username);

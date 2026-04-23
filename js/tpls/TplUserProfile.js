@@ -16,14 +16,19 @@ export default class TplUserProfile extends Tpl {
         const profileElement = document.querySelector('header .profile');
         const form = this.getElement().querySelector("form[name='user-profile']");
         
+        const btnUpdate = form.querySelector('.btn-update');
+        const btnUpdateClose = form.querySelector('.btn-update-close');
+        const btnCancel = form.querySelector('.btn-cancel');
+        const btnLogout = form.querySelector('.btn-logout');
+        
         form.elements['username'].value = profileElement.dataset.username;
         form.elements['reg_date'].value = profileElement.dataset.registrationDate;
         
-        form.elements['btn-cancel'].addEventListener('click', () => {
+        btnCancel.addEventListener('click', () => {
             this.delete();
         });
 
-        form.elements['btn-logout'].addEventListener('click', async () => {
+        btnLogout.addEventListener('click', async () => {
             this.delete();
             document.querySelector('header .profile').hidden = true;
             await showSelectUser();
@@ -34,10 +39,10 @@ export default class TplUserProfile extends Tpl {
             event.target.nextElementSibling.innerText = '';
         });
         
-        form.elements['btn-update'].addEventListener('click', async () => {
+        btnUpdate.addEventListener('click', async () => {
             await handleUpdate();
         });
-        form.elements['btn-update-close'].addEventListener('click', async () => {
+        btnUpdateClose.addEventListener('click', async () => {
             await handleUpdate();
             this.delete();
         });
