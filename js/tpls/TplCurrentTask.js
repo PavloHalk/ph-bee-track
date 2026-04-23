@@ -123,12 +123,12 @@ export default class TplCurrentTask extends Tpl {
         function handle() {
             if (selectEl.options.length) {
                 labelEl.style.borderColor = selectEl.options[selectEl.selectedIndex].dataset.color;
+
+                timerEl.innerText = '00:00:00';
+                timerEl.dataset.taskId = selectEl.options[selectEl.selectedIndex].dataset.taskId;
+                timerEl.style.boxShadow = '0 0 25px ' + selectEl.options[selectEl.selectedIndex].dataset.color;
+                timerEl.style.backgroundColor = 'color-mix(in srgb, ' + selectEl.options[selectEl.selectedIndex].dataset.color + ' 10%, transparent)';
             }
-            
-            timerEl.innerText = '00:00:00';
-            timerEl.dataset.taskId = selectEl.options[selectEl.selectedIndex].dataset.taskId;
-            timerEl.style.boxShadow = '0 0 25px ' + selectEl.options[selectEl.selectedIndex].dataset.color;
-            timerEl.style.backgroundColor = 'color-mix(in srgb, ' + selectEl.options[selectEl.selectedIndex].dataset.color + ' 10%, transparent)';
         }
     }
     
