@@ -76,3 +76,19 @@ export function notify(title, message, level) {
         }, 5);
     }
 }
+
+export function notifyInfo(title, message) {
+    notify(title, message, 'info');
+}
+
+export function notifySuccess(title, message) {
+    notify(title, message, 'success');
+}
+
+export function notifyWarning(title, message) {
+    notify(title, message, 'warning');
+}
+
+export function notifyCritical(title, message) {
+    notify(title, message, 'critical');
+}

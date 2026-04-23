@@ -1,6 +1,6 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
-import {notify} from "../utils.js";
+import {notifySuccess} from "../utils.js";
 
 export default class TplCurrentTask extends Tpl {
     static get htmlPath() {
@@ -24,7 +24,7 @@ export default class TplCurrentTask extends Tpl {
             tplHaveTasks.hidden = false;
         }
 
-        tplNoTasks.querySelector('.btn-create-task').addEventListener('click', (event) => {
+        tplNoTasks.querySelector('.btn-create-task').addEventListener('click', () => {
             tplNoTasks.hidden = true;
             tplHaveTasks.hidden = true;
             tplCreateTask.hidden = false;
@@ -62,7 +62,7 @@ export default class TplCurrentTask extends Tpl {
             
             await task.save();
             
-            notify('BeeTrack', `Задача "${task.taskName}" успішно створена!"`, 'success');
+            notifySuccess('BeeTrack', `Задача "${task.taskName}" успішно створена!"`);
             tplCreateTask.hidden = true;
             tplHaveTasks.hidden = false;
         });

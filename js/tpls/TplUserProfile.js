@@ -1,7 +1,7 @@
 import Tpl from './Tpl.js';
 import User from '../models/User.js';
 import { showSelectUser } from '../tplFunctions.js';
-import { notify } from '../utils.js';
+import { notifySuccess } from '../utils.js';
 
 export default class TplUserProfile extends Tpl {
     static get htmlPath() {
@@ -58,10 +58,9 @@ export default class TplUserProfile extends Tpl {
                 profileElement.dataset.username = user.username;
                 profileElement.querySelector('.username').innerText = user.username;
                 
-                notify(
+                notifySuccess(
                     'Бджілка оновлена',
-                    'Дані вашої бджілки були успішно оновлені.',
-                    'success'
+                    'Дані вашої бджілки були успішно оновлені.'
                 );
             } catch {
                 form.elements['username'].classList.add('invalid');

@@ -1,6 +1,6 @@
 import Tpl from './Tpl.js';
 import User from '../Models/User.js';
-import {notify} from "../utils.js";
+import {notifySuccess} from "../utils.js";
 
 export default class TplNewUser extends Tpl {
     static get htmlPath() {
@@ -44,10 +44,9 @@ export default class TplNewUser extends Tpl {
                     
                     this.delete();
 
-                    notify(
+                    notifySuccess(
                         'Бджілка створена',
-                        'Вітаю! Ви щойно створили нову бджілку з іменем "'+user.username+'" і увійшли в систему.',
-                        'success'
+                        'Вітаю! Ви щойно створили нову бджілку з іменем "'+user.username+'" і увійшли в систему.'
                     );
                 })
                 .catch(err => {
