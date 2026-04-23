@@ -36,6 +36,16 @@ export async function loadHtml(path) {
     return result.content;
 }
 
+export async function saveConfig(config) {
+    await pywebview.api.save_config(JSON.stringify(config));
+}
+
+export async function loadConfig() {
+    const config = await pywebview.api.load_config();
+    
+    return JSON.parse(config);
+}
+
 class SqliteError extends Error {
     name = 'SqliteError';
 }

@@ -1,5 +1,8 @@
-import { executeSql } from "./pyapi.js";
+import { executeSql, loadConfig } from "./pyapi.js";
 import {showCreateUser, showSelectUser, showUserProfile, showCurrentTask} from "./tplFunctions.js";
+import User from "./models/User.js";
+
+const config = await loadConfig();
 
 const profileElement = document.querySelector('header .profile');
 const profileObserver = new MutationObserver(async (mutations) => {
@@ -11,7 +14,18 @@ const checkUsers = await executeSql("SELECT COUNT(*) AS users_count FROM users")
 if (checkUsers[0].users_count === 0) {
     await showCreateUser();
 } else {
-    await showSelectUser();
+    if (!config.last_logged_user_id) {
+        await showSelectUser();
+    } else {
+        const user = await User.getById(config.last_logged_user_id);
+        const profile = document.querySelector('header .profile');
+        
+        profile.querySelector('.username').innerText = user.username;
+        profile.dataset.userId = user.id;
+        profile.dataset.username = user.username;
+        profile.dataset.registrationDate = user.created_at;
+        profile.hidden = false;
+    }
 }
 
 document.querySelector('header .profile').addEventListener('click', async () => {

@@ -62,7 +62,17 @@ class API:
                 return {"content": f.read(), "status": "success", "message": ""}
         except Exception as e:
             return {"content": "", "status": "error", "message": str(e)}
-
+    
+    def save_config(self, data_json):
+            with open("config.json", "w") as f:
+                f.write(data_json)
+            return "Збережено!"
+    
+    def load_config(self):
+        if os.path.exists("config.json"):
+            with open("config.json", "r") as f:
+                return f.read()
+        return "{}"
 
 api = API()
 

@@ -1,6 +1,7 @@
 import Tpl from './Tpl.js';
 import User from '../Models/User.js';
 import { showCreateUser } from "../tplFunctions.js";
+import { loadConfig, saveConfig } from "../pyapi.js";
 
 export default class TplSelectUser extends Tpl {
     static get htmlPath() {
@@ -39,11 +40,15 @@ export default class TplSelectUser extends Tpl {
             profile.hidden = false;
             
             this.delete();
+            
+            const config = await loadConfig();
+            config.last_logged_user_id = user.id;
+            await saveConfig(config);
         });
         
         template.addEventListener('click', () => {
             this.delete();
             showCreateUser();
-        })
+        });
     }
 }
