@@ -28,6 +28,9 @@ class API:
                                 name TEXT,
                                 description TEXT,
                                 color TEXT,
+                                time_elapsed INTEGER default 0,
+                                time_aim INTEGER default 144000,
+                                is_deleted INTEGER default 0,
                                 created_at TEXT)''')
                                 
         conn.execute('''CREATE TABLE IF NOT EXISTS tracks
@@ -36,7 +39,7 @@ class API:
                                 task_id INTEGER,
                                 category_id INTEGER,
                                 started_at TEXT,
-                                duration INTEGER)''')
+                                stopped_at TEXT)''')
         conn.close()
 
     def execute_sql(self, query, params=()):

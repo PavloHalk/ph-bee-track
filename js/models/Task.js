@@ -16,9 +16,9 @@ export default class Task extends Model {
         const result = { status: 'pending' }
         try {
             if (!this.id) {
-                const result = await executeSql(`INSERT INTO tasks (user_id, name, description, color, created_at) VALUES("${this.userId}", "${this.taskName}", "${this.description}", "${this.color}", "${date}")`);
+                const result = await executeSql(`INSERT INTO tasks (user_id, name, description, color, time_aim, created_at) VALUES("${this.userId}", "${this.taskName}", "${this.description}", "${this.color}", "${this.timeAim}", "${date}")`);
             } else {
-                const result = await executeSql(`UPDATE users SET name="${this.taskName}", "description=${this.description}", color="${this.color}", WHERE id=${this.id}`);
+                const result = await executeSql(`UPDATE users SET name="${this.taskName}", "description=${this.description}", color="${this.color}", time_aim="${this.timeAim}", WHERE id=${this.id}`);
             }
 
             return result.status === 'success';

@@ -1,0 +1,131 @@
+<div class="d-flex flex-wrap justify-content-center tasks-container">
+    <div class="task-template mx-5 mt-2 mb-5 p-2 d-none">
+        <h5 class="h5 text-center task-title"></h5>
+        <div class="task-description px-1"></div>
+        <div class="timer text-center mt-2">
+            <span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span>
+        </div>
+        
+        <div class="row">
+            <div class="col col-4">Ціль:</div>
+            <div class="col col-8">
+                <span class="clock time-aim"><span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col col-4">До цілі:</div>
+            <div class="col col-8">
+                <span class="clock time-left"><span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span></span>
+            </div>
+        </div>
+        <div class="row" style="margin-top: -5px;">
+            <div class="col col-4"></div>
+            <div class="col col-8"><span class="clock-percentage">(<span class="percentage">0.0</span> %)</span></div>
+        </div>
+        <div class="text-center mt-3">
+            <span class="btn btn-sm btn-success">Старт</span>
+            <span class="btn btn-sm btn-outline-danger disabled">Стоп</span>
+        </div>
+    </div>
+    <div class="task new-task mx-5 mt-2 mb-5 p-2">
+        New task
+    </div>
+</div>
+
+<div class="new-task-container d-none">
+    <h4 class="h4 text-center">Створення нової задачі</h4>
+    <form name="create-task" class="w-600 mx-auto">
+        <div class="row mx-0">
+            <div class="col col-3"><label for="new-task-name">Назва</label></div>
+            <div class="col col-9">
+                <input id="new-task-name" name="name" type="text" value="" autofocus />
+                <p class="field-error-msg"></p>
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3"><label for="new-task-description">Опис</label></div>
+            <div class="col col-9">
+                <textarea id="new-task-description" name="description" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3"><label for="new-task-color">Колір</label></div>
+            <div class="col col-9">
+                <div class="d-flex flex-wrap justify-content-start">
+                    <div class="color-sample me-2 mb-2 selected" style="background-color: blue;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: deepskyblue"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: aqua"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: purple"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: mediumpurple"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: red;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: deeppink;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: yellow;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: greenyellow"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: green;"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: lightseagreen"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: mediumaquamarine"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: silver"></div>
+                    <div class="color-sample me-2 mb-2" style="background-color: grey"></div>
+                </div>
+                <input id="new-task-color" name="color" type="text" value="blue" disabled />
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3"><label for="time-aim-h">Цільовий час</label></div>
+            <div class="col col-9">
+                <input id="time-aim-h" name="time-aim-h" type="number" min="0" max="9999" value="40" class="px-2" /> год.&nbsp;&nbsp;
+                <input id="time-aim-m" name="time-aim-m" type="number" min="0" max="59" value="0" class="px-2" /> хв.
+                <p class="field-error-msg"></p>
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3">&nbsp;</div>
+            <div class="col col-9">
+                <span class="btn btn-primary btn-create-task-submit">Створити</span>
+                <span class="btn btn-primary btn-create-task-cancel">Скасувати</span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .tpl-tasks .task {
+        width: 250px;
+        height: 280px;
+        border-radius: 10px;
+    }
+    .tpl-tasks .task.new-task {
+        border: 1px solid black;
+        cursor: pointer;
+    }
+    .tpl-tasks .task-description {
+        font-size: 10px;
+        line-height: 10px;
+        height: 50px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .tpl-tasks .timer {
+        font-family: monospace;
+        font-size: 28px;
+    }
+    .tpl-tasks .clock {
+        font-family: monospace;
+    }
+    .tpl-tasks .clock-percentage {
+        font-family: monospace;
+    }
+    .tpl-tasks .color-sample {
+        width: 20px;
+        height: 20px;
+        border: 2px solid black;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .tpl-tasks .color-sample:hover {
+        box-shadow: 0 0 4px black;
+    }
+    .tpl-tasks .color-sample.selected {
+        box-shadow: 1px 1px 10px black;
+    }
+</style>
