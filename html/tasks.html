@@ -1,5 +1,6 @@
 <div class="d-flex flex-wrap justify-content-center tasks-container">
     <div class="task-template mx-5 mt-2 mb-5 p-2 d-none">
+        <div class="btn-close-task p-1" title="Архівувати задачу">x</div>
         <h5 class="h5 text-center task-title"></h5>
         <div class="task-description px-1"></div>
         <div class="timer text-center mt-2">
@@ -92,6 +93,7 @@
 
 <style>
     .tpl-tasks .task {
+        position: relative;
         width: 250px;
         height: 282px;
         border-radius: 10px;
@@ -142,5 +144,19 @@
     }
     .tpl-tasks .color-sample.selected {
         box-shadow: 1px 1px 10px black;
+    }
+    
+    .tpl-tasks .btn-close-task {
+        border: 1px solid black;
+        border-radius: 50%;
+        cursor: pointer;
+        width: 17px;
+        height: 17px;
+        line-height: 3px;
+        position: absolute;
+        display: none;
+    }
+    .tpl-tasks .task:hover .btn-close-task {
+        display: block;
     }
 </style>

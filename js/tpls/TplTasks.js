@@ -36,6 +36,8 @@ export default class TplTasks extends Tpl {
         this.#listenBtnTaskTrackStart();
         this.#listenBtnTaskTrackStop();
         this.#listenBtnTaskReset();
+        
+        this.#listenBtnCloseTask();
     }
     
     #listenBtnCreateTask() {
@@ -187,6 +189,25 @@ export default class TplTasks extends Tpl {
                 taskEl.querySelector('.time-left .s').innerText = taskEl.querySelector('.time-aim .s').innerText;
 
                 taskEl.querySelector('.clock-percentage .percentage').innerText = '0.00';
+            });
+        });
+    }
+    
+    #listenBtnCloseTask() {
+        this.#tplTasks.addEventListener('click', async (event) => {
+            if (!event.target.closest('.btn-close-task')) return;
+            
+            const confirmText = 'Ви впевнені що хочете архівувати задачу? Архівовані задачі не доступні для перегляду і відстеження часу. Затрачений на задачу час не буде відображатися в загальній статистиці, проте вся історія часу буде збережена і може бути відображена в статистиці при встановленні відповідної опції.';
+
+            showConfirm('Архівувати задачу?', confirmText, async () => {
+                const click = new Event('click', { bubbles: true, cancelable: true });
+                event.target.closest('.task').querySelector('.btn-stop').dispatchEvent(click);
+
+                const task = await Task.getById(event.target.closest('.task').dataset.taskId);
+                await task.archive();
+
+                event.target.closest('.task').remove();
+                notifySuccess('Задача архівована!', 'Задача "' + task.taskName + '" була успішно архівована.');
             });
         });
     }

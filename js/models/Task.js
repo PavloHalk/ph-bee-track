@@ -16,7 +16,7 @@ export default class Task extends Model {
     }
     
     static async allForUser(userId) {
-        return await executeSql("SELECT * FROM tasks WHERE user_id=" + userId);
+        return await executeSql(`SELECT * FROM tasks WHERE user_id=${userId} AND is_deleted=0`);
     }
 
     async save() {
@@ -34,6 +34,10 @@ export default class Task extends Model {
         } catch (err) {
             throw err;
         }
+    }
+    
+    async archive() {
+        await executeSql(`UPDATE tasks SET is_deleted=1 WHERE id=${this.id}`);
     }
 
     static #fillTask(result) {
