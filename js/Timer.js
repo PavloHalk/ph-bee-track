@@ -8,6 +8,7 @@ export default class Timer {
     #interval = null;
     #lastStartDate = null;
     #elapsedOnLastStart = 0;
+    #elapsedTotalOnLastStart = 0;
     #taskNotified = false;
     #track = null;
     
@@ -28,6 +29,7 @@ export default class Timer {
 
         this.#lastStartDate = new Date();
         this.#elapsedOnLastStart = this.#task.timeElapsed;
+        this.#elapsedTotalOnLastStart = this.#task.timeElapsedTotal;
         this.#taskEl = document.querySelector('.task[data-task-id="'+this.#task.id+'"]');
         this.#interval = setInterval(this.#tick.bind(this), 1000);
         
@@ -56,6 +58,7 @@ export default class Timer {
     #tick() {
         const diff = Math.floor(((new Date()) - this.#lastStartDate) / 1000);
         this.#task.timeElapsed = this.#elapsedOnLastStart + diff;
+        this.#task.timeElapsedTotal = this.#elapsedTotalOnLastStart + diff;
         
         if (this.#task.timeElapsed % 5 === 0) {
             this.#task.save();

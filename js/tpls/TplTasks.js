@@ -121,6 +121,7 @@ export default class TplTasks extends Tpl {
             
             task.timeAim = hours * 3600 + minutes * 60;
             task.timeElapsed = 0;
+            task.timeElapsedTotal = 0;
 
             await task.save();
 

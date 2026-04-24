@@ -25,9 +25,9 @@ export default class Task extends Model {
         const result = { status: 'pending' }
         try {
             if (!this.id) {
-                const result = await executeSql(`INSERT INTO tasks (user_id, name, description, color, time_aim, time_elapsed, created_at) VALUES("${this.userId}", "${this.taskName}", "${this.description}", "${this.color}", "${this.timeAim}", "${this.timeElapsed}", "${date}")`);
+                const result = await executeSql(`INSERT INTO tasks (user_id, name, description, color, time_aim, time_elapsed, time_elapsed_total, created_at) VALUES("${this.userId}", "${this.taskName}", "${this.description}", "${this.color}", "${this.timeAim}", "${this.timeElapsed}", "${this.timeElapsedTotal}", "${date}")`);
             } else {
-                const result = await executeSql(`UPDATE tasks SET name="${this.taskName}", description="${this.description}", color="${this.color}", time_aim="${this.timeAim}", time_elapsed="${this.timeElapsed}" WHERE id=${this.id}`);
+                const result = await executeSql(`UPDATE tasks SET name="${this.taskName}", description="${this.description}", color="${this.color}", time_aim="${this.timeAim}", time_elapsed="${this.timeElapsed}", time_elapsed_total="${this.timeElapsedTotal}" WHERE id=${this.id}`);
             }
 
             return result.status === 'success';
@@ -45,6 +45,7 @@ export default class Task extends Model {
             task.description = result[0].description;
             task.color = result[0].color;
             task.timeElapsed = Number(result[0].time_elapsed);
+            task.timeElapsedTotal = Number(result[0].time_elapsed_total);
             task.timeAim = Number(result[0].time_aim);
             task.created_at = result[0].created_at;
 

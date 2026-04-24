@@ -30,6 +30,7 @@ class API:
                                 description TEXT,
                                 color TEXT,
                                 time_elapsed INTEGER default 0,
+                                time_elapsed_total INTEGER default 0,
                                 time_aim INTEGER default 144000,
                                 is_deleted INTEGER default 0,
                                 created_at TEXT)''')
