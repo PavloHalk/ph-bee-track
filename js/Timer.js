@@ -1,4 +1,5 @@
 import Task from './models/Task.js';
+import Track from './models/Track.js';
 import { osNotify } from './pyapi.js';
 
 export default class Timer {
@@ -8,6 +9,7 @@ export default class Timer {
     #lastStartDate = null;
     #elapsedOnLastStart = 0;
     #taskNotified = false;
+    #track = null;
     
     setTask(task) {
         if (!(task instanceof Task)) throw new TypeError('Timer requires an instance of Task.');
@@ -28,6 +30,12 @@ export default class Timer {
         this.#elapsedOnLastStart = this.#task.timeElapsed;
         this.#taskEl = document.querySelector('.task[data-task-id="'+this.#task.id+'"]');
         this.#interval = setInterval(this.#tick.bind(this), 1000);
+        
+        this.#track = new Track();
+        this.#track.userId = this.#task.userId;
+        this.#track.taskId = this.#task.id;
+        this.#track.startedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+        this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
     }
     
     stop() {
@@ -38,6 +46,11 @@ export default class Timer {
         this.#taskEl = null;
         
         this.#task.save();
+
+        this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+        this.#track.save();
+        
+        this.#track = null;
     }
     
     #tick() {
@@ -46,6 +59,9 @@ export default class Timer {
         
         if (this.#task.timeElapsed % 5 === 0) {
             this.#task.save();
+
+            this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+            this.#track.save();
         }
         
         if (this.#task.timeElapsed > this.#task.timeAim && !this.#taskNotified) {

@@ -40,6 +40,7 @@ export default class Task extends Model {
         if (Array.isArray(result) && result.length) {
             const task = new Task();
             task.id = result[0].id;
+            task.userId = result[0].user_id;
             task.taskName = result[0].name;
             task.description = result[0].description;
             task.color = result[0].color;

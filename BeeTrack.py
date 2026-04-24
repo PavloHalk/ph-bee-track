@@ -43,7 +43,7 @@ class API:
                                 stopped_at TEXT)''')
         conn.close()
 
-    def execute_sql(self, query, params=()):
+    '''def execute_sql(self, query, params=()):
         """Виконує SQL запит і повертає дані"""
         try:
             with sqlite3.connect(self.db_path) as conn:
@@ -56,6 +56,29 @@ class API:
                 else:
                     conn.commit()
                     return {"status": "success"}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}'''
+    
+    def execute_sql(self, query, params=()):
+        """Виконує SQL запит і повертає дані або статус"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                conn.row_factory = sqlite3.Row
+                cursor = conn.execute(query, params)
+                
+                # Отримуємо дані, якщо вони є (для SELECT або RETURNING)
+                # cursor.description буде не None, якщо запит щось повертає
+                if cursor.description:
+                    result = [dict(row) for row in cursor.fetchall()]
+                else:
+                    result = None
+                
+                conn.commit()
+                
+                if result is not None:
+                    return result
+                return {"status": "success"}
+                
         except Exception as e:
             return {"status": "error", "message": str(e)}
             
