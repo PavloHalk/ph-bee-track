@@ -62,5 +62,15 @@ export default class TplNewUser extends Tpl {
             event.target.classList.remove('invalid');
             event.target.nextElementSibling.innerText = '';
         });
+
+        form.elements['username'].addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                btn.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
+            }
+        });
+        
+        setTimeout(() => {
+            form.elements['username'].focus();
+        });
     }
 }

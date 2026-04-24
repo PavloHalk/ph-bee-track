@@ -47,6 +47,10 @@ export default class TplUserProfile extends Tpl {
             this.delete();
         });
         
+        setTimeout(() => {
+            form.elements['username'].focus();
+        }, 10);
+        
         async function handleUpdate() {
             if (!form.elements['username'].value) {
                 form.elements['username'].classList.add('invalid');
