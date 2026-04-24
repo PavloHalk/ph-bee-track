@@ -144,8 +144,6 @@ export default class TplTasks extends Tpl {
             event.target.closest('.btn-start').classList.add('disabled');
             event.target.closest('.task').querySelector('.btn-stop').classList.remove('disabled');
             event.target.closest('.task').classList.add('active');
-            
-            console.log('START TASK!');
         });
     }
     
@@ -159,8 +157,6 @@ export default class TplTasks extends Tpl {
             event.target.closest('.btn-stop').classList.add('disabled');
             event.target.closest('.task').querySelector('.btn-start').classList.remove('disabled');
             event.target.closest('.task').classList.remove('active');
-            
-            console.log('TASK STOP!');
         });
     }
     

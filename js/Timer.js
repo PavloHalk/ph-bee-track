@@ -4,6 +4,8 @@ export default class Timer {
     #task = null;
     #taskEl = null;
     #interval = null;
+    #lastStartDate = null;
+    #elapsedOnLastStart = 0;
     
     setTask(task) {
         if (!(task instanceof Task)) throw new TypeError('Timer requires an instance of Task.');
@@ -19,7 +21,9 @@ export default class Timer {
     start() {
         if (this.#interval || !this.#task) return;
 
-        this.#taskEl =document.querySelector('.task[data-task-id="'+this.#task.id+'"]');
+        this.#lastStartDate = new Date();
+        this.#elapsedOnLastStart = this.#task.timeElapsed;
+        this.#taskEl = document.querySelector('.task[data-task-id="'+this.#task.id+'"]');
         this.#interval = setInterval(this.#tick.bind(this), 1000);
     }
     
@@ -29,10 +33,17 @@ export default class Timer {
         clearInterval(this.#interval);
         this.#interval = null;
         this.#taskEl = null;
+        
+        this.#task.save();
     }
     
     #tick() {
-        this.#task.timeElapsed++;
+        const diff = Math.floor(((new Date()) - this.#lastStartDate) / 1000);
+        this.#task.timeElapsed = this.#elapsedOnLastStart + diff;
+        
+        if (this.#task.timeElapsed % 5 === 0) {
+            this.#task.save();
+        }
         
         const tElapsed = this.#secondsToTime(this.#task.timeElapsed);
         const tLeft = this.#secondsToTime(this.#task.timeAim - this.#task.timeElapsed);
