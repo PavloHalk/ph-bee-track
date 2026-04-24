@@ -35,8 +35,6 @@ export default class TplTasks extends Tpl {
         
         this.#listenBtnTaskTrackStart();
         this.#listenBtnTaskTrackStop();
-        
-        console.log(this.#timer);
     }
     
     #listenBtnCreateTask() {
@@ -141,9 +139,11 @@ export default class TplTasks extends Tpl {
 
             const task = await Task.getById(event.target.closest('.task').dataset.taskId);
             this.#timer.setTask(task);
+            this.#timer.start();
             
             event.target.closest('.btn-start').classList.add('disabled');
             event.target.closest('.task').querySelector('.btn-stop').classList.remove('disabled');
+            event.target.closest('.task').classList.add('active');
             
             console.log('START TASK!');
         });
@@ -154,8 +154,11 @@ export default class TplTasks extends Tpl {
             if (!event.target.closest('.btn-stop')) return;
             if (event.target.closest('.btn-stop').classList.contains('disabled')) return;
 
+            this.#timer.stop();
+            
             event.target.closest('.btn-stop').classList.add('disabled');
             event.target.closest('.task').querySelector('.btn-start').classList.remove('disabled');
+            event.target.closest('.task').classList.remove('active');
             
             console.log('TASK STOP!');
         });

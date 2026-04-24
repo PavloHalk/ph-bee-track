@@ -42,8 +42,8 @@ export default class Task extends Model {
             task.id = result[0].id;
             task.description = result[0].description;
             task.color = result[0].color;
-            task.timeElapsed = result[0].time_elapsed;
-            task.timeAim = result[0].time_aim;
+            task.timeElapsed = Number(result[0].time_elapsed);
+            task.timeAim = Number(result[0].time_aim);
             task.created_at = result[0].created_at;
 
             return task;
