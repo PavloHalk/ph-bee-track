@@ -1,4 +1,5 @@
 import Task from './models/Task.js';
+import { osNotify } from './pyapi.js';
 
 export default class Timer {
     #task = null;
@@ -6,6 +7,7 @@ export default class Timer {
     #interval = null;
     #lastStartDate = null;
     #elapsedOnLastStart = 0;
+    #taskNotified = false;
     
     setTask(task) {
         if (!(task instanceof Task)) throw new TypeError('Timer requires an instance of Task.');
@@ -16,6 +18,7 @@ export default class Timer {
         }
         
         this.#task = task;
+        this.#taskNotified = false;
     }
     
     start() {
@@ -43,6 +46,14 @@ export default class Timer {
         
         if (this.#task.timeElapsed % 5 === 0) {
             this.#task.save();
+        }
+        
+        if (this.#task.timeElapsed > this.#task.timeAim && !this.#taskNotified) {
+            this.#taskNotified = true;
+            osNotify(
+                'BeeTrack - ' + this.#task.name,
+                'Ви перевищили запланований на цю задачу час!'
+            );
         }
         
         const tElapsed = this.#secondsToTime(this.#task.timeElapsed);

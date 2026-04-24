@@ -46,6 +46,10 @@ export async function loadConfig() {
     return JSON.parse(config);
 }
 
+export async function osNotify(title, message) {
+    await pywebview.api.notify(title, message);
+}
+
 class SqliteError extends Error {
     name = 'SqliteError';
 }

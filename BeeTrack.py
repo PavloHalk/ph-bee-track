@@ -3,6 +3,7 @@ import sqlite3
 import os
 import sys
 import json
+from plyer import notification
 
 class API:
     def __init__(self):
@@ -76,6 +77,15 @@ class API:
             with open("config.json", "r") as f:
                 return f.read()
         return "{}"
+        
+    def notify(self, title, message):
+        notification.notify(
+            title = title,
+            message = message,
+            app_name = 'BeeTrack',
+            app_icon = 'favicon.ico',
+            timeout = 15
+        )
 
 api = API()
 
@@ -95,4 +105,4 @@ window = webview.create_window(
     js_api=api
 )
 
-webview.start(http_server=True, debug=False, user_agent='pywebview-client')
+webview.start(http_server=True, debug=True, user_agent='pywebview-client')

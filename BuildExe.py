@@ -2,6 +2,7 @@ import os
 
 command = (
     'pyinstaller --noconsole --onefile '
+    '--hidden-import "plyer.platforms.win.notification" '
     '--add-data "index.html;." '
     '--add-data "favicon.ico;." '
     '--add-data "css;css" '
