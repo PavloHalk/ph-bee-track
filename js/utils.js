@@ -92,3 +92,40 @@ export function notifyWarning(title, message) {
 export function notifyCritical(title, message) {
     notify(title, message, 'critical');
 }
+
+export function showConfirm(title, text, okCallback, cancelCallback) {
+    if (!okCallback) okCallback = () => {}
+    if (!cancelCallback) cancelCallback = () => {}
+    
+    const confirmContainer = document.createElement('div');
+    
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.bottom = '0';
+    overlay.style.left = '0';
+    overlay.style.right = '0';
+    overlay.style.backgroundColor = 'black';
+    overlay.style.opacity = '0.2';
+    overlay.style.zIndex = '10000';
+    
+    const form = document.createElement('div');
+    form.className = 'position-absolute top-50 start-50 translate-middle p-4';
+    form.style.zIndex = '10001';
+    form.style.backgroundColor = 'white';
+    form.style.border = '1px solid black';
+    form.style.borderRadius = '10px';
+    form.style.boxShadow = '0 0 30px black';
+    form.innerHTML = `<p class="h3">${title}</p><p>${text}</p><p><span class="btn btn-primary btn-confirm me-2">Так</span><span class="btn btn-outline-primary btn-cancel">Скасувати</span></p>`;
+
+    form.querySelector('.btn-confirm').addEventListener('click', okCallback);
+    form.querySelector('.btn-confirm').addEventListener('click', () => confirmContainer.remove());
+
+    form.querySelector('.btn-cancel').addEventListener('click', cancelCallback);
+    form.querySelector('.btn-cancel').addEventListener('click', () => confirmContainer.remove());
+    
+    confirmContainer.append(overlay);
+    confirmContainer.append(form);
+    
+    document.body.append(confirmContainer);
+}

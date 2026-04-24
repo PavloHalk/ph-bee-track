@@ -1,7 +1,7 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
 import Timer from '../Timer.js';
-import {notifySuccess} from '../utils.js';
+import {notifySuccess, showConfirm} from '../utils.js';
 
 export default class TplTasks extends Tpl {
     #tasks = null;
@@ -35,6 +35,7 @@ export default class TplTasks extends Tpl {
         
         this.#listenBtnTaskTrackStart();
         this.#listenBtnTaskTrackStop();
+        this.#listenBtnTaskReset();
     }
     
     #listenBtnCreateTask() {
@@ -161,6 +162,35 @@ export default class TplTasks extends Tpl {
         });
     }
     
+    #listenBtnTaskReset() {
+        this.#tplTasks.addEventListener('click', async (event) => {
+            if (!event.target.closest('.btn-reset')) return;
+            
+            const confirmText = 'Ви впевнені, що хочете скинути таймер? Поточний прогрес таймеру буде втрачений незворотньо, проте весь відстежений час залишиться в історії і може буде відображений в статистиці при активованій опції обробки всього часу.';
+            
+            showConfirm('Скинути таймер?', confirmText, async () => {
+                const click = new Event('click', { bubbles: true, cancelable: true });
+                event.target.closest('.task').querySelector('.btn-stop').dispatchEvent(click);
+
+                const task = await Task.getById(event.target.closest('.task').dataset.taskId);
+                task.timeElapsed = 0;
+                await task.save();
+
+                const taskEl = event.target.closest('.task');
+
+                taskEl.querySelector('.timer .h').innerText = '0';
+                taskEl.querySelector('.timer .m').innerText = '00';
+                taskEl.querySelector('.timer .s').innerText = '00';
+
+                taskEl.querySelector('.time-left .h').innerText = taskEl.querySelector('.time-aim .h').innerText;
+                taskEl.querySelector('.time-left .m').innerText = taskEl.querySelector('.time-aim .m').innerText;
+                taskEl.querySelector('.time-left .s').innerText = taskEl.querySelector('.time-aim .s').innerText;
+
+                taskEl.querySelector('.clock-percentage .percentage').innerText = '0.00';
+            });
+        });
+    }
+    
     #renderTasks() {
         for (const taskEl of this.#tplTasks.querySelectorAll('.task:not(.new-task)')) {
             taskEl.remove();
@@ -182,7 +212,6 @@ export default class TplTasks extends Tpl {
             taskEl.classList.remove('d-none');
             taskEl.classList.add('task');
 
-            //taskEl.style.backgroundColor = 'color-mix(in srgb, ' + task.color + ' 10%, transparent)';
             taskEl.style.backgroundColor = task.color;
             taskEl.style.boxShadow = '0 0 50px ' + task.color;
             
