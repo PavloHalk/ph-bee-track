@@ -27,8 +27,9 @@
             <span class="btn btn-sm btn-outline-danger disabled">Стоп</span>
         </div>
     </div>
-    <div class="task new-task mx-5 mt-2 mb-5 p-2">
-        New task
+    <div class="task new-task text-center mx-5 mt-2 mb-5 px-2 pt-4">
+        <img src="../img/add.png" alt="Add new task" />
+        <p class="h5 pt-5">Нова задача</p>
     </div>
 </div>
 
@@ -95,8 +96,14 @@
         border-radius: 10px;
     }
     .tpl-tasks .task.new-task {
-        border: 1px solid black;
         cursor: pointer;
+        box-shadow: 0 0 30px black;
+    }
+    .tpl-tasks .task.new-task:hover {
+        box-shadow: 0 0 40px black;
+    }
+    .tpl-tasks .task.new-task img {
+        width: 150px;
     }
     .tpl-tasks .task-description {
         font-size: 10px;
