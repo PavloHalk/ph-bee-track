@@ -1,13 +1,15 @@
-import { executeSql, loadConfig } from "./pyapi.js";
-import {showCreateUser, showSelectUser, showUserProfile, showCurrentTask, showTasks} from "./tplFunctions.js";
-import User from "./models/User.js";
+import { executeSql, loadConfig } from './pyapi.js';
+import {showCreateUser, showSelectUser, showUserProfile, showCurrentTask, showTasks} from './tplFunctions.js';
+import User from './models/User.js';
+import Timer from './Timer.js';
 
 const config = await loadConfig();
+const timer = new Timer();
 
 const profileElement = document.querySelector('header .profile');
 const profileObserver = new MutationObserver(async (mutations) => {
     //await showCurrentTask(mutations[0].target.dataset.userId);
-    await showTasks(mutations[0].target.dataset.userId);
+    await showTasks(mutations[0].target.dataset.userId, timer);
 });
 profileObserver.observe(profileElement, { attributes: true, attributeFilter: ['data-user-id'] });
 

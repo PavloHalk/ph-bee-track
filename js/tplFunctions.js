@@ -30,8 +30,9 @@ export async function showCurrentTask(userId) {
     app.append(tpl.getElement());
 }
 
-export async function showTasks(userId) {
+export async function showTasks(userId, timer) {
+    console.log(timer);
     app.innerHTML = '';
-    const tpl = await TplTasks.create(userId);
+    const tpl = await TplTasks.create(userId, timer);
     app.append(tpl.getElement());
 }

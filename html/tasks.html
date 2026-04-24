@@ -23,8 +23,8 @@
             <div class="col col-8"><span class="clock-percentage">(<span class="percentage">0.0</span> %)</span></div>
         </div>
         <div class="text-center mt-3">
-            <span class="btn btn-sm btn-success">Старт</span>
-            <span class="btn btn-sm btn-outline-danger disabled">Стоп</span>
+            <span class="btn btn-sm btn-success btn-start">Старт</span>
+            <span class="btn btn-sm btn-danger btn-stop disabled">Стоп</span>
         </div>
     </div>
     <div class="task new-task text-center mx-5 mt-2 mb-5 px-2 pt-4">
@@ -92,8 +92,11 @@
 <style>
     .tpl-tasks .task {
         width: 250px;
-        height: 280px;
+        height: 282px;
         border-radius: 10px;
+    }
+    .tpl-tasks .task .btn {
+        box-shadow: 0 0 5px black;
     }
     .tpl-tasks .task.new-task {
         cursor: pointer;
@@ -114,7 +117,7 @@
     }
     .tpl-tasks .timer {
         font-family: monospace;
-        font-size: 28px;
+        font-size: 30px;
     }
     .tpl-tasks .clock {
         font-family: monospace;

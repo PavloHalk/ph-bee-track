@@ -1,9 +1,11 @@
 import Tpl from './Tpl.js';
-import Task from "../models/Task.js";
-import {notifySuccess} from "../utils.js";
+import Task from '../models/Task.js';
+import Timer from '../Timer.js';
+import {notifySuccess} from '../utils.js';
 
 export default class TplTasks extends Tpl {
     #tasks = null;
+    #timer = null;
     
     #tplCreateTask = null;
     #tplTasks = null;
@@ -16,10 +18,11 @@ export default class TplTasks extends Tpl {
         return 'tpl tpl-tasks';
     }
     
-    async init(userId) {
+    async init(userId, timer) {
         this.#tplCreateTask = this.getElement().querySelector('.new-task-container');
         this.#tplTasks = this.getElement().querySelector('.tasks-container');
-
+        
+        this.#timer = timer;
         this.#tasks = await Task.allForUser(userId);
         this.#renderTasks();
         
@@ -29,6 +32,11 @@ export default class TplTasks extends Tpl {
         this.#listenTimeInput();
         this.#listenBtnCreateTaskCancel();
         this.#listenBtnCreateTaskSubmit(userId);
+        
+        this.#listenBtnTaskTrackStart();
+        this.#listenBtnTaskTrackStop();
+        
+        console.log(this.#timer);
     }
     
     #listenBtnCreateTask() {
@@ -114,6 +122,7 @@ export default class TplTasks extends Tpl {
             task.color = this.#tplCreateTask.querySelector('[name="color"]').value;
             
             task.timeAim = hours * 3600 + minutes * 60;
+            task.timeElapsed = 0;
 
             await task.save();
 
@@ -122,6 +131,33 @@ export default class TplTasks extends Tpl {
             this.#tplCreateTask.classList.add('d-none');
             this.#tasks = await Task.allForUser(userId);
             this.#renderTasks();
+        });
+    }
+    
+    #listenBtnTaskTrackStart() {
+        this.#tplTasks.addEventListener('click', async (event) => {
+            if (!event.target.closest('.btn-start')) return;
+            if (event.target.closest('.btn-start').classList.contains('disabled')) return;
+
+            const task = await Task.getById(event.target.closest('.task').dataset.taskId);
+            this.#timer.setTask(task);
+            
+            event.target.closest('.btn-start').classList.add('disabled');
+            event.target.closest('.task').querySelector('.btn-stop').classList.remove('disabled');
+            
+            console.log('START TASK!');
+        });
+    }
+    
+    #listenBtnTaskTrackStop() {
+        this.#tplTasks.addEventListener('click', async (event) => {
+            if (!event.target.closest('.btn-stop')) return;
+            if (event.target.closest('.btn-stop').classList.contains('disabled')) return;
+
+            event.target.closest('.btn-stop').classList.add('disabled');
+            event.target.closest('.task').querySelector('.btn-start').classList.remove('disabled');
+            
+            console.log('TASK STOP!');
         });
     }
     
@@ -140,7 +176,7 @@ export default class TplTasks extends Tpl {
             const timeDiff = this.#secondsToTime(Number(task.time_aim) - Number(task.time_elapsed));
             const percentage = Number(task.time_elapsed) / Number(task.time_aim) * 100;
             
-            taskEl.dataset.taskId = taskEl.id;
+            taskEl.dataset.taskId = task.id;
             
             taskEl.classList.remove('task-template');
             taskEl.classList.remove('d-none');
