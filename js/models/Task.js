@@ -27,7 +27,7 @@ export default class Task extends Model {
             if (!this.id) {
                 const result = await executeSql(`INSERT INTO tasks (user_id, name, description, color, time_aim, time_elapsed, created_at) VALUES("${this.userId}", "${this.taskName}", "${this.description}", "${this.color}", "${this.timeAim}", "${this.timeElapsed}", "${date}")`);
             } else {
-                const result = await executeSql(`UPDATE users SET name="${this.taskName}", "description=${this.description}", color="${this.color}", time_aim="${this.timeAim}", time_elapsed="${this.timeElapsed}", WHERE id=${this.id}`);
+                const result = await executeSql(`UPDATE tasks SET name="${this.taskName}", description="${this.description}", color="${this.color}", time_aim="${this.timeAim}", time_elapsed="${this.timeElapsed}" WHERE id=${this.id}`);
             }
 
             return result.status === 'success';
@@ -40,6 +40,7 @@ export default class Task extends Model {
         if (Array.isArray(result) && result.length) {
             const task = new Task();
             task.id = result[0].id;
+            task.taskName = result[0].name;
             task.description = result[0].description;
             task.color = result[0].color;
             task.timeElapsed = Number(result[0].time_elapsed);
