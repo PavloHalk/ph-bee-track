@@ -18,7 +18,7 @@ await pywebviewWaiter;
 
 export async function executeSql(sql) {
     const result = await pywebview.api.execute_sql(sql);
-    console.log(result);
+    //console.log(result);
     
     if (result.status && result.status === 'error') {
         console.warn(sql);
