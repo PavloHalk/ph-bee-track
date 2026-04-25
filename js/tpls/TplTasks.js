@@ -1,13 +1,13 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
 import Timer from '../Timer.js';
-import {notifySuccess, showConfirm} from '../utils.js';
+import {notifyCritical, notifySuccess, showConfirm} from '../utils.js';
 
 export default class TplTasks extends Tpl {
     #tasks = null;
     #timer = null;
     
-    #tplCreateTask = null;
+    #tplEditTask = null;
     #tplTasks = null;
     
     static get htmlPath() {
@@ -19,7 +19,7 @@ export default class TplTasks extends Tpl {
     }
     
     async init(userId, timer) {
-        this.#tplCreateTask = this.getElement().querySelector('.new-task-container');
+        this.#tplEditTask = this.getElement().querySelector('.edit-task-container');
         this.#tplTasks = this.getElement().querySelector('.tasks-container');
         
         this.#timer = timer;
@@ -38,23 +38,37 @@ export default class TplTasks extends Tpl {
         this.#listenBtnTaskReset();
         
         this.#listenBtnCloseTask();
+        this.#listenBtnEditTask();
     }
     
     #listenBtnCreateTask() {
         this.getElement().querySelector('.new-task').addEventListener('click', () => {
             this.#tplTasks.classList.add('d-none')
-            this.#tplCreateTask.classList.remove('d-none');
-            this.#tplCreateTask.querySelector('input[name="name"]').focus();
+            this.#tplEditTask.classList.remove('d-none');
+
+            this.#tplEditTask.querySelector('h4').innerText = "Створення нової задачі";
+            
+            const form = this.#tplEditTask.querySelector('form');
+            form.elements['id'].value = '0';
+            form.elements['name'].value = '';
+            form.elements['description'].value = '';
+            form.elements['time-aim-h'].value = 40;
+            form.elements['time-aim-m'].value = 0;
+
+            const click = new Event('click', { bubbles: true, cancelable: true });
+            form.querySelector('.color-sample').dispatchEvent(click);
+            
+            this.#tplEditTask.querySelector('input[name="name"]').focus();
         });
     }
 
     #listenColorSampleClick() {
-        this.#tplCreateTask.addEventListener('click', (event) => {
+        this.#tplEditTask.addEventListener('click', (event) => {
             if (!event.target.closest('.color-sample')) return;
 
-            this.#tplCreateTask.querySelector('[name="color"]').value = event.target.style.backgroundColor;
+            this.#tplEditTask.querySelector('[name="color"]').value = event.target.style.backgroundColor;
 
-            for (const colorSample of this.#tplCreateTask.querySelectorAll('.color-sample')) {
+            for (const colorSample of this.#tplEditTask.querySelectorAll('.color-sample')) {
                 colorSample.classList.remove('selected');
             }
             event.target.classList.add('selected');
@@ -62,14 +76,14 @@ export default class TplTasks extends Tpl {
     }
 
     #listenTaskNameInput() {
-        this.#tplCreateTask.querySelector('[name="name"]').addEventListener('input', (event) => {
+        this.#tplEditTask.querySelector('[name="name"]').addEventListener('input', (event) => {
             event.target.classList.remove('invalid');
             event.target.nextElementSibling.innerText = '';
         });
     }
     
     #listenTimeInput() {
-        this.#tplCreateTask.querySelector('form').addEventListener('input', (event) => {
+        this.#tplEditTask.querySelector('form').addEventListener('input', (event) => {
             if (!event.target.closest('input[type="number"]')) return;
             
             event.target.classList.remove('invalid');
@@ -78,59 +92,69 @@ export default class TplTasks extends Tpl {
     }
 
     #listenBtnCreateTaskCancel() {
-        this.#tplCreateTask.querySelector('.btn-create-task-cancel').addEventListener('click', () => {
+        this.#tplEditTask.querySelector('.btn-create-task-cancel').addEventListener('click', () => {
             this.#tplTasks.classList.remove('d-none')
-            this.#tplCreateTask.classList.add('d-none');
+            this.#tplEditTask.classList.add('d-none');
         });
     }
 
     #listenBtnCreateTaskSubmit(userId) {
-        this.#tplCreateTask.querySelector('.btn-create-task-submit').addEventListener('click', async () => {
-            if (!this.#tplCreateTask.querySelector('[name="name"]').value) {
-                this.#tplCreateTask.querySelector('[name="name"]').classList.add('invalid');
-                this.#tplCreateTask.querySelector('[name="name"]').nextElementSibling.innerText = "У задачі повинно бути ім'я.";
+        this.#tplEditTask.querySelector('.btn-create-task-submit').addEventListener('click', async () => {
+            const form = this.#tplEditTask.querySelector('form');
+            
+            if (!form.elements['name'].value) {
+                form.elements['name'].classList.add('invalid');
+                form.elements['name'].nextElementSibling.innerText = "У задачі повинно бути ім'я.";
                 return;
             }
 
-            const hours = this.#tplCreateTask.querySelector('[name="time-aim-h"]').value;
-            const minutes = this.#tplCreateTask.querySelector('[name="time-aim-m"]').value;
+            const hours = form.elements['time-aim-h'].value;
+            const minutes = form.elements['time-aim-m'].value;
             
             if (!/^\d+$/.test(hours)) {
-                this.#tplCreateTask.querySelector('[name="time-aim-h"]').classList.add('invalid');
-                this.#tplCreateTask.querySelector('[name="time-aim-m"]').nextElementSibling.innerText = 'Години можуть бути лише числом.';
+                form.elements['time-aim-h'].classList.add('invalid');
+                form.elements['time-aim-m'].nextElementSibling.innerText = 'Години можуть бути лише числом.';
                 return;
             }
             if (!/^\d+$/.test(minutes)) {
-                this.#tplCreateTask.querySelector('[name="time-aim-m"]').classList.add('invalid');
-                this.#tplCreateTask.querySelector('[name="time-aim-m"]').nextElementSibling.innerText = 'Хвилини можуть бути лише числом.';
+                form.elements['time-aim-m'].classList.add('invalid');
+                form.elements['time-aim-m'].nextElementSibling.innerText = 'Хвилини можуть бути лише числом.';
                 return;
             }
             if (Number(hours) < 0) {
-                this.#tplCreateTask.querySelector('[name="time-aim-h"]').classList.add('invalid');
-                this.#tplCreateTask.querySelector('[name="time-aim-m"]').nextElementSibling.innerText = 'Години можуть бути лише позитивним числом.';
+                form.elements['time-aim-h'].classList.add('invalid');
+                form.elements['time-aim-m'].nextElementSibling.innerText = 'Години можуть бути лише позитивним числом.';
                 return;
             }
             if (Number(minutes) > 59 || Number(minutes) < 0) {
-                this.#tplCreateTask.querySelector('[name="time-aim-m"]').classList.add('invalid');
-                this.#tplCreateTask.querySelector('[name="time-aim-m"]').nextElementSibling.innerText = 'Хвилини можуть бути лише числом від 0 до 59.';
+                form.elements['time-aim-m'].classList.add('invalid');
+                form.elements['time-aim-m'].nextElementSibling.innerText = 'Хвилини можуть бути лише числом від 0 до 59.';
                 return;
             }
 
-            const task = new Task();
+            let task = new Task();
+            
+            if (form.elements['id']) {
+                task = await Task.getById(form.elements['id'].value);
+            }
+            
             task.userId = userId;
-            task.taskName = this.#tplCreateTask.querySelector('[name="name"]').value;
-            task.description = this.#tplCreateTask.querySelector('[name="description"]').value;
-            task.color = this.#tplCreateTask.querySelector('[name="color"]').value;
+            task.taskName = form.elements['name'].value;
+            task.description = form.elements['description'].value;
+            task.color = form.elements['color'].value;
             
             task.timeAim = hours * 3600 + minutes * 60;
-            task.timeElapsed = 0;
-            task.timeElapsedTotal = 0;
+            
+            if (!task.id) {
+                task.timeElapsed = 0;
+                task.timeElapsedTotal = 0;
+            }
 
             await task.save();
 
-            notifySuccess('BeeTrack', `Задача "${task.taskName}" успішно створена!"`);
+            notifySuccess('BeeTrack', `Задача "${task.taskName}" успішно ${task.id ? 'відредагована' : 'створена'}!"`);
             this.#tplTasks.classList.remove('d-none')
-            this.#tplCreateTask.classList.add('d-none');
+            this.#tplEditTask.classList.add('d-none');
             this.#tasks = await Task.allForUser(userId);
             this.#renderTasks();
         });
@@ -196,6 +220,14 @@ export default class TplTasks extends Tpl {
     #listenBtnCloseTask() {
         this.#tplTasks.addEventListener('click', async (event) => {
             if (!event.target.closest('.btn-close-task')) return;
+
+            if (event.target.closest('.task').classList.contains('active')) {
+                notifyCritical(
+                    'Задача відстежується!',
+                    'Спершу зупиніть таймер цієї задачі. Не можна архівувати задачу з працюючим таймером.'
+                );
+                return;
+            }
             
             const confirmText = 'Ви впевнені що хочете архівувати задачу? Архівовані задачі не доступні для перегляду і відстеження часу. Затрачений на задачу час не буде відображатися в загальній статистиці, проте вся історія часу буде збережена і може бути відображена в статистиці при встановленні відповідної опції.';
 
@@ -209,6 +241,36 @@ export default class TplTasks extends Tpl {
                 event.target.closest('.task').remove();
                 notifySuccess('Задача архівована!', 'Задача "' + task.taskName + '" була успішно архівована.');
             });
+        });
+    }
+    
+    #listenBtnEditTask() {
+        this.#tplTasks.addEventListener('click', async (event) => {
+            if (!event.target.closest('.btn-edit-task')) return;
+            
+            if (event.target.closest('.task').classList.contains('active')) {
+                notifyCritical(
+                    'Задача відстежується!',
+                    'Спершу зупиніть таймер цієї задачі. Не можна редагувати задачі з працюючим таймером.'
+                );
+                return;
+            }
+
+            const task = await Task.getById(event.target.closest('.task').dataset.taskId);
+            
+            this.#tplTasks.classList.add('d-none');
+            this.#tplEditTask.classList.remove('d-none');
+            this.#tplEditTask.querySelector('h4').innerText = "Редагування задачі";
+            
+            const form = this.#tplEditTask.querySelector('form');
+            form.elements['id'].value = task.id;
+            form.elements['name'].value = task.taskName;
+            form.elements['description'].value = task.description;
+            form.elements['time-aim-h'].value = Math.floor(task.timeAim / 3600);
+            form.elements['time-aim-m'].value = (task.timeAim - (Math.floor(task.timeAim / 3600) * 3600)) / 60;
+            
+            const click = new Event('click', { bubbles: true, cancelable: true });
+            form.querySelector('.color-sample.color-' + task.color).dispatchEvent(click);
         });
     }
     

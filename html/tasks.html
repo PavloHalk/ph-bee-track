@@ -36,9 +36,10 @@
     </div>
 </div>
 
-<div class="new-task-container d-none">
+<div class="edit-task-container d-none">
     <h4 class="h4 text-center">Створення нової задачі</h4>
-    <form name="create-task" class="w-600 mx-auto">
+    <form name="edit-task" class="w-600 mx-auto">
+        <input type="number" name="id" disabled hidden />
         <div class="row mx-0">
             <div class="col col-3"><label for="new-task-name">Назва</label></div>
             <div class="col col-9">
@@ -56,20 +57,20 @@
             <div class="col col-3"><label for="new-task-color">Колір</label></div>
             <div class="col col-9">
                 <div class="d-flex flex-wrap justify-content-start">
-                    <div class="color-sample me-2 mb-2 selected" style="background-color: blue;"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: deepskyblue"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: aqua"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: purple"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: mediumpurple"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: red;"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: deeppink;"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: yellow;"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: greenyellow"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: green;"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: lightseagreen"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: mediumaquamarine"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: silver"></div>
-                    <div class="color-sample me-2 mb-2" style="background-color: grey"></div>
+                    <div class="color-sample me-2 mb-2 selected color-blue" style="background-color: blue;"></div>
+                    <div class="color-sample me-2 mb-2 color-deepskyblue" style="background-color: deepskyblue"></div>
+                    <div class="color-sample me-2 mb-2 color-aqua" style="background-color: aqua"></div>
+                    <div class="color-sample me-2 mb-2 color-purple" style="background-color: purple"></div>
+                    <div class="color-sample me-2 mb-2 color-mediumpurple" style="background-color: mediumpurple"></div>
+                    <div class="color-sample me-2 mb-2 color-red" style="background-color: red;"></div>
+                    <div class="color-sample me-2 mb-2 color-deeppink" style="background-color: deeppink;"></div>
+                    <div class="color-sample me-2 mb-2 color-yellow" style="background-color: yellow;"></div>
+                    <div class="color-sample me-2 mb-2 color-greenyellow" style="background-color: greenyellow"></div>
+                    <div class="color-sample me-2 mb-2 color-green" style="background-color: green;"></div>
+                    <div class="color-sample me-2 mb-2 color-lightseagreen" style="background-color: lightseagreen"></div>
+                    <div class="color-sample me-2 mb-2 color-mediumaquamarine" style="background-color: mediumaquamarine"></div>
+                    <div class="color-sample me-2 mb-2 color-silver" style="background-color: silver"></div>
+                    <div class="color-sample me-2 mb-2 color-grey" style="background-color: grey"></div>
                 </div>
                 <input id="new-task-color" name="color" type="text" value="blue" disabled />
             </div>
@@ -85,7 +86,7 @@
         <div class="row mx-0">
             <div class="col col-3">&nbsp;</div>
             <div class="col col-9">
-                <span class="btn btn-primary btn-create-task-submit">Створити</span>
+                <span class="btn btn-primary btn-create-task-submit">Зберегти</span>
                 <span class="btn btn-primary btn-create-task-cancel">Скасувати</span>
             </div>
         </div>
