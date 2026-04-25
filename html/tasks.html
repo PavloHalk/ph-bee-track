@@ -1,6 +1,7 @@
 <div class="d-flex flex-wrap justify-content-center tasks-container">
     <div class="task-template mx-5 mt-2 mb-5 p-2 d-none">
-        <div class="btn-close-task p-1" title="Архівувати задачу">x</div>
+        <div class="btn-task-top btn-close-task p-1" title="Архівувати задачу"></div>
+        <div class="btn-task-top btn-edit-task p-1" title="Редагувати задачу"></div>
         <h5 class="h5 text-center task-title"></h5>
         <div class="task-description px-1"></div>
         <div class="timer text-center mt-2">
@@ -146,17 +147,23 @@
         box-shadow: 1px 1px 10px black;
     }
     
-    .tpl-tasks .btn-close-task {
-        border: 1px solid black;
-        border-radius: 50%;
+    .tpl-tasks .btn-task-top {
+        position: absolute;
+        display: none;
+        background-size: 100%;
         cursor: pointer;
         width: 17px;
         height: 17px;
-        line-height: 3px;
-        position: absolute;
-        display: none;
     }
-    .tpl-tasks .task:hover .btn-close-task {
+    .tpl-tasks .btn-close-task {
+        background-image: url("../img/close.png");
+        left: 5px;
+    }
+    .tpl-tasks .task:hover .btn-task-top {
         display: block;
+    }
+    .tpl-tasks .btn-edit-task {
+        background-image: url("../img/edit.png");
+        right: 5px;
     }
 </style>
