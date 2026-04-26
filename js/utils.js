@@ -3,12 +3,21 @@ export function notify(title, message, level) {
         level = 'info';
     }
     
+    let lastNotificationBottom = 0;
+    const notifications = document.querySelectorAll('.notification');
+    
+    if (notifications.length) {
+        const lastNotification = notifications[notifications.length - 1];
+        lastNotificationBottom = lastNotification.getBoundingClientRect().bottom;
+    }
+    
     const el = document.createElement('div');
     el.className = 'py-1 px-2 notification notification-' + level;
     el.style.position = 'fixed';
     el.style.width = '350px';
     el.style.height = '80px';
-    el.style.top = '30px';
+    el.style.borderRadius = '5px';
+    el.style.top = lastNotificationBottom + 30 + 'px';
     el.style.right = '30px'
     el.style.opacity = '0.0';
     el.style.fontSize = '90%';
@@ -63,6 +72,24 @@ export function notify(title, message, level) {
             progress.style.width = progressWidth + '%';
         }
     }, 10);
+    
+    const positionInterval = setInterval(() => {
+        if (!el.isConnected) {
+            clearInterval(positionInterval);
+        }
+        
+        const elRect = el.getBoundingClientRect();
+        const elPrev = el.previousElementSibling;
+        
+        let neededPosition = 30;
+        if (elPrev && elPrev.classList.contains('notification') && elPrev.isConnected) {
+            neededPosition = elPrev.getBoundingClientRect().bottom + 30;
+        }
+        
+        if (elRect.top > neededPosition) {
+            el.style.top = elRect.top - 2 + 'px';
+        }
+    }, 1);
     
     function hide() {
         const hideInterval = setInterval(() => {
