@@ -1,6 +1,7 @@
 import Task from './models/Task.js';
 import Track from './models/Track.js';
 import { osNotify } from './pyapi.js';
+import {notifySuccess} from "./utils.js";
 
 export default class Timer {
     #task = null;
@@ -38,6 +39,11 @@ export default class Timer {
         this.#track.taskId = this.#task.id;
         this.#track.startedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
         this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+        
+        notifySuccess(
+            'Таймер пішов',
+            'Таймер успішно почав відраховувати час для задачі "' + this.#task.taskName + '".'
+        );
     }
     
     stop() {
@@ -53,6 +59,11 @@ export default class Timer {
         this.#track.save();
         
         this.#track = null;
+
+        notifySuccess(
+            'Таймер зупинений',
+            'Таймер зупинив відраховувати час для задачі "' + this.#task.taskName + '".'
+        );
     }
     
     #tick() {

@@ -8,7 +8,6 @@ const timer = new Timer();
 
 const profileElement = document.querySelector('header .profile');
 const profileObserver = new MutationObserver(async (mutations) => {
-    console.log(mutations[0].target.dataset.userId);
     if (Number(mutations[0].target.dataset.userId) === 0) {
         timer.stop();
     }
