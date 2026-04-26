@@ -26,11 +26,14 @@ export default class TplUserProfile extends Tpl {
         
         btnCancel.addEventListener('click', () => {
             this.delete();
+            document.querySelector('.tpl-tasks')?.classList.remove('d-none');
         });
 
         btnLogout.addEventListener('click', async () => {
             this.delete();
+            document.querySelector('header .profile').dataset.userId = 0;
             document.querySelector('header .profile').hidden = true;
+            document.querySelector('.tpl-tasks')?.remove();
             await showSelectUser();
         });
         
@@ -45,6 +48,7 @@ export default class TplUserProfile extends Tpl {
         btnUpdateClose.addEventListener('click', async () => {
             await handleUpdate();
             this.delete();
+            document.querySelector('.tpl-tasks')?.classList.remove('d-none');
         });
         
         setTimeout(() => {

@@ -8,7 +8,11 @@ const timer = new Timer();
 
 const profileElement = document.querySelector('header .profile');
 const profileObserver = new MutationObserver(async (mutations) => {
-    //await showCurrentTask(mutations[0].target.dataset.userId);
+    console.log(mutations[0].target.dataset.userId);
+    if (Number(mutations[0].target.dataset.userId) === 0) {
+        timer.stop();
+    }
+    
     await showTasks(mutations[0].target.dataset.userId, timer);
 });
 profileObserver.observe(profileElement, { attributes: true, attributeFilter: ['data-user-id'] });

@@ -18,6 +18,7 @@ export async function showSelectUser() {
 }
 
 export async function showUserProfile() {
+    app.querySelector('.tpl-tasks')?.classList.add('d-none');
     app.querySelector('.tpl-user-profile')?.remove();
     const tpl = await TplUserProfile.create();
     app.append(tpl.getElement());
