@@ -286,8 +286,9 @@ export default class TplTasks extends Tpl {
             
             const timeAim = this.#secondsToTime(task.time_aim);
             const timeElapsed = this.#secondsToTime(task.time_elapsed);
-            const timeDiff = this.#secondsToTime(Number(task.time_aim) - Number(task.time_elapsed));
+            const timeDiff = this.#secondsToTime(Math.abs(Number(task.time_aim) - Number(task.time_elapsed)));
             const percentage = Number(task.time_elapsed) / Number(task.time_aim) * 100;
+            const sign = Number(task.time_aim) < Number(task.time_elapsed) ? '-' : '';
             
             taskEl.dataset.taskId = task.id;
             
@@ -309,7 +310,7 @@ export default class TplTasks extends Tpl {
             taskEl.querySelector('.timer .m').innerText = timeElapsed.m.toString().padStart(2, '0');
             taskEl.querySelector('.timer .s').innerText = timeElapsed.s.toString().padStart(2, '0');
 
-            taskEl.querySelector('.time-left .h').innerText = timeDiff.h.toString();
+            taskEl.querySelector('.time-left .h').innerText = sign + timeDiff.h.toString();
             taskEl.querySelector('.time-left .m').innerText = timeDiff.m.toString().padStart(2, '0');
             taskEl.querySelector('.time-left .s').innerText = timeDiff.s.toString().padStart(2, '0');
 

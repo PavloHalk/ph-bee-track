@@ -87,14 +87,15 @@ export default class Timer {
         }
         
         const tElapsed = this.#secondsToTime(this.#task.timeElapsed);
-        const tLeft = this.#secondsToTime(this.#task.timeAim - this.#task.timeElapsed);
+        const tLeft = this.#secondsToTime(Math.abs(this.#task.timeAim - this.#task.timeElapsed));
         const percentage = this.#task.timeElapsed / this.#task.timeAim * 100;
+        const sign = this.#task.timeElapsed > this.#task.timeAim ? '-' : '';
 
         this.#taskEl.querySelector('.timer .h').innerText = tElapsed.h.toString();
         this.#taskEl.querySelector('.timer .m').innerText = tElapsed.m.toString().padStart(2, '0');
         this.#taskEl.querySelector('.timer .s').innerText = tElapsed.s.toString().padStart(2, '0');
 
-        this.#taskEl.querySelector('.time-left .h').innerText = tLeft.h.toString();
+        this.#taskEl.querySelector('.time-left .h').innerText = sign + tLeft.h.toString();
         this.#taskEl.querySelector('.time-left .m').innerText = tLeft.m.toString().padStart(2, '0');
         this.#taskEl.querySelector('.time-left .s').innerText = tLeft.s.toString().padStart(2, '0');
 
