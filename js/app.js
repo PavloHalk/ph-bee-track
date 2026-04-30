@@ -10,8 +10,9 @@ const profileElement = document.querySelector('header .profile');
 const profileObserver = new MutationObserver(async (mutations) => {
     if (Number(mutations[0].target.dataset.userId) === 0) {
         timer.stop();
+        return;
     }
-    
+
     await showTasks(mutations[0].target.dataset.userId, timer);
 });
 profileObserver.observe(profileElement, { attributes: true, attributeFilter: ['data-user-id'] });
