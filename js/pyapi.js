@@ -18,7 +18,6 @@ await pywebviewWaiter;
 
 export async function executeSql(sql) {
     const result = await pywebview.api.execute_sql(sql);
-    //console.log(result);
     
     if (result.status && result.status === 'error') {
         console.warn(sql);
@@ -48,6 +47,10 @@ export async function loadConfig() {
 
 export async function osNotify(title, message) {
     await pywebview.api.notify(title, message);
+}
+
+export async function playSound() {
+    await pywebview.api.play_sound();
 }
 
 class SqliteError extends Error {

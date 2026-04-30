@@ -1,12 +1,13 @@
 import Task from './models/Task.js';
 import Track from './models/Track.js';
-import { osNotify } from './pyapi.js';
+import {osNotify, playSound} from './pyapi.js';
 import {notifySuccess} from "./utils.js";
 
 export default class Timer {
     #task = null;
     #taskEl = null;
     #interval = null;
+    #alarmInterval = null;
     #lastStartDate = null;
     #elapsedOnLastStart = 0;
     #elapsedTotalOnLastStart = 0;
@@ -66,6 +67,13 @@ export default class Timer {
         );
     }
     
+    stopAlarm() {
+        if (!this.#alarmInterval) return;
+        
+        clearInterval(this.#alarmInterval);
+        this.#alarmInterval = null;
+    }
+    
     #tick() {
         const diff = Math.floor(((new Date()) - this.#lastStartDate) / 1000);
         this.#task.timeElapsed = this.#elapsedOnLastStart + diff;
@@ -84,6 +92,13 @@ export default class Timer {
                 'BeeTrack - ' + this.#task.name,
                 'Ви перевищили запланований на цю задачу час!'
             );
+
+            if (this.#task.playSound) {
+                this.#taskEl.querySelector('.btn-stop-alarm').classList.remove('d-none');
+                this.#alarmInterval = setInterval(() => {
+                    playSound();
+                }, 1600);
+            }
         }
         
         const tElapsed = this.#secondsToTime(this.#task.timeElapsed);

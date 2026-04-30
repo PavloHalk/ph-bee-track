@@ -39,6 +39,7 @@ export default class TplTasks extends Tpl {
         
         this.#listenBtnCloseTask();
         this.#listenBtnEditTask();
+        this.#listenBtnStopAlarm();
     }
     
     #listenBtnCreateTask() {
@@ -142,6 +143,7 @@ export default class TplTasks extends Tpl {
             task.taskName = form.elements['name'].value;
             task.description = form.elements['description'].value;
             task.color = form.elements['color'].value;
+            task.playSound = form.elements['play-sound'].checked ? 1 : 0;
             
             task.timeAim = hours * 3600 + minutes * 60;
             
@@ -266,12 +268,22 @@ export default class TplTasks extends Tpl {
             form.elements['id'].value = task.id;
             form.elements['name'].value = task.taskName;
             form.elements['description'].value = task.description;
+            form.elements['play-sound'].checked = task.playSound ? true : false;
             form.elements['time-aim-h'].value = Math.floor(task.timeAim / 3600);
             form.elements['time-aim-m'].value = (task.timeAim - (Math.floor(task.timeAim / 3600) * 3600)) / 60;
             
             const click = new Event('click', { bubbles: true, cancelable: true });
             form.querySelector('.color-sample.color-' + task.color).dispatchEvent(click);
         });
+    }
+    
+    #listenBtnStopAlarm() {
+        this.#tplTasks.addEventListener('click', async (event) => {
+            if (!event.target.closest('.btn-stop-alarm')) return;
+            
+            this.#timer.stopAlarm();
+            event.target.closest('.btn-stop-alarm').classList.add('d-none');
+        });   
     }
     
     #renderTasks() {

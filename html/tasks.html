@@ -29,6 +29,11 @@
             <span class="btn btn-sm btn-danger btn-stop disabled">Стоп</span>
             <span class="btn btn-sm btn-outline-dark btn-reset">Скинути</span>
         </div>
+        
+        <div class="btn-stop-alarm text-center d-none">
+            <img src="../img/alarm.png" alt="Alarm" class="py-5" />
+            <p>Вимкнути сповіщення</p>
+        </div>
     </div>
     <div class="task new-task text-center mx-5 mt-2 mb-5 px-2 pt-4">
         <img src="../img/add.png" alt="Add new task" />
@@ -73,6 +78,12 @@
                     <div class="color-sample me-2 mb-2 color-grey" style="background-color: grey"></div>
                 </div>
                 <input id="new-task-color" name="color" type="text" value="blue" disabled />
+            </div>
+        </div>
+        <div class="row mx-0">
+            <div class="col col-3"><label for="new-task-color">Колір</label></div>
+            <div class="col col-9">
+                <input type="checkbox" name="play-sound" id="play-sound" checked />
             </div>
         </div>
         <div class="row mx-0">
@@ -166,5 +177,26 @@
     .tpl-tasks .btn-edit-task {
         background-image: url("../img/edit.png");
         right: 5px;
+    }
+    
+    .tpl-tasks .btn-stop-alarm {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    .tpl-tasks .btn-stop-alarm:hover {
+        box-shadow: 0 0 10px black;
+    }
+    .tpl-tasks .btn-stop-alarm img {
+        width: 110px;
+    }
+    .tpl-tasks .btn-stop-alarm p {
+        font-size: 20px;
     }
 </style>

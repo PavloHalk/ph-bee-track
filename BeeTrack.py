@@ -4,6 +4,7 @@ import os
 import sys
 import json
 from plyer import notification
+from playsound import playsound
 
 class API:
     def __init__(self):
@@ -29,6 +30,7 @@ class API:
                                 name TEXT,
                                 description TEXT,
                                 color TEXT,
+                                play_sound INTEGER default 0,
                                 time_elapsed INTEGER default 0,
                                 time_elapsed_total INTEGER default 0,
                                 time_aim INTEGER default 144000,
@@ -110,6 +112,9 @@ class API:
             app_icon = 'favicon.ico',
             timeout = 15
         )
+        
+    def play_sound(self):
+        playsound('you-are-worked-to-hard.mp3')
 
 api = API()
 

@@ -5,6 +5,7 @@ command = (
     '--hidden-import "plyer.platforms.win.notification" '
     '--add-data "index.html;." '
     '--add-data "favicon.ico;." '
+    '--add-data "you-are-worked-to-hard.mp3;." '
     '--add-data "css;css" '
     '--add-data "js;js" '
     '--add-data "html;html" '

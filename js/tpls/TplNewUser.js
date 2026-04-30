@@ -17,7 +17,6 @@ export default class TplNewUser extends Tpl {
         const btnSubmit = this.getElement().querySelector('.btn-submit');
         const btnCancel = this.getElement().querySelector('.btn-cancel');
         
-        console.log('In init ', showCancelButton);
         if (!showCancelButton) {
             btnCancel.classList.add('d-none');
         }
