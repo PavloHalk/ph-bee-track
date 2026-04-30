@@ -1,6 +1,7 @@
 import Tpl from './Tpl.js';
 import User from '../Models/User.js';
 import {notifySuccess} from "../utils.js";
+import {showSelectUser} from "../tplFunctions.js";
 
 export default class TplNewUser extends Tpl {
     static get htmlPath() {
@@ -11,13 +12,19 @@ export default class TplNewUser extends Tpl {
         return 'tpl tpl-new-user';
     }
     
-    init() {
+    init(showCancelButton = true) {
         const form = this.getElement().querySelector('form');
-        const btn = this.getElement().querySelector('.btn-submit');
+        const btnSubmit = this.getElement().querySelector('.btn-submit');
+        const btnCancel = this.getElement().querySelector('.btn-cancel');
+        
+        console.log('In init ', showCancelButton);
+        if (!showCancelButton) {
+            btnCancel.classList.add('d-none');
+        }
         
         form.addEventListener('submit', (event) => event.preventDefault());
         
-        btn.addEventListener('click', (event) => {
+        btnSubmit.addEventListener('click', (event) => {
             const currentTarget = event.target.closest('form');
             
             if (!currentTarget.elements['username'].value) {
@@ -34,7 +41,7 @@ export default class TplNewUser extends Tpl {
                         'user-created',
                         { bubbles: true }
                     );
-                    btn.closest('.tpl').dispatchEvent(ev);
+                    btnSubmit.closest('.tpl').dispatchEvent(ev);
                     
                     const profile = document.querySelector('header .profile');
                     user = await User.getByUserName(user.username);
@@ -58,6 +65,11 @@ export default class TplNewUser extends Tpl {
                 });
         });
         
+        btnCancel.addEventListener('click', async () => {
+            this.delete();
+            await showSelectUser(showCancelButton);
+        });
+        
         form.elements['username'].addEventListener('input', (event) => {
             event.target.classList.remove('invalid');
             event.target.nextElementSibling.innerText = '';
@@ -65,7 +77,7 @@ export default class TplNewUser extends Tpl {
 
         form.elements['username'].addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
-                btn.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
+                btnSubmit.dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
             }
         });
         

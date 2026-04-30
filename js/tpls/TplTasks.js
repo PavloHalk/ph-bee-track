@@ -134,7 +134,7 @@ export default class TplTasks extends Tpl {
 
             let task = new Task();
             
-            if (form.elements['id']) {
+            if (Number(form.elements['id'].value)) {
                 task = await Task.getById(form.elements['id'].value);
             }
             

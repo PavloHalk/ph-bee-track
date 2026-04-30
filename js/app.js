@@ -1,5 +1,5 @@
 import { executeSql, loadConfig } from './pyapi.js';
-import {showCreateUser, showSelectUser, showUserProfile, showCurrentTask, showTasks} from './tplFunctions.js';
+import {showCreateUser, showSelectUser, showUserProfile, showTasks} from './tplFunctions.js';
 import User from './models/User.js';
 import Timer from './Timer.js';
 
@@ -18,8 +18,8 @@ const profileObserver = new MutationObserver(async (mutations) => {
 profileObserver.observe(profileElement, { attributes: true, attributeFilter: ['data-user-id'] });
 
 const checkUsers = await executeSql("SELECT COUNT(*) AS users_count FROM users");
-if (checkUsers[0].users_count === 0) {
-    await showCreateUser();
+if (!checkUsers[0].users_count) {
+    await showCreateUser(true);
 } else {
     if (!config.last_logged_user_id) {
         await showSelectUser();

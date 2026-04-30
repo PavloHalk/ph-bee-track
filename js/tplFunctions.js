@@ -6,8 +6,8 @@ import TplTasks from './tpls/TplTasks.js';
 
 const app = document.getElementById('app');
 
-export async function showCreateUser() {
-    const tpl = await TplNewUser.create();
+export async function showCreateUser(showCancelButton = true) {
+    const tpl = await TplNewUser.create(showCancelButton);
     app.append(tpl.getElement());
 }
 

@@ -1,7 +1,7 @@
 import Tpl from './Tpl.js';
 import User from '../Models/User.js';
 import { showCreateUser } from "../tplFunctions.js";
-import { loadConfig, saveConfig } from "../pyapi.js";
+import {executeSql, loadConfig, saveConfig} from "../pyapi.js";
 
 export default class TplSelectUser extends Tpl {
     static get htmlPath() {
@@ -46,9 +46,11 @@ export default class TplSelectUser extends Tpl {
             await saveConfig(config);
         });
         
-        template.addEventListener('click', () => {
+        template.addEventListener('click', async () => {
             this.delete();
-            showCreateUser();
+
+            const checkUsers = await executeSql("SELECT COUNT(*) AS users_count FROM users");
+            await showCreateUser(checkUsers[0].users_count);
         });
     }
 }
