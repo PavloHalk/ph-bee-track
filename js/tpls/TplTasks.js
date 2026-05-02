@@ -1,6 +1,5 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
-import Timer from '../Timer.js';
 import {notifyCritical, notifySuccess, showConfirm} from '../utils.js';
 
 export default class TplTasks extends Tpl {
