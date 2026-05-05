@@ -267,7 +267,7 @@ export default class TplTasks extends Tpl {
             form.elements['id'].value = task.id;
             form.elements['name'].value = task.taskName;
             form.elements['description'].value = task.description;
-            form.elements['play-sound'].checked = task.playSound ? true : false;
+            form.elements['play-sound'].checked = !!task.playSound;
             form.elements['time-aim-h'].value = Math.floor(task.timeAim / 3600);
             form.elements['time-aim-m'].value = (task.timeAim - (Math.floor(task.timeAim / 3600) * 3600)) / 60;
             

@@ -1,0 +1,121 @@
+<h4 class="text-center h4 mb-1">Загальна статистика по завданнях</h4>
+<form name="stat-task-total-filter-form" class="w-300 mb-4 mx-auto">
+    <div class="text-center">
+        <label>
+            <input type="checkbox" name="show-archived" />
+            Включати архівовані здачі
+        </label>
+    </div>
+</form>
+<div class="diagrams-container d-flex flex-wrap justify-content-center">
+    <div class="row row-template d-none">
+        <div class="col-1 px-2"><div class="legend-color"></div></div>
+        <div class="col-8 px-2"></div>
+        <div class="col-3 px-2 text-end"></div>
+    </div>
+    <div class="diagram-container diagram-container-involvement mx-5 mb-5 p-2">
+        <h6 class="text-center h6">Залученість</h6>
+        <div class="diagram"></div>
+        <div class="legend"></div>
+    </div>
+    <div class="diagram-container diagram-container-time-spent mx-5 mb-5 p-2">
+        <h6 class="text-center h6">Витрата часу</h6>
+        <div class="diagram"></div>
+        <div class="legend"></div>
+    </div>
+    <div class="diagram-container diagram-container-time-aim mx-5 mb-5 p-2">
+        <h6 class="text-center h6">Цільовий час</h6>
+        <div class="diagram"></div>
+        <div class="legend"></div>
+    </div>
+    <div class="diagram-container diagram-container-completeness mx-5 mb-5 p-2">
+        <h6 class="text-center h6">Виконання</h6>
+        <div class="diagram"></div>
+        <div class="legend"></div>
+    </div>
+</div>
+<table id="stat-task-total-template" class="d-none">
+    <tbody>
+    <tr class="template">
+        <td><div class="color-box"></div></td>
+        <td></td>
+        <td class="text-end"></td>
+        <td class="text-end"></td>
+        <td class="text-end"></td>
+        <td class="text-end"></td>
+    </tr>
+    </tbody>
+</table>
+<table id="stat-task-total">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Назва завдання</th>
+            <th>Цільовий час</th>
+            <th>Затрачений час</th>
+            <th>% Виконання</th>
+            <th>Залученість</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+            <td>Загалом</td>
+            <td class="text-end"></td>
+            <td class="text-end"></td>
+            <td class="text-end"></td>
+            <td class="text-end"></td>
+        </tr>
+    </tfoot>
+</table>
+
+<style>
+    .tpl-stat-task-total table {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .tpl-stat-task-total .color-box {
+        width: 30px;
+        height: 10px;
+        border-radius: 2px;
+    }
+
+    .tpl-stat-task-total th:nth-child(1), .tpl-stat-task-total td:nth-child(1) {
+        width: 30px;
+    }
+    .tpl-stat-task-total th:nth-child(3), .tpl-stat-task-total td:nth-child(3) {
+        width: 120px;
+    }
+    .tpl-stat-task-total th:nth-child(4), .tpl-stat-task-total td:nth-child(4) {
+        width: 120px;
+    }
+    .tpl-stat-task-total th:nth-child(5), .tpl-stat-task-total td:nth-child(5) {
+        width: 120px;
+    }
+    .tpl-stat-task-total th:nth-child(6), .tpl-stat-task-total td:nth-child(6) {
+        width: 120px;
+    }
+
+    .tpl-stat-task-total .diagram {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        margin: 10px auto;
+    }
+
+    .tpl-stat-task-total .diagram-container {
+        width: 370px;
+        box-shadow: 0 0 10px grey;
+        border-radius: 10px;
+    }
+    .tpl-stat-task-total .diagram-container .legend-color {
+        position: relative;
+        top: 8px;
+        width: 20px;
+        height: 10px;
+        border-radius: 2px;
+        border: 1px solid black;
+    }
+</style>

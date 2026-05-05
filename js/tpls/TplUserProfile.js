@@ -27,6 +27,9 @@ export default class TplUserProfile extends Tpl {
         btnCancel.addEventListener('click', () => {
             this.delete();
             document.querySelector('.tpl-tasks')?.classList.remove('d-none');
+
+            document.querySelector('header .btn-stat').classList.remove('d-none');
+            document.querySelector('header .btn-tasks').classList.add('d-none');
         });
 
         btnLogout.addEventListener('click', async () => {
@@ -49,6 +52,9 @@ export default class TplUserProfile extends Tpl {
             await handleUpdate();
             this.delete();
             document.querySelector('.tpl-tasks')?.classList.remove('d-none');
+
+            document.querySelector('header .btn-stat').classList.remove('d-none');
+            document.querySelector('header .btn-tasks').classList.add('d-none');
         });
         
         setTimeout(() => {

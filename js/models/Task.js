@@ -15,8 +15,14 @@ export default class Task extends Model {
         }
     }
     
-    static async allForUser(userId) {
-        return await executeSql(`SELECT * FROM tasks WHERE user_id=${userId} AND is_deleted=0`);
+    static async allForUser(userId, includeArchived = false) {
+        let sql = `SELECT * FROM tasks WHERE user_id=${userId}`;
+        if (!includeArchived) {
+            sql += ' AND is_deleted=0';
+        }
+        sql += ' ORDER BY created_at DESC';
+        
+        return await executeSql(sql);
     }
 
     async save() {
