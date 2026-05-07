@@ -137,7 +137,7 @@ export function showConfirm(title, text, okCallback, cancelCallback) {
     overlay.style.zIndex = '10000';
     
     const form = document.createElement('div');
-    form.className = 'position-absolute top-50 start-50 translate-middle p-4';
+    form.className = 'position-fixed top-50 start-50 translate-middle p-4';
     form.style.zIndex = '10001';
     form.style.backgroundColor = 'white';
     form.style.border = '1px solid black';
