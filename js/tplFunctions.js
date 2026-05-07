@@ -1,7 +1,6 @@
 import TplNewUser from './tpls/TplNewUser.js';
 import TplSelectUser from './tpls/TplSelectUser.js';
 import TplUserProfile from './tpls/TplUserProfile.js';
-import TplStatTaskTotal from './tpls/TplStatTaskTotal.js';
 import TplStatContainer from "./tpls/TplStatContainer.js";
 import TplTasks from './tpls/TplTasks.js';
 

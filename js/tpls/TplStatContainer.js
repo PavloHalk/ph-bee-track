@@ -1,5 +1,6 @@
 import Tpl from './Tpl.js';
 import TplStatTaskTotal from './TplStatTaskTotal.js';
+import TplStatHeatMap from './TplStatHeatMap.js';
 
 export default class TplStatContainer extends Tpl {
     static get htmlPath() {
@@ -26,7 +27,7 @@ export default class TplStatContainer extends Tpl {
             }
         });
 
-        this.getElement().querySelector('.stat-nav-tab-detailed').addEventListener('click', (event) => {
+        this.getElement().querySelector('.stat-nav-tab-detailed').addEventListener('click', async (event) => {
             if (!event.target.closest('.stat-nav-tab')) return;
 
             this.getElement().querySelector('.stat-nav-tab-general').classList.remove('active');
@@ -34,6 +35,11 @@ export default class TplStatContainer extends Tpl {
 
             this.getElement().querySelector('.tpl-stat-heat-map')?.classList.remove('d-none');
             this.getElement().querySelector('.tpl-stat-task-total')?.classList.add('d-none');
+            
+            if (!this.getElement().querySelector('.tpl-stat-heat-map')) {
+                const tpl = await TplStatHeatMap.create(userId);
+                this.getElement().append(tpl.getElement());
+            }
         });
 
         const tpl = await TplStatTaskTotal.create(userId);
