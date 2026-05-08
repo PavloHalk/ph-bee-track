@@ -63,7 +63,8 @@ export default class TplStatHeatMap extends Tpl {
                     cell.className = 'day empty';
                 } else {
                     cell.className = 'day';
-                    cell.title = `${TplStatHeatMap.DN[d.getDay()]}, ${d.getDate()} ${TplStatHeatMap.MN[d.getMonth()]} ${this.#year}`;
+                    cell.dataset.dateStr = `${TplStatHeatMap.DN[d.getDay()]}, ${d.getDate()} ${TplStatHeatMap.MN[d.getMonth()]} ${this.#year}`;
+                    cell.dataset.date = `${this.#year}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
                 }
                 col.appendChild(cell);
             });
@@ -72,7 +73,23 @@ export default class TplStatHeatMap extends Tpl {
 
         const records = await Track.getYearRecords(this.#userId, this.#year);
         const secondsPerDay = this.#calcSecondsPerDay(records);
-        console.log(secondsPerDay);
+        
+        const max = Object.values(secondsPerDay).reduce((a, b) => Math.max(a, b), 0);
+        
+        for (const date in secondsPerDay) {
+            const cell = document.querySelector(`[data-date="${date}"]`);
+            cell.title = cell.dataset.dateStr;
+            
+            if (secondsPerDay[date] > 0) {
+                const time = this.#secondsToTime(secondsPerDay[date]);
+                const timeStr = `${time.h}:${time.m.toString().padStart(2, '0')}:${time.s.toString().padStart(2, '0')}`;
+                
+                cell.style.backgroundColor = this.#getHeatColor(secondsPerDay[date], max);
+                cell.title += ' - ' + timeStr;
+            } else {
+                cell.title += ' - 0:00:00';
+            }
+        }
     }
 
     #buildCal() {
@@ -134,5 +151,24 @@ export default class TplStatHeatMap extends Tpl {
         }
 
         return result;
+    }
+
+    #getHeatColor(seconds, max) {
+        if (!seconds || seconds <= 0) return null;
+
+        const t = Math.log(seconds + 1) / Math.log(max + 1); // 0..1
+
+        const r = Math.round(207 - t * (207 - 13));
+        const g = Math.round(226 - t * (226 - 110));
+        const b = Math.round(255 - t * (255 - 253));
+        return `rgb(${r},${g},${b})`;
+    }
+
+    #secondsToTime(sec) {
+        return {
+            s: sec % 60,
+            m: Math.floor((sec % 3600) / 60),
+            h: Math.floor(sec / 3600)
+        }
     }
 }
