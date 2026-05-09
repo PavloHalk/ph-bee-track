@@ -158,9 +158,9 @@ export default class TplStatHeatMap extends Tpl {
 
         const t = Math.log(seconds + 1) / Math.log(max + 1); // 0..1
 
-        const r = Math.round(207 - t * (207 - 13));
-        const g = Math.round(226 - t * (226 - 110));
-        const b = Math.round(255 - t * (255 - 253));
+        const r = Math.round(207 - t * (207 - 5));
+        const g = Math.round(226 - t * (226 - 44));
+        const b = Math.round(255 - t * (255 - 101));
         return `rgb(${r},${g},${b})`;
     }
 
