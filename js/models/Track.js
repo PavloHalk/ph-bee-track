@@ -18,4 +18,16 @@ export default class Track extends Model {
             throw err;
         }
     }
+    
+    static async getYearRecords(userId, year) {
+        
+        const stop = year + '-01-01 00:00:00';
+        const start = (year+1) + '-01-01 00:00:00';
+        const sql = `SELECT * FROM tracks
+                                WHERE user_id = ${userId}
+                                AND started_at < '${start}'
+                                AND stopped_at >= '${stop}'`;
+        
+        return await executeSql(sql);
+    }
 }

@@ -1,0 +1,37 @@
+<div class="hm mx-auto">
+    <div class="nav-row">
+        <button class="nav-btn" id="bp" aria-label="Попередній рік">&#8249;</button>
+        <span class="yr" id="yd"></span>
+        <button class="nav-btn" id="bn" aria-label="Наступний рік">&#8250;</button>
+    </div>
+    <div class="cal-outer">
+        <div class="wd-col">
+            <div class="wd">Пн</div><div class="wd">Вт</div><div class="wd">Ср</div>
+            <div class="wd">Чт</div><div class="wd">Пт</div><div class="wd">Сб</div><div class="wd">Нд</div>
+        </div>
+        <div class="weeks-area">
+            <div class="mlabels" id="ml"></div>
+            <div class="weeks-row" id="wr"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hm { padding: 1.25rem 0.5rem 1rem; width: fit-content; }
+    .nav-row { display:flex; align-items:center; justify-content:center; gap:1.25rem; margin-bottom:1.25rem; }
+    .yr { font-size:22px; font-weight:500; color:var(--bs-body-color); min-width:60px; text-align:center; }
+    .nav-btn { background:none; border:0.5px solid var(--bs-border-color); border-radius:var(--bs-border-radius-sm); width:34px; height:34px; padding-bottom:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--bs-secondary-color); font-size:30px; line-height:1; transition:background 0.15s; }
+    .nav-btn:hover { background:var(--bs-secondary-bg); }
+    .cal-outer { display:flex; gap:4px; overflow-x:auto; padding-bottom:4px; }
+    .wd-col { display:flex; flex-direction:column; gap:3px; padding-top:22px; flex-shrink:0; }
+    .wd { font-size:10px; color:var(--bs-tertiary-color); height:14px; line-height:14px; text-align:right; padding-right:6px; }
+    .weeks-area { display:flex; flex-direction:column; position:relative; }
+    .mlabels { position:relative; height:18px; margin-bottom:4px; }
+    .mlabel { position:absolute; top:0; font-size:11px; color:var(--bs-secondary-color); font-weight:500; white-space:nowrap; }
+    .weeks-row { display:flex; gap:3px; }
+    .wcol { display:flex; flex-direction:column; gap:3px; flex-shrink:0; }
+    .day { width:14px; height:14px; border-radius:3px; background:var(--bs-secondary-bg); border:0.5px solid var(--bs-border-color-translucent); box-sizing:border-box; cursor:pointer; transition:border-color 0.1s; }
+    .day:hover { border-color:var(--bs-primary); }
+    .day.active { background:var(--bs-primary); border-color:transparent; }
+    .day.empty { background:transparent; border-color:transparent; cursor:default; }
+</style>

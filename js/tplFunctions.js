@@ -1,7 +1,7 @@
 import TplNewUser from './tpls/TplNewUser.js';
 import TplSelectUser from './tpls/TplSelectUser.js';
 import TplUserProfile from './tpls/TplUserProfile.js';
-import TplStatTaskTotal from './tpls/TplStatTaskTotal.js';
+import TplStatContainer from "./tpls/TplStatContainer.js";
 import TplTasks from './tpls/TplTasks.js';
 
 const app = document.getElementById('app');
@@ -59,7 +59,7 @@ export async function showStats(userId) {
         }
     }
     
-    const tpl = await TplStatTaskTotal.create(userId);
+    const tpl = await TplStatContainer.create(userId);
     app.append(tpl.getElement());
 
     document.querySelector('header .btn-stat').classList.add('d-none');
