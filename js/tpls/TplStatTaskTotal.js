@@ -10,15 +10,23 @@ export default class TplStatTaskTotal extends Tpl {
         return 'tpl tpl-stat-task-total';
     }
     
-    async init(userId) {
-        const filterForm = this.getElement().querySelector('form[name="stat-task-total-filter-form"]');
-        
-        await this.#getDataAndRender(userId, filterForm);
-        filterForm.elements['show-archived'].addEventListener('change', this.#getDataAndRender.bind(this, userId, filterForm));
+    #userId = 0;
+    #includeArchived = false;
+
+    async init(userId, includeArchived = false) {
+        this.#userId = userId;
+        this.#includeArchived = includeArchived;
+
+        await this.#getDataAndRender();
     }
 
-    async #getDataAndRender(userId, filterForm) {
-        const tasks = await Task.allForUser(userId, filterForm.elements['show-archived'].checked);
+    async setIncludeArchived(value) {
+        this.#includeArchived = value;
+        await this.#getDataAndRender();
+    }
+
+    async #getDataAndRender() {
+        const tasks = await Task.allForUser(this.#userId, this.#includeArchived);
         const data = this.#makeData(tasks);
 
         this.#renderTable(data);

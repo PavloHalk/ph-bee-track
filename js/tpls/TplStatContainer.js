@@ -4,6 +4,7 @@ import TplStatHeatMap from './TplStatHeatMap.js';
 import TplStatWeekCalendar from './TplStatWeekCalendar.js';
 
 export default class TplStatContainer extends Tpl {
+    #taskTotal = null;
     #heatMap = null;
     #weekCalendar = null;
 
@@ -16,7 +17,7 @@ export default class TplStatContainer extends Tpl {
     }
 
     async init(userId) {
-        const filterForm = this.getElement().querySelector('form[name="stat-detailed-filter-form"]');
+        const filterForm = this.getElement().querySelector('form[name="stat-filter-form"]');
 
         this.getElement().querySelector('.stat-nav-tab-general').addEventListener('click', async (event) => {
             if (!event.target.closest('.stat-nav-tab')) return;
@@ -24,16 +25,9 @@ export default class TplStatContainer extends Tpl {
             this.getElement().querySelector('.stat-nav-tab-general').classList.add('active');
             this.getElement().querySelector('.stat-nav-tab-detailed').classList.remove('active');
 
-            filterForm.classList.add('d-none');
-
             this.getElement().querySelector('.tpl-stat-heat-map')?.classList.add('d-none');
             this.getElement().querySelector('.tpl-stat-week-calendar')?.classList.add('d-none');
             this.getElement().querySelector('.tpl-stat-task-total')?.classList.remove('d-none');
-
-            if (!this.getElement().querySelector('.tpl-stat-task-total')) {
-                const tpl = await TplStatTaskTotal.create(userId);
-                this.getElement().append(tpl.getElement());
-            }
         });
 
         this.getElement().querySelector('.stat-nav-tab-detailed').addEventListener('click', async (event) => {
@@ -41,8 +35,6 @@ export default class TplStatContainer extends Tpl {
 
             this.getElement().querySelector('.stat-nav-tab-general').classList.remove('active');
             this.getElement().querySelector('.stat-nav-tab-detailed').classList.add('active');
-
-            filterForm.classList.remove('d-none');
 
             this.getElement().querySelector('.tpl-stat-heat-map')?.classList.remove('d-none');
             this.getElement().querySelector('.tpl-stat-week-calendar')?.classList.remove('d-none');
@@ -63,11 +55,12 @@ export default class TplStatContainer extends Tpl {
 
         filterForm.elements['show-archived'].addEventListener('change', async (event) => {
             const includeArchived = event.target.checked;
+            await this.#taskTotal?.setIncludeArchived(includeArchived);
             await this.#heatMap?.setIncludeArchived(includeArchived);
             await this.#weekCalendar?.setIncludeArchived(includeArchived);
         });
 
-        const tpl = await TplStatTaskTotal.create(userId);
-        this.getElement().append(tpl.getElement());
+        this.#taskTotal = await TplStatTaskTotal.create(userId);
+        this.getElement().append(this.#taskTotal.getElement());
     }
 }
