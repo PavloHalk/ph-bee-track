@@ -7,6 +7,7 @@ export default class TplStatHeatMap extends Tpl {
     static STEP = 17;
     #year = new Date().getFullYear();
     #userId = 0;
+    #includeArchived = false;
     
     static get htmlPath() {
         return 'stat-heat-map';
@@ -16,12 +17,13 @@ export default class TplStatHeatMap extends Tpl {
         return 'tpl tpl-stat-heat-map';
     }
     
-    async init(userId) {
+    async init(userId, includeArchived = false) {
         this.#userId = userId;
+        this.#includeArchived = includeArchived;
 
         setTimeout(async () => {
             await this.#render();
-            
+
             document.getElementById('bp').addEventListener('click', () => {
                 this.#year--;
                 this.#render();
@@ -31,6 +33,11 @@ export default class TplStatHeatMap extends Tpl {
                 this.#render();
             });
         });
+    }
+
+    async setIncludeArchived(value) {
+        this.#includeArchived = value;
+        await this.#render();
     }
 
     async #render() {
@@ -71,7 +78,7 @@ export default class TplStatHeatMap extends Tpl {
             wr.appendChild(col);
         });
 
-        const records = await Track.getYearRecords(this.#userId, this.#year);
+        const records = await Track.getYearRecords(this.#userId, this.#year, this.#includeArchived);
         const secondsPerDay = this.#calcSecondsPerDay(records);
         
         const max = Object.values(secondsPerDay).reduce((a, b) => Math.max(a, b), 0);

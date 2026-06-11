@@ -19,14 +19,16 @@ export default class Track extends Model {
         }
     }
     
-    static async getYearRecords(userId, year) {
+    static async getYearRecords(userId, year, includeArchived = false) {
 
         const stop = year + '-01-01 00:00:00';
         const start = (year+1) + '-01-01 00:00:00';
-        const sql = `SELECT * FROM tracks
-                                WHERE user_id = ${userId}
-                                AND started_at < '${start}'
-                                AND stopped_at >= '${stop}'`;
+        const archivedFilter = includeArchived ? '' : ' AND tk.is_deleted = 0';
+        const sql = `SELECT tr.* FROM tracks tr
+                                LEFT JOIN tasks tk ON tk.id = tr.task_id
+                                WHERE tr.user_id = ${userId}
+                                AND tr.started_at < '${start}'
+                                AND tr.stopped_at >= '${stop}'${archivedFilter}`;
 
         return await executeSql(sql);
     }
@@ -34,11 +36,12 @@ export default class Track extends Model {
     // Треки, що перетинаються з тижнем [monday, monday + 7 днів).
     // monday — локальна дата (понеділок о 00:00); межі переводимо у UTC,
     // бо started_at/stopped_at зберігаються в UTC.
-    static async getWeekRecords(userId, monday) {
+    static async getWeekRecords(userId, monday, includeArchived = false) {
         const start = this.#toSqlUtc(monday);
         const end = new Date(monday);
         end.setDate(end.getDate() + 7);
         const endStr = this.#toSqlUtc(end);
+        const archivedFilter = includeArchived ? '' : ' AND tk.is_deleted = 0';
 
         const sql = `SELECT tr.started_at, tr.stopped_at, tr.task_id,
                                 tk.name AS task_name, tk.color AS task_color
@@ -46,7 +49,7 @@ export default class Track extends Model {
                             LEFT JOIN tasks tk ON tk.id = tr.task_id
                             WHERE tr.user_id = ${userId}
                             AND tr.started_at < '${endStr}'
-                            AND tr.stopped_at >= '${start}'`;
+                            AND tr.stopped_at >= '${start}'${archivedFilter}`;
 
         return await executeSql(sql);
     }

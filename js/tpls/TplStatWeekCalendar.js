@@ -11,6 +11,7 @@ export default class TplStatWeekCalendar extends Tpl {
     #userId = 0;
     #currentMonday = null;
     #cache = new Map();
+    #includeArchived = false;
 
     static get htmlPath() {
         return 'stat-week-calendar';
@@ -20,8 +21,9 @@ export default class TplStatWeekCalendar extends Tpl {
         return 'tpl tpl-stat-week-calendar';
     }
 
-    async init(userId) {
+    async init(userId, includeArchived = false) {
         this.#userId = userId;
+        this.#includeArchived = includeArchived;
         this.#currentMonday = this.#getMondayOf(new Date());
 
         this.getElement().querySelector('.cal-prev').addEventListener('click', () => {
@@ -37,6 +39,14 @@ export default class TplStatWeekCalendar extends Tpl {
             this.#buildGrid();
         });
 
+        this.#buildGrid();
+    }
+
+    // Перемикання архівованих: кеш стає недійсним, тож чистимо його
+    // й перемальовуємо поточний тиждень новим запитом.
+    async setIncludeArchived(value) {
+        this.#includeArchived = value;
+        this.#cache.clear();
         this.#buildGrid();
     }
 
@@ -103,7 +113,7 @@ export default class TplStatWeekCalendar extends Tpl {
 
         let records = this.#cache.get(key);
         if (!records) {
-            records = await Track.getWeekRecords(this.#userId, monday);
+            records = await Track.getWeekRecords(this.#userId, monday, this.#includeArchived);
             this.#cache.set(key, records);
         }
 
