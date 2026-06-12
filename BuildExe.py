@@ -10,6 +10,7 @@ command = (
     '--add-data "js;js" '
     '--add-data "html;html" '
     '--add-data "img;img" '
+    '--add-data "lang;lang" '
     '--version-file=version.txt '
     '--icon="favicon.ico" '
     'BeeTrack.py'

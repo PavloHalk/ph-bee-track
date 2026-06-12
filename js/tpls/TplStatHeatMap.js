@@ -1,9 +1,8 @@
 import Tpl from './Tpl.js';
 import Track from '../models/Track.js';
+import { t } from '../i18n.js';
 
 export default class TplStatHeatMap extends Tpl {
-    static MN = ['Січ','Лют','Бер','Кві','Тра','Чер','Лип','Сер','Вер','Жов','Лис','Гру'];
-    static DN = ['Нд','Пн','Вт','Ср','Чт','Пт','Сб'];
     static STEP = 17;
     #year = new Date().getFullYear();
     #userId = 0;
@@ -40,7 +39,14 @@ export default class TplStatHeatMap extends Tpl {
         await this.#render();
     }
 
+    onLanguageChanged() {
+        this.#render();
+    }
+
     async #render() {
+        const months = t('stats.heatmap.months');
+        const days = t('stats.heatmap.days');
+
         document.getElementById('yd').textContent = this.#year.toString();
         const weeks = this.#buildCal();
         const wr = document.getElementById('wr');
@@ -57,7 +63,7 @@ export default class TplStatHeatMap extends Tpl {
                     const lbl = document.createElement('div');
                     lbl.className = 'mlabel';
                     lbl.style.left = (wi * TplStatHeatMap.STEP) + 'px';
-                    lbl.textContent = TplStatHeatMap.MN[lastMonth];
+                    lbl.textContent = months[lastMonth];
                     ml.appendChild(lbl);
                     break;
                 }
@@ -70,7 +76,7 @@ export default class TplStatHeatMap extends Tpl {
                     cell.className = 'day empty';
                 } else {
                     cell.className = 'day';
-                    cell.dataset.dateStr = `${TplStatHeatMap.DN[d.getDay()]}, ${d.getDate()} ${TplStatHeatMap.MN[d.getMonth()]} ${this.#year}`;
+                    cell.dataset.dateStr = `${days[(d.getDay() + 6) % 7]}, ${d.getDate()} ${months[d.getMonth()]} ${this.#year}`;
                     cell.dataset.date = `${this.#year}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
                 }
                 col.appendChild(cell);

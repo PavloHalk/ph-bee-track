@@ -2,6 +2,7 @@ import Task from './models/Task.js';
 import Track from './models/Track.js';
 import {osNotify, playSound} from './pyapi.js';
 import {notifySuccess} from "./utils.js";
+import { t } from './i18n.js';
 
 export default class Timer {
     #task = null;
@@ -42,8 +43,8 @@ export default class Timer {
         this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
         
         notifySuccess(
-            'Таймер пішов',
-            'Таймер успішно почав відраховувати час для задачі "' + this.#task.taskName + '".'
+            t('timer.started.title'),
+            t('timer.started.message', { name: this.#task.taskName })
         );
     }
     
@@ -62,8 +63,8 @@ export default class Timer {
         this.#track = null;
 
         notifySuccess(
-            'Таймер зупинений',
-            'Таймер зупинив відраховувати час для задачі "' + this.#task.taskName + '".'
+            t('timer.stopped.title'),
+            t('timer.stopped.message', { name: this.#task.taskName })
         );
     }
     
@@ -90,7 +91,7 @@ export default class Timer {
             this.#taskNotified = true;
             osNotify(
                 'BeeTrack - ' + this.#task.name,
-                'Ви перевищили запланований на цю задачу час!'
+                t('timer.exceeded')
             );
 
             if (this.#task.playSound) {

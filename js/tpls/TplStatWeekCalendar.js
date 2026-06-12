@@ -1,9 +1,8 @@
 import Tpl from './Tpl.js';
 import Track from '../models/Track.js';
+import { t } from '../i18n.js';
 
 export default class TplStatWeekCalendar extends Tpl {
-    static DN = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
-    static MN = ['січ','лют','бер','кві','тра','чер','лип','сер','вер','жов','лис','гру'];
     static HOURS = 24;
     static HOUR_H = 48;
     static DAY_MS = 86400000;
@@ -50,21 +49,28 @@ export default class TplStatWeekCalendar extends Tpl {
         this.#buildGrid();
     }
 
+    onLanguageChanged() {
+        this.#buildGrid();
+    }
+
     #buildGrid() {
+        const dayNames = t('stats.week.days');
+        const monthNames = t('stats.week.months');
+
         const grid = this.getElement().querySelector('.cal-grid');
         grid.innerHTML = '<div class="corner-cell"></div>';
 
         const weekDates = this.#getWeekDates(this.#currentMonday);
         const sunday = weekDates[6];
 
-        const startLabel = `${this.#currentMonday.getDate()} ${TplStatWeekCalendar.MN[this.#currentMonday.getMonth()]}`;
-        const endLabel = `${sunday.getDate()} ${TplStatWeekCalendar.MN[sunday.getMonth()]} ${sunday.getFullYear()}`;
+        const startLabel = `${this.#currentMonday.getDate()} ${monthNames[this.#currentMonday.getMonth()]}`;
+        const endLabel = `${sunday.getDate()} ${monthNames[sunday.getMonth()]} ${sunday.getFullYear()}`;
         this.getElement().querySelector('.cal-week-label').textContent = `${startLabel} – ${endLabel}`;
 
         weekDates.forEach((date, i) => {
             const h = document.createElement('div');
             h.className = 'day-header' + (this.#isToday(date) ? ' today' : '');
-            h.innerHTML = `<div class="day-name">${TplStatWeekCalendar.DN[i]}</div>`
+            h.innerHTML = `<div class="day-name">${dayNames[i]}</div>`
                 + `<div class="day-date">${date.getDate()}</div>`
                 + `<div class="day-sub">${this.#pad(date.getDate())}.${this.#pad(date.getMonth() + 1)}</div>`;
             grid.appendChild(h);
@@ -144,7 +150,7 @@ export default class TplStatWeekCalendar extends Tpl {
                 const toMin = (segTo - dayStart) / 60000;
 
                 this.#addTask({
-                    name: rec.task_name || 'Задача',
+                    name: rec.task_name || t('stats.week.task'),
                     color: rec.task_color || '#6c757d',
                     dayIndex: i,
                     startHour: Math.floor(fromMin / 60),
@@ -187,7 +193,7 @@ export default class TplStatWeekCalendar extends Tpl {
     }
 
     #getWeekDates(monday) {
-        return TplStatWeekCalendar.DN.map((_, i) => {
+        return Array.from({ length: 7 }, (_, i) => {
             const d = new Date(monday);
             d.setDate(monday.getDate() + i);
             return d;

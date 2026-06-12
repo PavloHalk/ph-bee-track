@@ -2,6 +2,7 @@ import Tpl from './Tpl.js';
 import User from '../Models/User.js';
 import {notifySuccess} from "../utils.js";
 import {showSelectUser} from "../tplFunctions.js";
+import { t } from '../i18n.js';
 
 export default class TplNewUser extends Tpl {
     static get htmlPath() {
@@ -28,7 +29,7 @@ export default class TplNewUser extends Tpl {
             
             if (!currentTarget.elements['username'].value) {
                 currentTarget.elements['username'].classList.add('invalid');
-                currentTarget.elements['username'].nextElementSibling.innerText = "Незаповнене поле.";
+                currentTarget.elements['username'].nextElementSibling.innerText = t('user.create.errors.empty');
                 return;
             }
 
@@ -53,14 +54,14 @@ export default class TplNewUser extends Tpl {
                     this.delete();
 
                     notifySuccess(
-                        'Бджілка створена',
-                        'Вітаю! Ви щойно створили нову бджілку з іменем "'+user.username+'" і увійшли в систему.'
+                        t('user.create.created.title'),
+                        t('user.create.created.message', { name: user.username })
                     );
                 })
                 .catch(err => {
                     console.error(err);
                     currentTarget.elements['username'].classList.add('invalid');
-                    currentTarget.elements['username'].nextElementSibling.innerText = "Така бджілка вже існує.";
+                    currentTarget.elements['username'].nextElementSibling.innerText = t('user.create.errors.exists');
                 });
         });
         

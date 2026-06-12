@@ -25,19 +25,26 @@
     </div>
     <div class="row m-0">
         <div class="col col-12">
-            <span class="btn btn-outline-primary btn-xs btn-stat d-none">Статистика</span>
-            <span class="btn btn-outline-primary btn-xs btn-tasks d-none">Задачі</span>
+            <span class="btn btn-outline-primary btn-xs btn-stat d-none" data-i18n="header.stats">Статистика</span>
+            <span class="btn btn-outline-primary btn-xs btn-tasks d-none" data-i18n="header.tasks">Задачі</span>
         </div>
     </div>
 </header>
 <main id="app" class="flex-grow-1 pt-3"></main>
-<footer class="bg-light text-center">
-    <p class="text-black-50"><small><small>Version 0.4.1</small></small></p>
-    <p class="text-end github">
-        <a href="https://github.com/PavloHalk/ph-bee-track" target="_blank" title="BeeTrack on GitHub">
-            <img src="./img/github.png" alt="BeeTrack on GitHub" />
-        </a>
-    </p>
+<footer class="bg-light">
+    <div class="row m-0 align-items-center">
+        <div class="col col-4 text-start">
+            <select class="form-select form-select-sm d-inline-block w-auto lang-select" name="lang" data-i18n-title="footer.language"></select>
+        </div>
+        <div class="col col-4 text-center">
+            <p class="text-black-50 m-0"><small><small>Version 0.4.1</small></small></p>
+        </div>
+        <div class="col col-4 text-end github">
+            <a href="https://github.com/PavloHalk/ph-bee-track" target="_blank" title="BeeTrack on GitHub">
+                <img src="./img/github.png" alt="BeeTrack on GitHub" />
+            </a>
+        </div>
+    </div>
 </footer>
 </body>
 </html>

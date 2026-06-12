@@ -1,7 +1,7 @@
 <div class="d-flex flex-wrap justify-content-center tasks-container">
     <div class="task-template mx-5 mt-2 mb-5 p-2 d-none">
-        <div class="btn-task-top btn-close-task p-1" title="Архівувати задачу"></div>
-        <div class="btn-task-top btn-edit-task p-1" title="Редагувати задачу"></div>
+        <div class="btn-task-top btn-close-task p-1" title="Архівувати задачу" data-i18n-title="tasks.card.archive"></div>
+        <div class="btn-task-top btn-edit-task p-1" title="Редагувати задачу" data-i18n-title="tasks.card.edit"></div>
         <h5 class="h5 text-center task-title"></h5>
         <div class="task-description px-1"></div>
         <div class="timer text-center mt-2">
@@ -9,13 +9,13 @@
         </div>
         
         <div class="row">
-            <div class="col col-4">Ціль:</div>
+            <div class="col col-4" data-i18n="tasks.card.aim">Ціль:</div>
             <div class="col col-8">
                 <span class="clock time-aim"><span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span></span>
             </div>
         </div>
         <div class="row mt-2">
-            <div class="col col-4">До цілі:</div>
+            <div class="col col-4" data-i18n="tasks.card.toAim">До цілі:</div>
             <div class="col col-8">
                 <span class="clock time-left"><span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span></span>
             </div>
@@ -25,41 +25,41 @@
             <div class="col col-8"><span class="clock-percentage"><span class="percentage">0.0</span> %</span></div>
         </div>
         <div class="text-center mt-3">
-            <span class="btn btn-sm btn-success btn-start">Старт</span>
-            <span class="btn btn-sm btn-danger btn-stop disabled">Стоп</span>
-            <span class="btn btn-sm btn-outline-dark btn-reset">Скинути</span>
+            <span class="btn btn-sm btn-success btn-start" data-i18n="tasks.card.start">Старт</span>
+            <span class="btn btn-sm btn-danger btn-stop disabled" data-i18n="tasks.card.stop">Стоп</span>
+            <span class="btn btn-sm btn-outline-dark btn-reset" data-i18n="tasks.card.reset">Скинути</span>
         </div>
         
         <div class="btn-stop-alarm text-center d-none">
             <img src="../img/alarm.png" alt="Alarm" class="py-5" />
-            <p>Вимкнути сповіщення</p>
+            <p data-i18n="tasks.card.stopAlarm">Вимкнути сповіщення</p>
         </div>
     </div>
     <div class="task new-task text-center mx-5 mt-2 mb-5 px-2 pt-4">
         <img src="../img/add.png" alt="Add new task" />
-        <p class="h5 pt-5">Нова задача</p>
+        <p class="h5 pt-5" data-i18n="tasks.new">Нова задача</p>
     </div>
 </div>
 
 <div class="edit-task-container d-none">
-    <h4 class="h4 text-center">Створення нової задачі</h4>
+    <h4 class="h4 text-center" data-i18n="tasks.form.createTitle">Створення нової задачі</h4>
     <form name="edit-task" class="w-600 mx-auto">
         <input type="number" name="id" disabled hidden />
         <div class="row mx-0">
-            <div class="col col-3"><label for="new-task-name">Назва</label></div>
+            <div class="col col-3"><label for="new-task-name" data-i18n="tasks.form.name">Назва</label></div>
             <div class="col col-9">
                 <input id="new-task-name" name="name" type="text" value="" autofocus />
                 <p class="field-error-msg"></p>
             </div>
         </div>
         <div class="row mx-0">
-            <div class="col col-3"><label for="new-task-description">Опис</label></div>
+            <div class="col col-3"><label for="new-task-description" data-i18n="tasks.form.description">Опис</label></div>
             <div class="col col-9">
                 <textarea id="new-task-description" name="description" rows="3"></textarea>
             </div>
         </div>
         <div class="row mx-0">
-            <div class="col col-3"><label for="new-task-color">Колір</label></div>
+            <div class="col col-3"><label for="new-task-color" data-i18n="tasks.form.color">Колір</label></div>
             <div class="col col-9">
                 <div class="d-flex flex-wrap justify-content-start">
                     <div class="color-sample me-2 mb-2 selected color-blue" style="background-color: blue;"></div>
@@ -81,24 +81,24 @@
             </div>
         </div>
         <div class="row mx-0">
-            <div class="col col-3"><label for="new-task-color">Сповіщати?</label></div>
+            <div class="col col-3"><label for="play-sound" data-i18n="tasks.form.notify">Сповіщати?</label></div>
             <div class="col col-9">
                 <input type="checkbox" name="play-sound" id="play-sound" checked />
             </div>
         </div>
         <div class="row mx-0">
-            <div class="col col-3"><label for="time-aim-h">Цільовий час</label></div>
+            <div class="col col-3"><label for="time-aim-h" data-i18n="tasks.form.timeAim">Цільовий час</label></div>
             <div class="col col-9">
-                <input id="time-aim-h" name="time-aim-h" type="number" min="0" max="9999" value="40" class="px-2" /> год.&nbsp;&nbsp;
-                <input id="time-aim-m" name="time-aim-m" type="number" min="0" max="59" value="0" class="px-2" /> хв.
+                <input id="time-aim-h" name="time-aim-h" type="number" min="0" max="9999" value="40" class="px-2" /> <span data-i18n="tasks.form.hoursShort">год.</span>&nbsp;&nbsp;
+                <input id="time-aim-m" name="time-aim-m" type="number" min="0" max="59" value="0" class="px-2" /> <span data-i18n="tasks.form.minutesShort">хв.</span>
                 <p class="field-error-msg"></p>
             </div>
         </div>
         <div class="row mx-0">
             <div class="col col-3">&nbsp;</div>
             <div class="col col-9">
-                <span class="btn btn-primary btn-create-task-submit">Зберегти</span>
-                <span class="btn btn-primary btn-create-task-cancel">Скасувати</span>
+                <span class="btn btn-primary btn-create-task-submit" data-i18n="tasks.form.save">Зберегти</span>
+                <span class="btn btn-primary btn-create-task-cancel" data-i18n="tasks.form.cancel">Скасувати</span>
             </div>
         </div>
     </form>

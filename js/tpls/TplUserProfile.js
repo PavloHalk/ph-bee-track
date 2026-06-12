@@ -2,6 +2,7 @@ import Tpl from './Tpl.js';
 import User from '../models/User.js';
 import { showSelectUser } from '../tplFunctions.js';
 import { notifySuccess } from '../utils.js';
+import { t } from '../i18n.js';
 
 export default class TplUserProfile extends Tpl {
     static get htmlPath() {
@@ -64,7 +65,7 @@ export default class TplUserProfile extends Tpl {
         async function handleUpdate() {
             if (!form.elements['username'].value) {
                 form.elements['username'].classList.add('invalid');
-                form.elements['username'].nextElementSibling.innerText = "У бджілки має бути ім'я.";
+                form.elements['username'].nextElementSibling.innerText = t('user.profile.errors.empty');
                 return;
             }
 
@@ -78,12 +79,12 @@ export default class TplUserProfile extends Tpl {
                 profileElement.querySelector('.username').innerText = user.username;
                 
                 notifySuccess(
-                    'Бджілка оновлена',
-                    'Дані вашої бджілки були успішно оновлені.'
+                    t('user.profile.updated.title'),
+                    t('user.profile.updated.message')
                 );
             } catch {
                 form.elements['username'].classList.add('invalid');
-                form.elements['username'].nextElementSibling.innerText = "Така бджілка вже існує.";
+                form.elements['username'].nextElementSibling.innerText = t('user.profile.errors.exists');
             }
         }
     }

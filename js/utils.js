@@ -1,3 +1,5 @@
+import { t } from './i18n.js';
+
 export function notify(title, message, level) {
     if (!['info', 'success', 'warning', 'critical'].includes(level)) {
         level = 'info';
@@ -143,7 +145,7 @@ export function showConfirm(title, text, okCallback, cancelCallback) {
     form.style.border = '1px solid black';
     form.style.borderRadius = '10px';
     form.style.boxShadow = '0 0 30px black';
-    form.innerHTML = `<p class="h3">${title}</p><p>${text}</p><p><span class="btn btn-primary btn-confirm me-2">Так</span><span class="btn btn-outline-primary btn-cancel">Скасувати</span></p>`;
+    form.innerHTML = `<p class="h3">${title}</p><p>${text}</p><p><span class="btn btn-primary btn-confirm me-2">${t('common.yes')}</span><span class="btn btn-outline-primary btn-cancel">${t('common.cancel')}</span></p>`;
 
     form.querySelector('.btn-confirm').addEventListener('click', okCallback);
     form.querySelector('.btn-confirm').addEventListener('click', () => confirmContainer.remove());

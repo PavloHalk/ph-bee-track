@@ -134,4 +134,4 @@ window = webview.create_window(
     js_api=api
 )
 
-webview.start(http_server=True, debug=False, user_agent='pywebview-client')
+webview.start(http_server=True, debug=True, user_agent='pywebview-client')

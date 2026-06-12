@@ -1,5 +1,6 @@
 import Tpl from './Tpl.js';
 import Task from '../Models/Task.js';
+import { t } from '../i18n.js';
 
 export default class TplStatTaskTotal extends Tpl {
     static get htmlPath() {
@@ -23,6 +24,10 @@ export default class TplStatTaskTotal extends Tpl {
     async setIncludeArchived(value) {
         this.#includeArchived = value;
         await this.#getDataAndRender();
+    }
+
+    onLanguageChanged() {
+        this.#getDataAndRender();
     }
 
     async #getDataAndRender() {
@@ -118,7 +123,7 @@ export default class TplStatTaskTotal extends Tpl {
         if (rest.length) {
             chartData.push({
                 color: 'black',
-                label: 'Інші',
+                label: t('stats.charts.others'),
                 value: rest.reduce((acc, row) => acc + row.time_elapsed_total, 0),
                 valueText: this.#secondsToTime(rest.reduce((acc, row) => acc + row.time_elapsed_total, 0))
             })
@@ -148,7 +153,7 @@ export default class TplStatTaskTotal extends Tpl {
         if (rest.length) {
             chartData.push({
                 color: 'black',
-                label: 'Інші',
+                label: t('stats.charts.others'),
                 value: rest.reduce((acc, row) => acc + row.involvement, 0),
                 valueText: rest.reduce((acc, row) => acc + row.involvement, 0).toFixed(2) + ' %'
             })
@@ -178,7 +183,7 @@ export default class TplStatTaskTotal extends Tpl {
         if (rest.length) {
             chartData.push({
                 color: 'black',
-                label: 'Інші',
+                label: t('stats.charts.others'),
                 value: rest.reduce((acc, row) => acc + row.time_aim, 0),
                 valueText: this.#secondsToTime(rest.reduce((acc, row) => acc + row.time_aim, 0))
             })
@@ -208,7 +213,7 @@ export default class TplStatTaskTotal extends Tpl {
         if (rest.length) {
             chartData.push({
                 color: 'black',
-                label: 'Інші',
+                label: t('stats.charts.others'),
                 value: rest.reduce((acc, row) => acc + row.time_percent, 0),
                 valueText: rest.reduce((acc, row) => acc + row.time_percent, 0).toFixed(2) + ' %'
             })
@@ -227,7 +232,7 @@ export default class TplStatTaskTotal extends Tpl {
         diagram.style.background = '';
         
         if (total === 0) {
-            container.querySelector('.diagram').innerHTML = '<p class="text-center text-danger">Немає даних</p>';
+            container.querySelector('.diagram').innerHTML = `<p class="text-center text-danger">${t('stats.charts.noData')}</p>`;
         }
         
         let cumulative = 0;

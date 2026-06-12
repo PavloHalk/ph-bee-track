@@ -1,6 +1,7 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
 import {notifyCritical, notifySuccess, showConfirm} from '../utils.js';
+import { t } from '../i18n.js';
 
 export default class TplTasks extends Tpl {
     #tasks = null;
@@ -46,7 +47,9 @@ export default class TplTasks extends Tpl {
             this.#tplTasks.classList.add('d-none')
             this.#tplEditTask.classList.remove('d-none');
 
-            this.#tplEditTask.querySelector('h4').innerText = "Створення нової задачі";
+            const title = this.#tplEditTask.querySelector('h4');
+            title.dataset.i18n = 'tasks.form.createTitle';
+            title.innerText = t('tasks.form.createTitle');
             
             const form = this.#tplEditTask.querySelector('form');
             form.elements['id'].value = '0';
@@ -104,7 +107,7 @@ export default class TplTasks extends Tpl {
             
             if (!form.elements['name'].value) {
                 form.elements['name'].classList.add('invalid');
-                form.elements['name'].nextElementSibling.innerText = "У задачі повинно бути ім'я.";
+                form.elements['name'].nextElementSibling.innerText = t('tasks.form.errors.noName');
                 return;
             }
 
@@ -113,22 +116,22 @@ export default class TplTasks extends Tpl {
             
             if (!/^\d+$/.test(hours)) {
                 form.elements['time-aim-h'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = 'Години можуть бути лише числом.';
+                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.hoursNumeric');
                 return;
             }
             if (!/^\d+$/.test(minutes)) {
                 form.elements['time-aim-m'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = 'Хвилини можуть бути лише числом.';
+                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.minutesNumeric');
                 return;
             }
             if (Number(hours) < 0) {
                 form.elements['time-aim-h'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = 'Години можуть бути лише позитивним числом.';
+                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.hoursNegative');
                 return;
             }
             if (Number(minutes) > 59 || Number(minutes) < 0) {
                 form.elements['time-aim-m'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = 'Хвилини можуть бути лише числом від 0 до 59.';
+                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.minutesRange');
                 return;
             }
 
@@ -153,7 +156,10 @@ export default class TplTasks extends Tpl {
 
             await task.save();
 
-            notifySuccess('BeeTrack', `Задача "${task.taskName}" успішно ${task.id ? 'відредагована' : 'створена'}!"`);
+            notifySuccess('BeeTrack', t(
+                task.id ? 'tasks.notifications.savedUpdated' : 'tasks.notifications.savedCreated',
+                { name: task.taskName }
+            ));
             this.#tplTasks.classList.remove('d-none')
             this.#tplEditTask.classList.add('d-none');
             this.#tasks = await Task.allForUser(userId);
@@ -193,9 +199,7 @@ export default class TplTasks extends Tpl {
         this.#tplTasks.addEventListener('click', async (event) => {
             if (!event.target.closest('.btn-reset')) return;
             
-            const confirmText = 'Ви впевнені, що хочете скинути таймер? Поточний прогрес таймеру буде втрачений незворотньо, проте весь відстежений час залишиться в історії і може буде відображений в статистиці при активованій опції обробки всього часу.';
-            
-            showConfirm('Скинути таймер?', confirmText, async () => {
+            showConfirm(t('tasks.confirmReset.title'), t('tasks.confirmReset.text'), async () => {
                 const click = new Event('click', { bubbles: true, cancelable: true });
                 event.target.closest('.task').querySelector('.btn-stop').dispatchEvent(click);
 
@@ -224,15 +228,13 @@ export default class TplTasks extends Tpl {
 
             if (event.target.closest('.task').classList.contains('active')) {
                 notifyCritical(
-                    'Задача відстежується!',
-                    'Спершу зупиніть таймер цієї задачі. Не можна архівувати задачу з працюючим таймером.'
+                    t('tasks.notifications.trackingTitle'),
+                    t('tasks.notifications.trackingArchive')
                 );
                 return;
             }
             
-            const confirmText = 'Ви впевнені що хочете архівувати задачу? Архівовані задачі не доступні для перегляду і відстеження часу. Затрачений на задачу час не буде відображатися в загальній статистиці, проте вся історія часу буде збережена і може бути відображена в статистиці при встановленні відповідної опції.';
-
-            showConfirm('Архівувати задачу?', confirmText, async () => {
+            showConfirm(t('tasks.confirmArchive.title'), t('tasks.confirmArchive.text'), async () => {
                 const click = new Event('click', { bubbles: true, cancelable: true });
                 event.target.closest('.task').querySelector('.btn-stop').dispatchEvent(click);
 
@@ -240,7 +242,7 @@ export default class TplTasks extends Tpl {
                 await task.archive();
 
                 event.target.closest('.task').remove();
-                notifySuccess('Задача архівована!', 'Задача "' + task.taskName + '" була успішно архівована.');
+                notifySuccess(t('tasks.notifications.archivedTitle'), t('tasks.notifications.archivedMessage', { name: task.taskName }));
             });
         });
     }
@@ -251,8 +253,8 @@ export default class TplTasks extends Tpl {
             
             if (event.target.closest('.task').classList.contains('active')) {
                 notifyCritical(
-                    'Задача відстежується!',
-                    'Спершу зупиніть таймер цієї задачі. Не можна редагувати задачі з працюючим таймером.'
+                    t('tasks.notifications.trackingTitle'),
+                    t('tasks.notifications.trackingEdit')
                 );
                 return;
             }
@@ -261,7 +263,9 @@ export default class TplTasks extends Tpl {
             
             this.#tplTasks.classList.add('d-none');
             this.#tplEditTask.classList.remove('d-none');
-            this.#tplEditTask.querySelector('h4').innerText = "Редагування задачі";
+            const title = this.#tplEditTask.querySelector('h4');
+            title.dataset.i18n = 'tasks.form.editTitle';
+            title.innerText = t('tasks.form.editTitle');
             
             const form = this.#tplEditTask.querySelector('form');
             form.elements['id'].value = task.id;
