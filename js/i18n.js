@@ -2,8 +2,10 @@ import { loadConfig, saveConfig } from './pyapi.js';
 import ua from '../lang/ua.js';
 
 export const DEFAULT_LANGUAGE = 'ua';
+// name — самоназва мови: саме так вона показується в селекторі.
 export const availableLanguages = [
     { code: 'ua', name: 'Українська' },
+    { code: 'en', name: 'English' },
 ];
 
 const dictionaries = { ua };
@@ -47,7 +49,7 @@ export function t(path, params = {}) {
 
     if (typeof value !== 'string') return value;
 
-    return value.replace(/\{(\w+)\}/g, (match, key) => key in params ? params[key] : match);
+    return value.replace(/\{(\w+)}/g, (match, key) => key in params ? params[key] : match);
 }
 
 export function translateDom(root) {
