@@ -1,6 +1,7 @@
 import Tpl from './Tpl.js';
 import Track from '../models/Track.js';
 import { t } from '../i18n.js';
+import { secondsToClock } from '../utils.js';
 
 export default class TplStatHeatMap extends Tpl {
     static STEP = 17;
@@ -94,9 +95,8 @@ export default class TplStatHeatMap extends Tpl {
             cell.title = cell.dataset.dateStr;
             
             if (secondsPerDay[date] > 0) {
-                const time = this.#secondsToTime(secondsPerDay[date]);
-                const timeStr = `${time.h}:${time.m.toString().padStart(2, '0')}:${time.s.toString().padStart(2, '0')}`;
-                
+                const timeStr = secondsToClock(secondsPerDay[date]);
+
                 cell.style.backgroundColor = this.#getHeatColor(secondsPerDay[date], max);
                 cell.title += ' - ' + timeStr;
             } else {
@@ -177,11 +177,4 @@ export default class TplStatHeatMap extends Tpl {
         return `rgb(${r},${g},${b})`;
     }
 
-    #secondsToTime(sec) {
-        return {
-            s: sec % 60,
-            m: Math.floor((sec % 3600) / 60),
-            h: Math.floor(sec / 3600)
-        }
-    }
 }

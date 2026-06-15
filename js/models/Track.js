@@ -1,5 +1,6 @@
 import Model from './Model.js';
 import {executeSql} from "../pyapi.js";
+import {toSqlDateTime} from "../utils.js";
 
 export default class Track extends Model {
     get table() {
@@ -43,10 +44,10 @@ export default class Track extends Model {
     // monday — локальна дата (понеділок о 00:00); межі переводимо у UTC,
     // бо started_at/stopped_at зберігаються в UTC.
     static async getWeekRecords(userId, monday, includeArchived = false) {
-        const start = this.#toSqlUtc(monday);
+        const start = toSqlDateTime(monday);
         const end = new Date(monday);
         end.setDate(end.getDate() + 7);
-        const endStr = this.#toSqlUtc(end);
+        const endStr = toSqlDateTime(end);
         const archivedFilter = includeArchived ? '' : ' AND tk.is_deleted = 0';
 
         const sql = `SELECT tr.started_at, tr.stopped_at, tr.task_id,
@@ -58,9 +59,5 @@ export default class Track extends Model {
                             AND tr.stopped_at >= ?${archivedFilter}`;
 
         return await executeSql(sql, [userId, endStr, start]);
-    }
-
-    static #toSqlUtc(date) {
-        return date.toISOString().slice(0, 19).replace('T', ' ');
     }
 }

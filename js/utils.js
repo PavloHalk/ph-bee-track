@@ -31,6 +31,26 @@ export function validateRequiredLine(input, maxLength, messages) {
     return value;
 }
 
+// Розкладає секунди на { h, m, s }.
+export function secondsToParts(sec) {
+    return {
+        s: sec % 60,
+        m: Math.floor((sec % 3600) / 60),
+        h: Math.floor(sec / 3600),
+    };
+}
+
+// Форматує секунди як годинник "h:mm:ss".
+export function secondsToClock(sec) {
+    const { h, m, s } = secondsToParts(sec);
+    return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+// Час (за замовчуванням поточний) як рядок для SQLite: "YYYY-MM-DD HH:MM:SS".
+export function toSqlDateTime(date = new Date()) {
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+}
+
 export function notify(title, message, level) {
     if (!['info', 'success', 'warning', 'critical'].includes(level)) {
         level = 'info';

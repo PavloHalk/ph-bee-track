@@ -1,6 +1,6 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
-import {notifyCritical, notifySuccess, showConfirm, validateRequiredLine, MAX_NAME_LENGTH, MAX_DESCRIPTION_LENGTH, MAX_AIM_HOURS} from '../utils.js';
+import {notifyCritical, notifySuccess, showConfirm, validateRequiredLine, secondsToParts, MAX_NAME_LENGTH, MAX_DESCRIPTION_LENGTH, MAX_AIM_HOURS} from '../utils.js';
 import { t } from '../i18n.js';
 
 export default class TplTasks extends Tpl {
@@ -335,9 +335,9 @@ export default class TplTasks extends Tpl {
         for (const task of this.#tasks) {
             const taskEl = taskTemplate.cloneNode(true);
             
-            const timeAim = this.#secondsToTime(task.time_aim);
-            const timeElapsed = this.#secondsToTime(task.time_elapsed);
-            const timeDiff = this.#secondsToTime(Math.abs(Number(task.time_aim) - Number(task.time_elapsed)));
+            const timeAim = secondsToParts(task.time_aim);
+            const timeElapsed = secondsToParts(task.time_elapsed);
+            const timeDiff = secondsToParts(Math.abs(Number(task.time_aim) - Number(task.time_elapsed)));
             const percentage = Number(task.time_elapsed) / Number(task.time_aim) * 100;
             const sign = Number(task.time_aim) < Number(task.time_elapsed) ? '-' : '';
             
@@ -371,11 +371,4 @@ export default class TplTasks extends Tpl {
         }
     }
     
-    #secondsToTime(sec) {
-        return {
-            s: sec % 60,
-            m: Math.floor((sec % 3600) / 60),
-            h: Math.floor(sec / 3600)
-        }
-    }
 }

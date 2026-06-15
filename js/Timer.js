@@ -1,7 +1,7 @@
 import Task from './models/Task.js';
 import Track from './models/Track.js';
 import {osNotify, playSound} from './pyapi.js';
-import {notifySuccess} from "./utils.js";
+import {notifySuccess, secondsToParts, toSqlDateTime} from "./utils.js";
 import { t } from './i18n.js';
 
 export default class Timer {
@@ -45,8 +45,8 @@ export default class Timer {
         this.#track = new Track();
         this.#track.userId = this.#task.userId;
         this.#track.taskId = this.#task.id;
-        this.#track.startedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
-        this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+        this.#track.startedAt = toSqlDateTime();
+        this.#track.stoppedAt = toSqlDateTime();
         
         notifySuccess(
             t('timer.started.title'),
@@ -62,7 +62,7 @@ export default class Timer {
 
         this.#task.save();
 
-        this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+        this.#track.stoppedAt = toSqlDateTime();
         this.#track.save();
 
         this.#track = null;
@@ -98,7 +98,7 @@ export default class Timer {
         if (this.#task.timeElapsed % 5 === 0) {
             this.#task.save();
 
-            this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+            this.#track.stoppedAt = toSqlDateTime();
             this.#track.save();
         }
         
@@ -117,8 +117,8 @@ export default class Timer {
             }
         }
         
-        const tElapsed = this.#secondsToTime(this.#task.timeElapsed);
-        const tLeft = this.#secondsToTime(Math.abs(this.#task.timeAim - this.#task.timeElapsed));
+        const tElapsed = secondsToParts(this.#task.timeElapsed);
+        const tLeft = secondsToParts(Math.abs(this.#task.timeAim - this.#task.timeElapsed));
         const percentage = this.#task.timeElapsed / this.#task.timeAim * 100;
         const sign = this.#task.timeElapsed > this.#task.timeAim ? '-' : '';
 
@@ -131,13 +131,5 @@ export default class Timer {
         this.#taskEl.querySelector('.time-left .s').innerText = tLeft.s.toString().padStart(2, '0');
 
         this.#taskEl.querySelector('.clock-percentage .percentage').innerText = percentage.toFixed(2);
-    }
-
-    #secondsToTime(sec) {
-        return {
-            s: sec % 60,
-            m: Math.floor((sec % 3600) / 60),
-            h: Math.floor(sec / 3600)
-        }
     }
 }

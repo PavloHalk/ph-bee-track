@@ -1,5 +1,6 @@
 import Model from './Model.js'
 import {executeSql} from "../pyapi.js";
+import {toSqlDateTime} from "../utils.js";
 
 export default class User extends Model {
     get table() {
@@ -7,7 +8,7 @@ export default class User extends Model {
     }
     
     async save() {
-        const date = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
+        const date = toSqlDateTime();
 
         const result = { status: 'pending' }
         try {

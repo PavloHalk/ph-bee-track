@@ -168,7 +168,9 @@ export default class TplStatWeekCalendar extends Tpl {
 
         const startPx = (task.startHour + task.startMin / 60) * TplStatWeekCalendar.HOUR_H;
         const endPx = (task.endHour + task.endMin / 60) * TplStatWeekCalendar.HOUR_H;
-        const height = Math.max(endPx - startPx, 18);
+        const height = Math.max(endPx - startPx, 6);
+
+        const timeStr = `${this.#formatTime(task.startHour, task.startMin)} – ${this.#formatTime(task.endHour, task.endMin)}`;
 
         const block = document.createElement('div');
         block.className = 'task-block';
@@ -176,10 +178,11 @@ export default class TplStatWeekCalendar extends Tpl {
         block.style.height = height + 'px';
         block.style.background = task.color;
         block.style.color = task.textColor || '#fff';
+        // Те саме, що в картці (назва + час) — щоб було видно на коротких треках,
+        // де текст не вміщається у блок.
+        block.title = `${task.name}\n${timeStr}`;
         block.innerHTML = `<div class="task-name">${task.name}</div>`
-            + (height > 28
-                ? `<div class="task-time">${this.#formatTime(task.startHour, task.startMin)} – ${this.#formatTime(task.endHour, task.endMin)}</div>`
-                : '');
+            + (height > 28 ? `<div class="task-time">${timeStr}</div>` : '');
         layer.appendChild(block);
     }
 

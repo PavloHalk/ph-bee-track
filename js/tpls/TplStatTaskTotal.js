@@ -1,6 +1,7 @@
 import Tpl from './Tpl.js';
 import Task from '../Models/Task.js';
 import { t } from '../i18n.js';
+import { secondsToClock } from '../utils.js';
 
 export default class TplStatTaskTotal extends Tpl {
     static get htmlPath() {
@@ -70,16 +71,6 @@ export default class TplStatTaskTotal extends Tpl {
         return data;
     }
 
-    #secondsToTime(sec) {
-        const o = {
-            s: sec % 60,
-            m: Math.floor((sec % 3600) / 60),
-            h: Math.floor(sec / 3600)
-        }
-        
-        return `${o.h}:${o.m.toString().padStart(2, '0')}:${o.s.toString().padStart(2, '0')}`;
-    }
-    
     #renderTable(data) {
         const tableEl = document.getElementById('stat-task-total');
         const rowTemplateEl = document.getElementById('stat-task-total-template')
@@ -91,15 +82,15 @@ export default class TplStatTaskTotal extends Tpl {
             rowEl.classList.remove('template');
             rowEl.cells[0].querySelector('div.color-box').style.backgroundColor = row.color;
             rowEl.cells[1].textContent = row.title;
-            rowEl.cells[2].textContent = this.#secondsToTime(row.time_aim);
-            rowEl.cells[3].textContent = this.#secondsToTime(row.time_elapsed_total);
+            rowEl.cells[2].textContent = secondsToClock(row.time_aim);
+            rowEl.cells[3].textContent = secondsToClock(row.time_elapsed_total);
             rowEl.cells[4].textContent = row.time_percent.toFixed(2) + ' %';
             rowEl.cells[5].textContent = row.involvement.toFixed(2) + ' %';
             tableEl.tBodies[0].append(rowEl);
         }
 
-        tableEl.tFoot.rows[0].cells[2].textContent = this.#secondsToTime(data.footer.time_aim);
-        tableEl.tFoot.rows[0].cells[3].textContent = this.#secondsToTime(data.footer.time_elapsed_total);
+        tableEl.tFoot.rows[0].cells[2].textContent = secondsToClock(data.footer.time_aim);
+        tableEl.tFoot.rows[0].cells[3].textContent = secondsToClock(data.footer.time_elapsed_total);
         tableEl.tFoot.rows[0].cells[4].textContent = data.footer.time_percent.toFixed(2) + ' %';
         tableEl.tFoot.rows[0].cells[5].textContent = data.footer.involvement.toFixed(2) + ' %';
     }
@@ -116,7 +107,7 @@ export default class TplStatTaskTotal extends Tpl {
                 color: row.color,
                 label: row.title,
                 value: row.time_elapsed_total,
-                valueText: this.#secondsToTime(row.time_elapsed_total)
+                valueText: secondsToClock(row.time_elapsed_total)
             })
         }
         
@@ -125,7 +116,7 @@ export default class TplStatTaskTotal extends Tpl {
                 color: 'black',
                 label: t('stats.charts.others'),
                 value: rest.reduce((acc, row) => acc + row.time_elapsed_total, 0),
-                valueText: this.#secondsToTime(rest.reduce((acc, row) => acc + row.time_elapsed_total, 0))
+                valueText: secondsToClock(rest.reduce((acc, row) => acc + row.time_elapsed_total, 0))
             })
         }
 
@@ -176,7 +167,7 @@ export default class TplStatTaskTotal extends Tpl {
                 color: row.color,
                 label: row.title,
                 value: row.time_aim,
-                valueText: this.#secondsToTime(row.time_aim)
+                valueText: secondsToClock(row.time_aim)
             })
         }
 
@@ -185,7 +176,7 @@ export default class TplStatTaskTotal extends Tpl {
                 color: 'black',
                 label: t('stats.charts.others'),
                 value: rest.reduce((acc, row) => acc + row.time_aim, 0),
-                valueText: this.#secondsToTime(rest.reduce((acc, row) => acc + row.time_aim, 0))
+                valueText: secondsToClock(rest.reduce((acc, row) => acc + row.time_aim, 0))
             })
         }
 
