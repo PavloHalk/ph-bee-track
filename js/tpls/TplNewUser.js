@@ -1,6 +1,6 @@
 import Tpl from './Tpl.js';
 import User from '../Models/User.js';
-import {notifySuccess} from "../utils.js";
+import {notifySuccess, validateRequiredLine, MAX_NAME_LENGTH} from "../utils.js";
 import {showSelectUser} from "../tplFunctions.js";
 import { t } from '../i18n.js';
 
@@ -26,15 +26,15 @@ export default class TplNewUser extends Tpl {
         
         btnSubmit.addEventListener('click', (event) => {
             const currentTarget = event.target.closest('form');
-            
-            if (!currentTarget.elements['username'].value) {
-                currentTarget.elements['username'].classList.add('invalid');
-                currentTarget.elements['username'].nextElementSibling.innerText = t('user.create.errors.empty');
-                return;
-            }
+
+            const username = validateRequiredLine(currentTarget.elements['username'], MAX_NAME_LENGTH, {
+                empty: t('user.create.errors.empty'),
+                tooLong: t('user.create.errors.tooLong', { max: MAX_NAME_LENGTH }),
+            });
+            if (username === null) return;
 
             let user = new User();
-            user.username = currentTarget.elements['username'].value;
+            user.username = username;
             user.save() //@todo: use async/await
                 .then(async () => {
                     const ev = new CustomEvent(

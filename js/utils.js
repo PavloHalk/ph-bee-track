@@ -1,5 +1,36 @@
 import { t } from './i18n.js';
 
+// Межі довжини полів форм (у символах) та верхня межа годин цілі.
+export const MAX_NAME_LENGTH = 64;
+export const MAX_DESCRIPTION_LENGTH = 500;
+export const MAX_AIM_HOURS = 9999;
+
+// Однорядкове текстове значення: переноси рядків → пробіл, краї обрізаємо.
+export function normalizeLine(value) {
+    return (value ?? '').replace(/[\r\n]+/g, ' ').trim();
+}
+
+// Валідує обов'язкове однорядкове поле прямо в DOM: нормалізує значення,
+// показує повідомлення під полем (у сусідньому .field-error-msg) і повертає
+// очищене значення або null, якщо воно порожнє чи задовге.
+// messages — вже перекладені рядки { empty, tooLong }.
+export function validateRequiredLine(input, maxLength, messages) {
+    const value = normalizeLine(input.value);
+    input.value = value;
+
+    if (!value) {
+        input.classList.add('invalid');
+        input.nextElementSibling.innerText = messages.empty;
+        return null;
+    }
+    if (value.length > maxLength) {
+        input.classList.add('invalid');
+        input.nextElementSibling.innerText = messages.tooLong;
+        return null;
+    }
+    return value;
+}
+
 export function notify(title, message, level) {
     if (!['info', 'success', 'warning', 'critical'].includes(level)) {
         level = 'info';

@@ -20,6 +20,7 @@ export default {
             errors: {
                 empty: 'Незаповнене поле.',
                 exists: 'Така бджілка вже існує.',
+                tooLong: 'Максимум {max} символів.',
             },
             created: {
                 title: 'Бджілка створена',
@@ -41,6 +42,7 @@ export default {
             errors: {
                 empty: "У бджілки має бути ім'я.",
                 exists: 'Така бджілка вже існує.',
+                tooLong: 'Максимум {max} символів.',
             },
             updated: {
                 title: 'Бджілка оновлена',
@@ -74,10 +76,14 @@ export default {
             cancel: 'Скасувати',
             errors: {
                 noName: "У задачі повинно бути ім'я.",
+                nameTooLong: 'Назва: максимум {max} символів.',
+                descriptionTooLong: 'Опис: максимум {max} символів.',
                 hoursNumeric: 'Години можуть бути лише числом.',
                 minutesNumeric: 'Хвилини можуть бути лише числом.',
                 hoursNegative: 'Години можуть бути лише позитивним числом.',
+                hoursMax: 'Години не можуть перевищувати {max}.',
                 minutesRange: 'Хвилини можуть бути лише числом від 0 до 59.',
+                timeZero: 'Цільовий час має бути більше нуля.',
             },
         },
         confirmReset: {

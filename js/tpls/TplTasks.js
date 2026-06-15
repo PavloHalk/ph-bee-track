@@ -1,6 +1,6 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
-import {notifyCritical, notifySuccess, showConfirm} from '../utils.js';
+import {notifyCritical, notifySuccess, showConfirm, validateRequiredLine, MAX_NAME_LENGTH, MAX_DESCRIPTION_LENGTH, MAX_AIM_HOURS} from '../utils.js';
 import { t } from '../i18n.js';
 
 export default class TplTasks extends Tpl {
@@ -29,6 +29,7 @@ export default class TplTasks extends Tpl {
         this.#listenBtnCreateTask();
         this.#listenColorSampleClick();
         this.#listenTaskNameInput();
+        this.#listenDescriptionInput();
         this.#listenTimeInput();
         this.#listenBtnCreateTaskCancel();
         this.#listenBtnCreateTaskSubmit(userId);
@@ -85,12 +86,22 @@ export default class TplTasks extends Tpl {
         });
     }
     
+    #listenDescriptionInput() {
+        this.#tplEditTask.querySelector('[name="description"]').addEventListener('input', (event) => {
+            event.target.classList.remove('invalid');
+            event.target.nextElementSibling.innerText = '';
+        });
+    }
+
     #listenTimeInput() {
         this.#tplEditTask.querySelector('form').addEventListener('input', (event) => {
             if (!event.target.closest('input[type="number"]')) return;
-            
-            event.target.classList.remove('invalid');
-            event.target.closest('form').elements['time-aim-m'].nextElementSibling.innerText = '';
+
+            const form = event.target.closest('form');
+            // Помилка часу спільна для обох полів, тож знімаємо підсвічування з обох.
+            form.elements['time-aim-h'].classList.remove('invalid');
+            form.elements['time-aim-m'].classList.remove('invalid');
+            form.elements['time-aim-m'].closest('.col-9').querySelector('.field-error-msg').innerText = '';
         });
     }
 
@@ -105,45 +116,62 @@ export default class TplTasks extends Tpl {
         this.#tplEditTask.querySelector('.btn-create-task-submit').addEventListener('click', async () => {
             const form = this.#tplEditTask.querySelector('form');
             
-            if (!form.elements['name'].value) {
-                form.elements['name'].classList.add('invalid');
-                form.elements['name'].nextElementSibling.innerText = t('tasks.form.errors.noName');
+            const name = validateRequiredLine(form.elements['name'], MAX_NAME_LENGTH, {
+                empty: t('tasks.form.errors.noName'),
+                tooLong: t('tasks.form.errors.nameTooLong', { max: MAX_NAME_LENGTH }),
+            });
+            if (name === null) return;
+
+            const description = form.elements['description'].value.trim();
+            form.elements['description'].value = description;
+            if (description.length > MAX_DESCRIPTION_LENGTH) {
+                form.elements['description'].classList.add('invalid');
+                form.elements['description'].nextElementSibling.innerText = t('tasks.form.errors.descriptionTooLong', { max: MAX_DESCRIPTION_LENGTH });
                 return;
             }
 
             const hours = form.elements['time-aim-h'].value;
             const minutes = form.elements['time-aim-m'].value;
-            
+            // Повідомлення про помилку часу — окремий <p class="field-error-msg">
+            // під обома полями (НЕ nextElementSibling, бо там стоїть <span>хв.</span>).
+            const timeError = form.elements['time-aim-m'].closest('.col-9').querySelector('.field-error-msg');
+
             if (!/^\d+$/.test(hours)) {
                 form.elements['time-aim-h'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.hoursNumeric');
+                timeError.innerText = t('tasks.form.errors.hoursNumeric');
                 return;
             }
             if (!/^\d+$/.test(minutes)) {
                 form.elements['time-aim-m'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.minutesNumeric');
+                timeError.innerText = t('tasks.form.errors.minutesNumeric');
                 return;
             }
-            if (Number(hours) < 0) {
+            if (Number(hours) > MAX_AIM_HOURS) {
                 form.elements['time-aim-h'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.hoursNegative');
+                timeError.innerText = t('tasks.form.errors.hoursMax', { max: MAX_AIM_HOURS });
                 return;
             }
             if (Number(minutes) > 59 || Number(minutes) < 0) {
                 form.elements['time-aim-m'].classList.add('invalid');
-                form.elements['time-aim-m'].nextElementSibling.innerText = t('tasks.form.errors.minutesRange');
+                timeError.innerText = t('tasks.form.errors.minutesRange');
+                return;
+            }
+            if (Number(hours) * 3600 + Number(minutes) * 60 <= 0) {
+                form.elements['time-aim-h'].classList.add('invalid');
+                form.elements['time-aim-m'].classList.add('invalid');
+                timeError.innerText = t('tasks.form.errors.timeZero');
                 return;
             }
 
             let task = new Task();
-            
+
             if (Number(form.elements['id'].value)) {
                 task = await Task.getById(form.elements['id'].value);
             }
-            
+
             task.userId = userId;
-            task.taskName = form.elements['name'].value;
-            task.description = form.elements['description'].value;
+            task.taskName = name;
+            task.description = description;
             task.color = form.elements['color'].value;
             task.playSound = form.elements['play-sound'].checked ? 1 : 0;
             

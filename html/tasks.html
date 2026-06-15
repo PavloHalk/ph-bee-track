@@ -48,14 +48,15 @@
         <div class="row mx-0">
             <div class="col col-3"><label for="new-task-name" data-i18n="tasks.form.name">Назва</label></div>
             <div class="col col-9">
-                <input id="new-task-name" name="name" type="text" value="" autofocus />
+                <input id="new-task-name" name="name" type="text" value="" maxlength="64" autofocus />
                 <p class="field-error-msg"></p>
             </div>
         </div>
         <div class="row mx-0">
             <div class="col col-3"><label for="new-task-description" data-i18n="tasks.form.description">Опис</label></div>
             <div class="col col-9">
-                <textarea id="new-task-description" name="description" rows="3"></textarea>
+                <textarea id="new-task-description" name="description" rows="3" maxlength="500"></textarea>
+                <p class="field-error-msg"></p>
             </div>
         </div>
         <div class="row mx-0">

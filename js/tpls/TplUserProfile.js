@@ -1,7 +1,7 @@
 import Tpl from './Tpl.js';
 import User from '../models/User.js';
 import { showSelectUser } from '../tplFunctions.js';
-import { notifySuccess } from '../utils.js';
+import { notifySuccess, validateRequiredLine, MAX_NAME_LENGTH } from '../utils.js';
 import { t } from '../i18n.js';
 
 export default class TplUserProfile extends Tpl {
@@ -50,7 +50,7 @@ export default class TplUserProfile extends Tpl {
             await handleUpdate();
         });
         btnUpdateClose.addEventListener('click', async () => {
-            await handleUpdate();
+            if (!await handleUpdate()) return;
             this.delete();
             document.querySelector('.tpl-tasks')?.classList.remove('d-none');
 
@@ -63,28 +63,30 @@ export default class TplUserProfile extends Tpl {
         }, 10);
         
         async function handleUpdate() {
-            if (!form.elements['username'].value) {
-                form.elements['username'].classList.add('invalid');
-                form.elements['username'].nextElementSibling.innerText = t('user.profile.errors.empty');
-                return;
-            }
+            const username = validateRequiredLine(form.elements['username'], MAX_NAME_LENGTH, {
+                empty: t('user.profile.errors.empty'),
+                tooLong: t('user.profile.errors.tooLong', { max: MAX_NAME_LENGTH }),
+            });
+            if (username === null) return false;
 
             const profileElement = document.querySelector('header .profile');
             const user = await User.getById(profileElement.dataset.userId);
 
-            user.username = form.elements['username'].value;
+            user.username = username;
             try {
                 await user.save();
                 profileElement.dataset.username = user.username;
                 profileElement.querySelector('.username').innerText = user.username;
-                
+
                 notifySuccess(
                     t('user.profile.updated.title'),
                     t('user.profile.updated.message')
                 );
+                return true;
             } catch {
                 form.elements['username'].classList.add('invalid');
                 form.elements['username'].nextElementSibling.innerText = t('user.profile.errors.exists');
+                return false;
             }
         }
     }
