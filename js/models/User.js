@@ -12,9 +12,9 @@ export default class User extends Model {
         const result = { status: 'pending' }
         try {
             if (!this.id) {
-                const result = await executeSql(`INSERT INTO users (username, created_at) VALUES("${this.username}", "${date}")`);
+                const result = await executeSql(`INSERT INTO users (username, created_at) VALUES(?, ?)`, [this.username, date]);
             } else {
-                const result = await executeSql(`UPDATE users SET username="${this.username}" WHERE id=${this.id}`);
+                const result = await executeSql(`UPDATE users SET username=? WHERE id=?`, [this.username, this.id]);
             }
             
             return result.status === 'success';
@@ -33,7 +33,7 @@ export default class User extends Model {
     
     static async getById(id) {
         try {
-            const result = await executeSql("SELECT * FROM users WHERE id=" + id);
+            const result = await executeSql("SELECT * FROM users WHERE id=?", [id]);
             return this.#fillUser(result);
         } catch (err) {
             throw err;
@@ -42,7 +42,7 @@ export default class User extends Model {
 
     static async getByUserName(username) {
         try {
-            const result = await executeSql("SELECT * FROM users WHERE username='" + username + "'");
+            const result = await executeSql("SELECT * FROM users WHERE username=?", [username]);
 
             return this.#fillUser(result);
         } catch (err) {

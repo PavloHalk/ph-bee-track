@@ -8,7 +8,7 @@ export default class Task extends Model {
 
     static async getById(id) {
         try {
-            const result = await executeSql("SELECT * FROM tasks WHERE id=" + id);
+            const result = await executeSql("SELECT * FROM tasks WHERE id=?", [id]);
             return this.#fillTask(result);
         } catch (err) {
             throw err;
@@ -16,13 +16,13 @@ export default class Task extends Model {
     }
     
     static async allForUser(userId, includeArchived = false) {
-        let sql = `SELECT * FROM tasks WHERE user_id=${userId}`;
+        let sql = `SELECT * FROM tasks WHERE user_id=?`;
         if (!includeArchived) {
             sql += ' AND is_deleted=0';
         }
         sql += ' ORDER BY created_at DESC';
-        
-        return await executeSql(sql);
+
+        return await executeSql(sql, [userId]);
     }
 
     async save() {
@@ -31,9 +31,15 @@ export default class Task extends Model {
         const result = { status: 'pending' }
         try {
             if (!this.id) {
-                const result = await executeSql(`INSERT INTO tasks (user_id, name, description, color, play_sound, time_aim, time_elapsed, time_elapsed_total, created_at) VALUES("${this.userId}", "${this.taskName}", "${this.description}", "${this.color}", "${this.playSound}", "${this.timeAim}", "${this.timeElapsed}", "${this.timeElapsedTotal}", "${date}")`);
+                const result = await executeSql(
+                    `INSERT INTO tasks (user_id, name, description, color, play_sound, time_aim, time_elapsed, time_elapsed_total, created_at) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [this.userId, this.taskName, this.description, this.color, this.playSound, this.timeAim, this.timeElapsed, this.timeElapsedTotal, date]
+                );
             } else {
-                const result = await executeSql(`UPDATE tasks SET name="${this.taskName}", description="${this.description}", color="${this.color}", play_sound="${this.playSound}", time_aim="${this.timeAim}", time_elapsed="${this.timeElapsed}", time_elapsed_total="${this.timeElapsedTotal}" WHERE id=${this.id}`);
+                const result = await executeSql(
+                    `UPDATE tasks SET name=?, description=?, color=?, play_sound=?, time_aim=?, time_elapsed=?, time_elapsed_total=? WHERE id=?`,
+                    [this.taskName, this.description, this.color, this.playSound, this.timeAim, this.timeElapsed, this.timeElapsedTotal, this.id]
+                );
             }
 
             return result.status === 'success';
@@ -43,7 +49,7 @@ export default class Task extends Model {
     }
     
     async archive() {
-        await executeSql(`UPDATE tasks SET is_deleted=1 WHERE id=${this.id}`);
+        await executeSql(`UPDATE tasks SET is_deleted=1 WHERE id=?`, [this.id]);
     }
 
     static #fillTask(result) {

@@ -9,10 +9,16 @@ export default class Track extends Model {
     async save() {
         try {
             if (!this.id) {
-                const result = await executeSql(`INSERT INTO tracks (user_id, task_id, started_at, stopped_at) VALUES("${this.userId}", "${this.taskId}", "${this.startedAt}", "${this.stoppedAt}") RETURNING id`);
+                const result = await executeSql(
+                    `INSERT INTO tracks (user_id, task_id, started_at, stopped_at) VALUES(?, ?, ?, ?) RETURNING id`,
+                    [this.userId, this.taskId, this.startedAt, this.stoppedAt]
+                );
                 this.id = result[0].id;
             } else {
-                await executeSql(`UPDATE tracks SET user_id="${this.userId}", task_id="${this.taskId}", started_at="${this.startedAt}", stopped_at="${this.stoppedAt}" WHERE id=${this.id}`);
+                await executeSql(
+                    `UPDATE tracks SET user_id=?, task_id=?, started_at=?, stopped_at=? WHERE id=?`,
+                    [this.userId, this.taskId, this.startedAt, this.stoppedAt, this.id]
+                );
             }
         } catch (err) {
             throw err;
@@ -26,11 +32,11 @@ export default class Track extends Model {
         const archivedFilter = includeArchived ? '' : ' AND tk.is_deleted = 0';
         const sql = `SELECT tr.* FROM tracks tr
                                 LEFT JOIN tasks tk ON tk.id = tr.task_id
-                                WHERE tr.user_id = ${userId}
-                                AND tr.started_at < '${start}'
-                                AND tr.stopped_at >= '${stop}'${archivedFilter}`;
+                                WHERE tr.user_id = ?
+                                AND tr.started_at < ?
+                                AND tr.stopped_at >= ?${archivedFilter}`;
 
-        return await executeSql(sql);
+        return await executeSql(sql, [userId, start, stop]);
     }
 
     // Треки, що перетинаються з тижнем [monday, monday + 7 днів).
@@ -47,11 +53,11 @@ export default class Track extends Model {
                                 tk.name AS task_name, tk.color AS task_color
                             FROM tracks tr
                             LEFT JOIN tasks tk ON tk.id = tr.task_id
-                            WHERE tr.user_id = ${userId}
-                            AND tr.started_at < '${endStr}'
-                            AND tr.stopped_at >= '${start}'${archivedFilter}`;
+                            WHERE tr.user_id = ?
+                            AND tr.started_at < ?
+                            AND tr.stopped_at >= ?${archivedFilter}`;
 
-        return await executeSql(sql);
+        return await executeSql(sql, [userId, endStr, start]);
     }
 
     static #toSqlUtc(date) {

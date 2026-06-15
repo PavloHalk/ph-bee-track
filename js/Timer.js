@@ -19,8 +19,14 @@ export default class Timer {
         if (!(task instanceof Task)) throw new TypeError('Timer requires an instance of Task.');
         
         if (this.#task) {
-            const click = new Event('click', { bubbles: true, cancelable: true });
-            document.querySelector('.task[data-task-id="'+this.#task.id+'"] .btn-stop').dispatchEvent(click);
+            // Зупиняємо попередню задачу лише якщо вона реально присутня в DOM
+            // (інакше це задача з минулої сесії — після виходу/зміни бджілки її
+            // елемента вже немає, і зупиняти нема чого).
+            const prevStopBtn = document.querySelector('.task[data-task-id="'+this.#task.id+'"] .btn-stop');
+            if (prevStopBtn) {
+                const click = new Event('click', { bubbles: true, cancelable: true });
+                prevStopBtn.dispatchEvent(click);
+            }
         }
         
         this.#task = task;
