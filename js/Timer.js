@@ -56,22 +56,31 @@ export default class Timer {
     
     stop() {
         if (!this.#interval) return;
-        
+
         clearInterval(this.#interval);
         this.#interval = null;
-        this.#taskEl = null;
-        
+
         this.#task.save();
 
         this.#track.stoppedAt = (new Date()).toISOString().substring(0, 19).replace('T', ' ');
         this.#track.save();
-        
+
         this.#track = null;
+
+        // Зупиняємо звукову тривогу і ховаємо її кнопку, щоб сигнал не лунав далі
+        // після зупинки задачі чи виходу з профілю.
+        this.stopAlarm();
+        this.#taskEl?.querySelector('.btn-stop-alarm')?.classList.add('d-none');
+        this.#taskEl = null;
 
         notifySuccess(
             t('timer.stopped.title'),
             t('timer.stopped.message', { name: this.#task.taskName })
         );
+
+        // Скидаємо посилання на задачу, щоб воно не лишалося між сесіями.
+        this.#task = null;
+        this.#taskNotified = false;
     }
     
     stopAlarm() {

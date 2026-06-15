@@ -304,7 +304,15 @@ export default class TplTasks extends Tpl {
             form.elements['time-aim-m'].value = (task.timeAim - (Math.floor(task.timeAim / 3600) * 3600)) / 60;
             
             const click = new Event('click', { bubbles: true, cancelable: true });
-            form.querySelector('.color-sample.color-' + task.color).dispatchEvent(click);
+            // Підсвічуємо зразок збереженого кольору; якщо такого немає (легасі/
+            // нестандартні дані) чи селектор некоректний — відкочуємось на перший зразок.
+            let colorSample = null;
+            try {
+                colorSample = form.querySelector('.color-sample.color-' + task.color);
+            } catch {
+                colorSample = null;
+            }
+            (colorSample ?? form.querySelector('.color-sample')).dispatchEvent(click);
         });
     }
     
