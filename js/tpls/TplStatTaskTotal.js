@@ -54,7 +54,7 @@ export default class TplStatTaskTotal extends Tpl {
                 time_aim: task.time_aim,
                 time_elapsed_total: task.time_elapsed_total,
                 time_percent: (task.time_elapsed_total / task.time_aim * 100),
-                involvement: totalTimeElapsed === 0 ? '0' : (task.time_elapsed_total / totalTimeElapsed * 100),
+                involvement: totalTimeElapsed === 0 ? 0 : (task.time_elapsed_total / totalTimeElapsed * 100),
             });
         }
         

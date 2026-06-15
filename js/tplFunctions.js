@@ -18,9 +18,16 @@ export async function showSelectUser() {
 }
 
 export async function showUserProfile() {
-    app.querySelector('.tpl-tasks')?.classList.add('d-none');
-    app.querySelector('.tpl-user-profile')?.remove();
-    app.querySelector('.tpl-stat-task-total')?.remove();
+    const tpls = document.querySelectorAll('.tpl');
+
+    for (const tpl of tpls) {
+        if (tpl.classList.contains('tpl-tasks')) {
+            tpl.classList.add('d-none');
+        } else {
+            tpl.remove();
+        }
+    }
+
     const tpl = await TplUserProfile.create();
     app.append(tpl.getElement());
 
