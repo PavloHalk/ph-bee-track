@@ -9,6 +9,13 @@
         "Added weekday distribution to the detailed statistics.",
         "Header and footer are now fixed in place, and the window opens maximized."
       ]
+    },
+    {
+      "version": "0.0.1",
+      "date": "2026-04-18",
+      "changes": [
+        "The date when it all started. Empty application."
+      ]
     }
   ]
 }
