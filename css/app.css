@@ -17,6 +17,17 @@ header, main, footer {
 header .logo {
     width: 75px;
 }
+.about-modal .about-logo {
+    width: 90px;
+}
+.about-modal .about-github img {
+    width: 60px;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+.about-modal .about-github img:hover {
+    opacity: 1;
+}
 header .profile {
     cursor: pointer;
 }

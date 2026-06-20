@@ -3,6 +3,7 @@ export default {
         stats: 'Statistika',
         tasks: 'Úkoly',
         noProfile: 'Žádný profil',
+        about: 'O BeeTrack',
     },
     footer: {
         language: 'Jazyk rozhraní',
@@ -10,6 +11,13 @@ export default {
     common: {
         yes: 'Ano',
         cancel: 'Zrušit',
+        ok: 'OK',
+    },
+    about: {
+        title: 'O BeeTrack',
+        author: 'Autor',
+        version: 'Verze',
+        contribute: 'BeeTrack je open source — pokud chcete, můžete se zapojit do jeho vývoje na GitHubu:',
     },
     user: {
         create: {

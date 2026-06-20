@@ -3,6 +3,7 @@ export default {
         stats: 'İstatistikler',
         tasks: 'Görevler',
         noProfile: 'Profil yok',
+        about: 'BeeTrack Hakkında',
     },
     footer: {
         language: 'Arayüz dili',
@@ -10,6 +11,13 @@ export default {
     common: {
         yes: 'Evet',
         cancel: 'İptal',
+        ok: 'Tamam',
+    },
+    about: {
+        title: 'BeeTrack Hakkında',
+        author: 'Yazar',
+        version: 'Sürüm',
+        contribute: 'BeeTrack açık kaynaklıdır — isterseniz GitHub üzerinden geliştirmesine katkıda bulunabilirsiniz:',
     },
     user: {
         create: {

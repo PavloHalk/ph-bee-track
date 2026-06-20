@@ -3,6 +3,7 @@ import { initI18n, setLanguage, getLanguage, availableLanguages, t } from './i18
 import {showCreateUser, showSelectUser, showUserProfile, showTasks, showStats} from './tplFunctions.js';
 import User from './models/User.js';
 import Timer from './Timer.js';
+import { showAbout } from './utils.js';
 
 await initI18n();
 
@@ -72,4 +73,7 @@ document.querySelector('header .btn-stat').addEventListener('click', async () =>
 });
 document.querySelector('header .btn-tasks').addEventListener('click', async () => {
     await showTasks(document.querySelector('header .profile').dataset.userId, timer);
+});
+document.querySelector('header .btn-about').addEventListener('click', () => {
+    showAbout();
 });

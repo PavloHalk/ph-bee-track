@@ -213,6 +213,60 @@ export function notifyCritical(title, message) {
     notify(title, message, 'critical');
 }
 
+// Поточна версія програми та дата її випуску — поки що жорстко зашиті.
+export const APP_VERSION = '0.6.0';
+export const APP_RELEASE_DATE = '2026-06-20';
+export const APP_AUTHOR = 'Галковський Павло Дмитрович';
+export const APP_AUTHOR_EMAIL = 'pavelhalkovsky@gmail.com';
+export const APP_GITHUB_URL = 'https://github.com/PavloHalk/ph-bee-track';
+
+// Модальне вікно "Про BeeTrack": логотип, автор, версія з датою, посилання
+// на GitHub із запрошенням долучитися до розробки та єдина кнопка "Ок".
+export function showAbout() {
+    const aboutContainer = document.createElement('div');
+
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.bottom = '0';
+    overlay.style.left = '0';
+    overlay.style.right = '0';
+    overlay.style.backgroundColor = 'black';
+    overlay.style.opacity = '0.2';
+    overlay.style.zIndex = '10000';
+
+    const form = document.createElement('div');
+    form.className = 'position-fixed top-50 start-50 translate-middle p-4 text-center about-modal';
+    form.style.zIndex = '10001';
+    form.style.backgroundColor = 'white';
+    form.style.border = '1px solid black';
+    form.style.borderRadius = '10px';
+    form.style.boxShadow = '0 0 30px black';
+    form.style.maxWidth = '420px';
+
+    form.innerHTML = `
+        <p class="m-0"><img class="about-logo" src="./img/logo.png" alt="BeeTrack logo" /></p>
+        <p class="h3 mt-2">${t('about.title')}</p>
+        <p class="mb-1"><strong>${t('about.author')}:</strong><br>${APP_AUTHOR}<br>
+            <a href="mailto:${APP_AUTHOR_EMAIL}">${APP_AUTHOR_EMAIL}</a></p>
+        <p class="mb-3"><strong>${t('about.version')}:</strong> ${APP_VERSION} (${APP_RELEASE_DATE})</p>
+        <p class="mb-2">${t('about.contribute')}</p>
+        <p class="mb-3 about-github">
+            <a href="${APP_GITHUB_URL}" target="_blank" title="BeeTrack on GitHub">
+                <img src="./img/github.png" alt="BeeTrack on GitHub" />
+            </a>
+        </p>
+        <p class="m-0"><span class="btn btn-primary btn-ok">${t('common.ok')}</span></p>`;
+
+    const close = () => aboutContainer.remove();
+    form.querySelector('.btn-ok').addEventListener('click', close);
+
+    aboutContainer.append(overlay);
+    aboutContainer.append(form);
+
+    document.body.append(aboutContainer);
+}
+
 export function showConfirm(title, text, okCallback, cancelCallback) {
     if (!okCallback) okCallback = () => {}
     if (!cancelCallback) cancelCallback = () => {}

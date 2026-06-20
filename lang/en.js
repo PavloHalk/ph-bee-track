@@ -3,6 +3,7 @@ export default {
         stats: 'Statistics',
         tasks: 'Tasks',
         noProfile: 'No profile',
+        about: 'About BeeTrack',
     },
     footer: {
         language: 'Interface language',
@@ -10,6 +11,13 @@ export default {
     common: {
         yes: 'Yes',
         cancel: 'Cancel',
+        ok: 'OK',
+    },
+    about: {
+        title: 'About BeeTrack',
+        author: 'Author',
+        version: 'Version',
+        contribute: 'BeeTrack is open source — if you wish, you can join its development on GitHub:',
     },
     user: {
         create: {

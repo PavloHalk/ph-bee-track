@@ -3,6 +3,7 @@ export default {
         stats: '统计',
         tasks: '任务',
         noProfile: '无个人资料',
+        about: '关于 BeeTrack',
     },
     footer: {
         language: '界面语言',
@@ -10,6 +11,13 @@ export default {
     common: {
         yes: '是',
         cancel: '取消',
+        ok: '确定',
+    },
+    about: {
+        title: '关于 BeeTrack',
+        author: '作者',
+        version: '版本',
+        contribute: 'BeeTrack 是开源软件 — 如果愿意，您可以在 GitHub 上参与它的开发：',
     },
     user: {
         create: {
