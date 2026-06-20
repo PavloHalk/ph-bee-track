@@ -19,9 +19,9 @@ export default class Timer {
         if (!(task instanceof Task)) throw new TypeError('Timer requires an instance of Task.');
         
         if (this.#task) {
-            // Зупиняємо попередню задачу лише якщо вона реально присутня в DOM
-            // (інакше це задача з минулої сесії — після виходу/зміни бджілки її
-            // елемента вже немає, і зупиняти нема чого).
+            // Stop the previous task only if it is actually present in the DOM
+            // (otherwise it is a task from a past session — after logout/switching the bee
+            // its element is gone, and there is nothing to stop).
             const prevStopBtn = document.querySelector('.task[data-task-id="'+this.#task.id+'"] .btn-stop');
             if (prevStopBtn) {
                 const click = new Event('click', { bubbles: true, cancelable: true });
@@ -67,8 +67,8 @@ export default class Timer {
 
         this.#track = null;
 
-        // Зупиняємо звукову тривогу і ховаємо її кнопку, щоб сигнал не лунав далі
-        // після зупинки задачі чи виходу з профілю.
+        // Stop the audible alarm and hide its button, so the signal does not keep
+        // sounding after the task is stopped or the profile is exited.
         this.stopAlarm();
         this.#taskEl?.querySelector('.btn-stop-alarm')?.classList.add('d-none');
         this.#taskEl = null;
@@ -78,7 +78,7 @@ export default class Timer {
             t('timer.stopped.message', { name: this.#task.taskName })
         );
 
-        // Скидаємо посилання на задачу, щоб воно не лишалося між сесіями.
+        // Reset the task reference so it does not linger between sessions.
         this.#task = null;
         this.#taskNotified = false;
     }

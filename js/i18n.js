@@ -2,7 +2,7 @@ import { loadConfig, saveConfig } from './pyapi.js';
 import ua from '../lang/ua.js';
 
 export const DEFAULT_LANGUAGE = 'ua';
-// name — самоназва мови: саме так вона показується в селекторі.
+// name — the language's own native name: that is exactly how it shows in the selector.
 export const availableLanguages = [
     { code: 'ua', name: 'Українська' },
     { code: 'en', name: 'English' },

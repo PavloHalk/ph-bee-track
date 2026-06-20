@@ -27,8 +27,8 @@ document.querySelector('footer .app-version').textContent = APP_VERSION;
 
 const profileElement = document.querySelector('header .profile');
 
-// Плейсхолдер імені не можна перекладати через data-i18n,
-// бо після входу цей елемент містить реальне ім'я користувача.
+// The name placeholder cannot be translated via data-i18n,
+// because after login this element holds the user's real name.
 function translateProfilePlaceholder() {
     if (!Number(profileElement.dataset.userId)) {
         profileElement.querySelector('.username').innerText = t('header.noProfile');

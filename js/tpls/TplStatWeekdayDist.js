@@ -3,11 +3,11 @@ import Track from '../models/Track.js';
 import { t, translateDom } from '../i18n.js';
 import { secondsToClock, secondsPerDayOfYear } from '../utils.js';
 
-// Розподіл відстеженого часу за днями тижня (Пн–Нд) за вибраний рік.
-// Дві колонки на день: сумарний час за рік і середній час за активний
-// день тижня. Метрики мають дуже різний масштаб (сума ≈ 50× середнього),
-// тож кожна нормується до власного максимуму — порівнюються дні в межах
-// метрики, а точні значення показує тайтл стовпчика.
+// Distribution of tracked time by weekday (Mon–Sun) for the selected year.
+// Two columns per day: total time over the year and average time per active
+// weekday. The metrics have very different scales (total ≈ 50× the average),
+// so each is normalized to its own maximum — days are compared within a
+// metric, and the exact values are shown by the bar's title.
 export default class TplStatWeekdayDist extends Tpl {
     #userId = 0;
     #year = new Date().getFullYear();
@@ -49,8 +49,8 @@ export default class TplStatWeekdayDist extends Tpl {
 
         const records = await Track.getYearRecords(this.#userId, year, includeArchived);
 
-        // Поки тривав запит, користувач міг перегорнути рік чи перемкнути
-        // фільтр — тоді цей результат уже неактуальний.
+        // While the request was running, the user could have flipped the year or toggled
+        // the filter — in that case this result is already stale.
         if (year !== this.#year || includeArchived !== this.#includeArchived) return;
 
         const perDay = secondsPerDayOfYear(records, year);
@@ -84,8 +84,8 @@ export default class TplStatWeekdayDist extends Tpl {
         }
 
         for (let i = 0; i < 7; i++) {
-            // Нормуємо до максимуму метрики; ненульовому дню даємо мінімум,
-            // щоб стовпчик було видно навіть за крихітного значення.
+            // Normalize to the metric's maximum; give a non-zero day a minimum,
+            // so the bar is visible even for a tiny value.
             const totalPct = totals[i] > 0 ? Math.max((totals[i] / maxTotal) * 100, 2) : 0;
             const avgPct = averages[i] > 0 ? Math.max((averages[i] / maxAvg) * 100, 2) : 0;
 

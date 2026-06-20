@@ -46,8 +46,8 @@ export default class Tpl {
         throw new Error('You have to implement this method in child class.');
     }
 
-    // Елементи з data-i18n перекладає глобальний translateDom. Цей хук —
-    // для контенту, який шаблон малює сам у JS (назви місяців, легенди тощо).
+    // Elements with data-i18n are translated by the global translateDom. This hook is
+    // for content the template renders itself in JS (month names, legends, etc.).
     onLanguageChanged() {}
 
     show() {

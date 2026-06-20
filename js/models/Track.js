@@ -40,9 +40,9 @@ export default class Track extends Model {
         return await executeSql(sql, [userId, start, stop]);
     }
 
-    // Треки, що перетинаються з тижнем [monday, monday + 7 днів).
-    // monday — локальна дата (понеділок о 00:00); межі переводимо у UTC,
-    // бо started_at/stopped_at зберігаються в UTC.
+    // Tracks that overlap the week [monday, monday + 7 days).
+    // monday — local date (Monday at 00:00); the boundaries are converted to UTC,
+    // because started_at/stopped_at are stored in UTC.
     static async getWeekRecords(userId, monday, includeArchived = false) {
         const start = toSqlDateTime(monday);
         const end = new Date(monday);

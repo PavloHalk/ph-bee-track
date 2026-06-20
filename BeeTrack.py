@@ -47,14 +47,14 @@ class API:
         conn.close()
 
     '''def execute_sql(self, query, params=()):
-        """Виконує SQL запит і повертає дані"""
+        """Runs an SQL query and returns data"""
         try:
             with sqlite3.connect(self.db_path) as conn:
-                conn.row_factory = sqlite3.Row # Щоб отримувати дані як словник
+                conn.row_factory = sqlite3.Row # To get rows as dictionaries
                 cursor = conn.execute(query, params)
-                
+
                 if query.strip().upper().startswith("SELECT"):
-                    # Перетворюємо результат у список звичайних об'єктів JS
+                    # Convert the result into a list of plain JS objects
                     return [dict(row) for row in cursor.fetchall()]
                 else:
                     conn.commit()
@@ -63,14 +63,14 @@ class API:
             return {"status": "error", "message": str(e)}'''
     
     def execute_sql(self, query, params=()):
-        """Виконує SQL запит і повертає дані або статус"""
+        """Runs an SQL query and returns data or a status"""
         try:
             with sqlite3.connect(self.db_path) as conn:
                 conn.row_factory = sqlite3.Row
                 cursor = conn.execute(query, params)
                 
-                # Отримуємо дані, якщо вони є (для SELECT або RETURNING)
-                # cursor.description буде не None, якщо запит щось повертає
+                # Fetch data if there is any (for SELECT or RETURNING)
+                # cursor.description is not None when the query returns something
                 if cursor.description:
                     result = [dict(row) for row in cursor.fetchall()]
                 else:

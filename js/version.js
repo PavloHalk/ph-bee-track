@@ -1,7 +1,7 @@
 import { loadVersion } from './pyapi.js';
 
-// Єдине джерело правди про версію — version-app.json у корені проєкту.
-// releases відсортовано «найновіша зверху», тож поточний реліз — це releases[0].
+// The single source of truth for the version is version-app.json in the project root.
+// releases is sorted "newest first", so the current release is releases[0].
 const data = await loadVersion();
 const releases = Array.isArray(data.releases) ? data.releases : [];
 

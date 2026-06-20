@@ -41,8 +41,8 @@ export default class TplStatWeekCalendar extends Tpl {
         this.#buildGrid();
     }
 
-    // Перемикання архівованих: кеш стає недійсним, тож чистимо його
-    // й перемальовуємо поточний тиждень новим запитом.
+    // Toggling archived: the cache becomes invalid, so clear it
+    // and redraw the current week with a fresh request.
     async setIncludeArchived(value) {
         this.#includeArchived = value;
         this.#cache.clear();
@@ -111,8 +111,8 @@ export default class TplStatWeekCalendar extends Tpl {
         this.#renderTasks(weekDates);
     }
 
-    // Тягне треки лише за відображуваний тиждень. Уже завантажені тижні
-    // кешуються, тож повернення до переглянутого тижня не робить запит.
+    // Fetches tracks only for the displayed week. Already-loaded weeks
+    // are cached, so returning to a viewed week makes no request.
     async #renderTasks(weekDates) {
         const monday = weekDates[0];
         const key = this.#weekKey(monday);
@@ -123,8 +123,8 @@ export default class TplStatWeekCalendar extends Tpl {
             this.#cache.set(key, records);
         }
 
-        // За час очікування запиту користувач міг перегорнути далі —
-        // тоді сітка вже інша, малювати не треба.
+        // While waiting for the request, the user could have flipped further —
+        // then the grid is already different and there is no need to draw.
         if (this.#weekKey(this.#currentMonday) !== key) return;
 
         const weekStart = monday.getTime();
@@ -178,8 +178,8 @@ export default class TplStatWeekCalendar extends Tpl {
         block.style.height = height + 'px';
         block.style.background = task.color;
         block.style.color = task.textColor || '#fff';
-        // Те саме, що в картці (назва + час) — щоб було видно на коротких треках,
-        // де текст не вміщається у блок.
+        // Same as on the card (name + time) — so it is visible on short tracks,
+        // where the text does not fit inside the block.
         block.title = `${task.name}\n${timeStr}`;
         block.innerHTML = `<div class="task-name">${task.name}</div>`
             + (height > 28 ? `<div class="task-time">${timeStr}</div>` : '');

@@ -42,9 +42,9 @@ export default class TplStatContainer extends Tpl {
             const includeArchived = filterForm.elements['show-archived'].checked;
 
             if (!this.#detailRow) {
-                // Теплова карта і розподіл за днями тижня живуть в одному
-                // ряді: вузько — стовпцем, широко — карта зліва (фіксована),
-                // розподіл справа (тягнеться). Розкладку задає CSS у фрагменті.
+                // The heat map and the weekday distribution live in one
+                // row: narrow — stacked in a column, wide — map on the left (fixed),
+                // distribution on the right (stretches). The layout is defined by CSS in the fragment.
                 this.#detailRow = document.createElement('div');
                 this.#detailRow.className = 'stat-detailed-row';
                 this.getElement().append(this.#detailRow);

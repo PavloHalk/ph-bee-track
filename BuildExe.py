@@ -3,8 +3,8 @@ import json
 
 
 def generate_version_file():
-    """Генерує version.txt (метадані .exe) з version-app.json — єдиного джерела правди.
-    Бере найсвіжіший реліз (releases[0]) і розкладає рядок версії на кортеж із 4 чисел."""
+    """Generates version.txt (.exe metadata) from version-app.json — the single source of truth.
+    Takes the latest release (releases[0]) and splits the version string into a 4-number tuple."""
     with open('version-app.json', 'r', encoding='utf-8') as f:
         latest = json.load(f)['releases'][0]
 

@@ -98,7 +98,7 @@ export default class TplTasks extends Tpl {
             if (!event.target.closest('input[type="number"]')) return;
 
             const form = event.target.closest('form');
-            // Помилка часу спільна для обох полів, тож знімаємо підсвічування з обох.
+            // The time error is shared by both fields, so clear the highlight from both.
             form.elements['time-aim-h'].classList.remove('invalid');
             form.elements['time-aim-m'].classList.remove('invalid');
             form.elements['time-aim-m'].closest('.col-9').querySelector('.field-error-msg').innerText = '';
@@ -132,8 +132,8 @@ export default class TplTasks extends Tpl {
 
             const hours = form.elements['time-aim-h'].value;
             const minutes = form.elements['time-aim-m'].value;
-            // Повідомлення про помилку часу — окремий <p class="field-error-msg">
-            // під обома полями (НЕ nextElementSibling, бо там стоїть <span>хв.</span>).
+            // The time error message is a separate <p class="field-error-msg">
+            // under both fields (NOT nextElementSibling, because a <span>min.</span> sits there).
             const timeError = form.elements['time-aim-m'].closest('.col-9').querySelector('.field-error-msg');
 
             if (!/^\d+$/.test(hours)) {
@@ -304,8 +304,8 @@ export default class TplTasks extends Tpl {
             form.elements['time-aim-m'].value = (task.timeAim - (Math.floor(task.timeAim / 3600) * 3600)) / 60;
             
             const click = new Event('click', { bubbles: true, cancelable: true });
-            // Підсвічуємо зразок збереженого кольору; якщо такого немає (легасі/
-            // нестандартні дані) чи селектор некоректний — відкочуємось на перший зразок.
+            // Highlight the swatch of the saved color; if there is none (legacy/
+            // non-standard data) or the selector is invalid — fall back to the first swatch.
             let colorSample = null;
             try {
                 colorSample = form.querySelector('.color-sample.color-' + task.color);

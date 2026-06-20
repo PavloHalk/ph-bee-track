@@ -21,8 +21,8 @@ export default class TplSelectUser extends Tpl {
         for (const user of users) {
             const userElement = template.cloneNode(true);
             userElement.querySelector('img').src = '../img/profile.png';
-            // Клон успадковує data-i18n від шаблону "Додати бджілку" — знімаємо,
-            // інакше перемикання мови перезапише реальне ім'я користувача.
+            // The clone inherits data-i18n from the "Add a bee" template — remove it,
+            // otherwise switching the language would overwrite the user's real name.
             userElement.querySelector('.username').removeAttribute('data-i18n');
             userElement.querySelector('.username').innerText = user.username;
             userElement.dataset.userId = user.id;

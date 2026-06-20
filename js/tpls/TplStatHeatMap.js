@@ -14,8 +14,8 @@ export default class TplStatHeatMap extends Tpl {
         return this.#year;
     }
 
-    // Колбек, що викликається після навігації роком (сусідній звіт
-    // підв'язується через нього, щоб оновлюватися разом із картою).
+    // Callback invoked after year navigation (a sibling report
+    // hooks in through it to update together with the map).
     setOnYearChanged(callback) {
         this.#onYearChanged = callback;
     }
@@ -144,12 +144,12 @@ export default class TplStatHeatMap extends Tpl {
     #getHeatColor(seconds, max) {
         if (!seconds || seconds <= 0) return null;
 
-        // Степенева шкала (gamma > 0.5) тримає короткий час світлим,
-        // на відміну від логарифмічної, що роздувала малі значення.
+        // A power scale (gamma > 0.5) keeps short time light,
+        // unlike a logarithmic one, which inflated small values.
         const ratio = max > 0 ? Math.min(seconds / max, 1) : 0;
         const t = Math.pow(ratio, 0.65); // 0..1
 
-        // Від блідо-блідо-блакитного до темно-темно-синього.
+        // From very-very-pale blue to very-very-dark blue.
         const r = Math.round(232 - t * (232 - 8));
         const g = Math.round(245 - t * (245 - 27));
         const b = Math.round(255 - t * (255 - 92));

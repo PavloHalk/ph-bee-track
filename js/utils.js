@@ -1,20 +1,20 @@
 import { t } from './i18n.js';
 import { APP_VERSION, APP_RELEASE_DATE } from './version.js';
 
-// Межі довжини полів форм (у символах) та верхня межа годин цілі.
+// Form field length limits (in characters) and the upper bound for goal hours.
 export const MAX_NAME_LENGTH = 64;
 export const MAX_DESCRIPTION_LENGTH = 500;
 export const MAX_AIM_HOURS = 9999;
 
-// Однорядкове текстове значення: переноси рядків → пробіл, краї обрізаємо.
+// Single-line text value: line breaks → space, trim the edges.
 export function normalizeLine(value) {
     return (value ?? '').replace(/[\r\n]+/g, ' ').trim();
 }
 
-// Валідує обов'язкове однорядкове поле прямо в DOM: нормалізує значення,
-// показує повідомлення під полем (у сусідньому .field-error-msg) і повертає
-// очищене значення або null, якщо воно порожнє чи задовге.
-// messages — вже перекладені рядки { empty, tooLong }.
+// Validates a required single-line field directly in the DOM: normalizes the value,
+// shows a message under the field (in the adjacent .field-error-msg) and returns
+// the cleaned value, or null if it is empty or too long.
+// messages — already-translated strings { empty, tooLong }.
 export function validateRequiredLine(input, maxLength, messages) {
     const value = normalizeLine(input.value);
     input.value = value;
@@ -32,7 +32,7 @@ export function validateRequiredLine(input, maxLength, messages) {
     return value;
 }
 
-// Розкладає секунди на { h, m, s }.
+// Splits seconds into { h, m, s }.
 export function secondsToParts(sec) {
     return {
         s: sec % 60,
@@ -41,21 +41,21 @@ export function secondsToParts(sec) {
     };
 }
 
-// Форматує секунди як годинник "h:mm:ss".
+// Formats seconds as a clock "h:mm:ss".
 export function secondsToClock(sec) {
     const { h, m, s } = secondsToParts(sec);
     return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
 }
 
-// Час (за замовчуванням поточний) як рядок для SQLite: "YYYY-MM-DD HH:MM:SS".
+// Time (current by default) as a string for SQLite: "YYYY-MM-DD HH:MM:SS".
 export function toSqlDateTime(date = new Date()) {
     return date.toISOString().slice(0, 19).replace('T', ' ');
 }
 
-// Розподіляє відстежений час по днях указаного року. Повертає
-// { 'YYYY-MM-DD': seconds } для кожного дня року (нульові — включно).
-// Треки зберігаються в UTC, тож і межі днів рахуємо в UTC; трек, що
-// перетинає північ, ділиться між сусідніми днями.
+// Distributes tracked time across the days of the given year. Returns
+// { 'YYYY-MM-DD': seconds } for every day of the year (zeros included).
+// Tracks are stored in UTC, so day boundaries are computed in UTC too; a track
+// that crosses midnight is split between the adjacent days.
 export function secondsPerDayOfYear(records, year) {
     const DAY_MS = 86400_000;
     const isLeap = (y) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
@@ -214,15 +214,15 @@ export function notifyCritical(title, message) {
     notify(title, message, 'critical');
 }
 
-// Версію та дату беремо з version-app.json (через version.js) — єдиного джерела правди.
+// Version and date come from version-app.json (via version.js) — the single source of truth.
 export const APP_AUTHOR = 'Галковський Павло Дмитрович';
 export const APP_AUTHOR_EMAIL = 'pavelhalkovsky@gmail.com';
 export const APP_GITHUB_URL = 'https://github.com/PavloHalk/ph-bee-track';
 export const APP_LICENSE_NAME = 'PolyForm Noncommercial 1.0.0';
 export const APP_LICENSE_URL = 'https://polyformproject.org/licenses/noncommercial/1.0.0';
 
-// Модальне вікно "Про BeeTrack": логотип, автор, версія з датою, посилання
-// на GitHub із запрошенням долучитися до розробки та єдина кнопка "Ок".
+// "About BeeTrack" modal window: logo, author, version with date, a GitHub link
+// inviting people to join the development, and a single "OK" button.
 export function showAbout() {
     const aboutContainer = document.createElement('div');
 
