@@ -169,11 +169,15 @@ export default class TplStatHeatMap extends Tpl {
     #getHeatColor(seconds, max) {
         if (!seconds || seconds <= 0) return null;
 
-        const t = Math.log(seconds + 1) / Math.log(max + 1); // 0..1
+        // Степенева шкала (gamma > 0.5) тримає короткий час світлим,
+        // на відміну від логарифмічної, що роздувала малі значення.
+        const ratio = max > 0 ? Math.min(seconds / max, 1) : 0;
+        const t = Math.pow(ratio, 0.65); // 0..1
 
-        const r = Math.round(207 - t * (207 - 5));
-        const g = Math.round(226 - t * (226 - 44));
-        const b = Math.round(255 - t * (255 - 101));
+        // Від блідо-блідо-блакитного до темно-темно-синього.
+        const r = Math.round(232 - t * (232 - 8));
+        const g = Math.round(245 - t * (245 - 27));
+        const b = Math.round(255 - t * (255 - 92));
         return `rgb(${r},${g},${b})`;
     }
 
