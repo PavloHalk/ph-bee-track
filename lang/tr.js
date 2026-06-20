@@ -17,6 +17,7 @@ export default {
         title: 'BeeTrack Hakkında',
         author: 'Yazar',
         version: 'Sürüm',
+        license: 'Lisans',
         contribute: 'BeeTrack açık kaynaklıdır — isterseniz GitHub üzerinden geliştirmesine katkıda bulunabilirsiniz:',
     },
     user: {

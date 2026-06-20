@@ -17,6 +17,7 @@ export default {
         title: 'Про BeeTrack',
         author: 'Автор',
         version: 'Версія',
+        license: 'Ліцензія',
         contribute: 'Проєкт із відкритим кодом — за бажання ви можете долучитися до його розробки на GitHub:',
     },
     user: {

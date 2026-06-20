@@ -17,6 +17,7 @@ export default {
         title: 'À propos de BeeTrack',
         author: 'Auteur',
         version: 'Version',
+        license: 'Licence',
         contribute: 'BeeTrack est un logiciel libre — si vous le souhaitez, vous pouvez participer à son développement sur GitHub :',
     },
     user: {

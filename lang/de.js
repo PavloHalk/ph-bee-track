@@ -17,6 +17,7 @@ export default {
         title: 'Über BeeTrack',
         author: 'Autor',
         version: 'Version',
+        license: 'Lizenz',
         contribute: 'BeeTrack ist quelloffen — wenn du möchtest, kannst du dich auf GitHub an der Entwicklung beteiligen:',
     },
     user: {

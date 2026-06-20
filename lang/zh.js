@@ -17,6 +17,7 @@ export default {
         title: '关于 BeeTrack',
         author: '作者',
         version: '版本',
+        license: '许可证',
         contribute: 'BeeTrack 是开源软件 — 如果愿意，您可以在 GitHub 上参与它的开发：',
     },
     user: {

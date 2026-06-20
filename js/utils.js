@@ -218,6 +218,8 @@ export function notifyCritical(title, message) {
 export const APP_AUTHOR = 'Галковський Павло Дмитрович';
 export const APP_AUTHOR_EMAIL = 'pavelhalkovsky@gmail.com';
 export const APP_GITHUB_URL = 'https://github.com/PavloHalk/ph-bee-track';
+export const APP_LICENSE_NAME = 'PolyForm Noncommercial 1.0.0';
+export const APP_LICENSE_URL = 'https://polyformproject.org/licenses/noncommercial/1.0.0';
 
 // Модальне вікно "Про BeeTrack": логотип, автор, версія з датою, посилання
 // на GitHub із запрошенням долучитися до розробки та єдина кнопка "Ок".
@@ -248,7 +250,9 @@ export function showAbout() {
         <p class="h3 mt-2">${t('about.title')}</p>
         <p class="mb-1"><strong>${t('about.author')}:</strong><br>${APP_AUTHOR}<br>
             <a href="mailto:${APP_AUTHOR_EMAIL}">${APP_AUTHOR_EMAIL}</a></p>
-        <p class="mb-3"><strong>${t('about.version')}:</strong> ${APP_VERSION} (${APP_RELEASE_DATE})</p>
+        <p class="mb-1"><strong>${t('about.version')}:</strong> ${APP_VERSION} (${APP_RELEASE_DATE})</p>
+        <p class="mb-3"><strong>${t('about.license')}:</strong>
+            <a href="${APP_LICENSE_URL}" target="_blank">${APP_LICENSE_NAME}</a></p>
         <p class="mb-2">${t('about.contribute')}</p>
         <p class="mb-3 about-github">
             <a href="${APP_GITHUB_URL}" target="_blank" title="BeeTrack on GitHub">
