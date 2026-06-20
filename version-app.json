@@ -1,0 +1,14 @@
+{
+  "releases": [
+    {
+      "version": "0.6.0",
+      "date": "2026-06-20",
+      "changes": [
+        "Added the \"About BeeTrack\" window with author info, version and a link to GitHub.",
+        "Added over a dozen interface languages.",
+        "Added weekday distribution to the detailed statistics.",
+        "Header and footer are now fixed in place, and the window opens maximized."
+      ]
+    }
+  ]
+}

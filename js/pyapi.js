@@ -45,6 +45,12 @@ export async function loadConfig() {
     return JSON.parse(config);
 }
 
+export async function loadVersion() {
+    const data = await pywebview.api.load_version();
+
+    return JSON.parse(data);
+}
+
 export async function osNotify(title, message) {
     await pywebview.api.notify(title, message);
 }

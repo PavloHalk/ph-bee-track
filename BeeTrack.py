@@ -103,6 +103,14 @@ class API:
             with open("config.json", "r") as f:
                 return f.read()
         return "{}"
+
+    def load_version(self):
+        try:
+            file_path = get_resource_path('version-app.json')
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f.read()
+        except Exception:
+            return "{}"
         
     def notify(self, title, message):
         notification.notify(

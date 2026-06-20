@@ -1,4 +1,5 @@
 import { t } from './i18n.js';
+import { APP_VERSION, APP_RELEASE_DATE } from './version.js';
 
 // Межі довжини полів форм (у символах) та верхня межа годин цілі.
 export const MAX_NAME_LENGTH = 64;
@@ -213,9 +214,7 @@ export function notifyCritical(title, message) {
     notify(title, message, 'critical');
 }
 
-// Поточна версія програми та дата її випуску — поки що жорстко зашиті.
-export const APP_VERSION = '0.6.0';
-export const APP_RELEASE_DATE = '2026-06-20';
+// Версію та дату беремо з version-app.json (через version.js) — єдиного джерела правди.
 export const APP_AUTHOR = 'Галковський Павло Дмитрович';
 export const APP_AUTHOR_EMAIL = 'pavelhalkovsky@gmail.com';
 export const APP_GITHUB_URL = 'https://github.com/PavloHalk/ph-bee-track';

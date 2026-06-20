@@ -4,6 +4,7 @@ import {showCreateUser, showSelectUser, showUserProfile, showTasks, showStats} f
 import User from './models/User.js';
 import Timer from './Timer.js';
 import { showAbout } from './utils.js';
+import { APP_VERSION } from './version.js';
 
 await initI18n();
 
@@ -21,6 +22,8 @@ langSelect.value = getLanguage();
 langSelect.addEventListener('change', async () => {
     await setLanguage(langSelect.value);
 });
+
+document.querySelector('footer .app-version').textContent = APP_VERSION;
 
 const profileElement = document.querySelector('header .profile');
 
