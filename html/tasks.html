@@ -4,27 +4,25 @@
         <div class="btn-task-top btn-edit-task p-1" title="Редагувати задачу" data-i18n-title="tasks.card.edit"></div>
         <h5 class="h5 text-center task-title"></h5>
         <div class="task-description px-1"></div>
-        <div class="timer text-center mt-2">
+        <div class="timer text-center mt-2 mb-2">
             <span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span>
         </div>
-        
-        <div class="row">
-            <div class="col col-4" data-i18n="tasks.card.aim">Ціль:</div>
-            <div class="col col-8">
+
+        <div class="task-stats">
+            <div class="task-stat">
+                <span class="task-stat-label" data-i18n="tasks.card.aim">Ціль:</span>
                 <span class="clock time-aim"><span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span></span>
             </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col col-4" data-i18n="tasks.card.toAim">До цілі:</div>
-            <div class="col col-8">
+            <div class="task-stat">
+                <span class="task-stat-label" data-i18n="tasks.card.toAim">До цілі:</span>
                 <span class="clock time-left"><span class="h">--</span>:<span class="m">--</span>:<span class="s">--</span></span>
             </div>
+            <div class="task-stat">
+                <span class="task-stat-label"></span>
+                <span class="clock-percentage"><span class="percentage">0.0</span> %</span>
+            </div>
         </div>
-        <div class="row" style="margin-top: -5px;">
-            <div class="col col-4"></div>
-            <div class="col col-8"><span class="clock-percentage"><span class="percentage">0.0</span> %</span></div>
-        </div>
-        <div class="text-center mt-3">
+        <div class="task-buttons text-center mt-3">
             <span class="btn btn-sm btn-success btn-start" data-i18n="tasks.card.start">Старт</span>
             <span class="btn btn-sm btn-danger btn-stop disabled" data-i18n="tasks.card.stop">Стоп</span>
             <span class="btn btn-sm btn-outline-dark btn-reset" data-i18n="tasks.card.reset">Скинути</span>
@@ -109,8 +107,41 @@
     .tpl-tasks .task {
         position: relative;
         width: 250px;
-        height: 282px;
+        min-height: 282px;
         border-radius: 10px;
+    }
+    .tpl-tasks .task:not(.new-task) {
+        display: flex;
+        flex-direction: column;
+    }
+    .tpl-tasks .task-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        overflow-wrap: anywhere;
+    }
+    .tpl-tasks .task-stats {
+        font-size: 13px;
+    }
+    .tpl-tasks .task-stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 6px;
+        margin-top: 2px;
+    }
+    .tpl-tasks .task-stat-label {
+        overflow-wrap: anywhere;
+    }
+    .tpl-tasks .task-buttons {
+        margin-top: auto;
+        padding-top: 8px;
+    }
+    .tpl-tasks .task-buttons .btn {
+        font-size: 12px;
+        padding: 4px 8px;
+        margin-bottom: 3px;
     }
     .tpl-tasks .task .btn {
         box-shadow: 0 0 5px black;
