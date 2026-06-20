@@ -6,6 +6,19 @@ export const DEFAULT_LANGUAGE = 'ua';
 export const availableLanguages = [
     { code: 'ua', name: 'Українська' },
     { code: 'en', name: 'English' },
+    { code: 'pl', name: 'Polski' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'cs', name: 'Čeština' },
+    { code: 'es', name: 'Español' },
+    { code: 'fr', name: 'Français' },
+    { code: 'pt-br', name: 'Português (Brasil)' },
+    { code: 'it', name: 'Italiano' },
+    { code: 'tr', name: 'Türkçe' },
+    { code: 'zh', name: '简体中文' },
+    { code: 'ja', name: '日本語' },
+    { code: 'hi', name: 'हिन्दी' },
+    { code: 'bn', name: 'বাংলা' },
+    { code: 'ko', name: '한국어' },
 ];
 
 const dictionaries = { ua };
