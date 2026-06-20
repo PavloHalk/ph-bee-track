@@ -51,6 +51,46 @@ export function toSqlDateTime(date = new Date()) {
     return date.toISOString().slice(0, 19).replace('T', ' ');
 }
 
+// Розподіляє відстежений час по днях указаного року. Повертає
+// { 'YYYY-MM-DD': seconds } для кожного дня року (нульові — включно).
+// Треки зберігаються в UTC, тож і межі днів рахуємо в UTC; трек, що
+// перетинає північ, ділиться між сусідніми днями.
+export function secondsPerDayOfYear(records, year) {
+    const DAY_MS = 86400_000;
+    const isLeap = (y) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+    const daysInYear = isLeap(year) ? 366 : 365;
+
+    const result = {};
+    for (let i = 0; i < daysInYear; i++) {
+        const d = new Date(Date.UTC(year, 0, 1 + i));
+        result[d.toISOString().slice(0, 10)] = 0;
+    }
+
+    const yearBegin = Date.UTC(year, 0, 1);
+    const yearEnd = Date.UTC(year + 1, 0, 1);
+
+    for (const rec of records) {
+        const start = new Date(rec.started_at.replace(' ', 'T') + 'Z').getTime();
+        const stop = new Date(rec.stopped_at.replace(' ', 'T') + 'Z').getTime();
+
+        const from = Math.max(start, yearBegin);
+        const to = Math.min(stop, yearEnd);
+        if (from >= to) continue;
+
+        const firstDayMs = Math.floor(from / DAY_MS) * DAY_MS;
+        for (let dayMs = firstDayMs; dayMs < to; dayMs += DAY_MS) {
+            const dayKey = new Date(dayMs).toISOString().slice(0, 10);
+            if (!(dayKey in result)) continue;
+
+            const dayFrom = Math.max(from, dayMs);
+            const dayTo = Math.min(to, dayMs + DAY_MS);
+            result[dayKey] += (dayTo - dayFrom) / 1000;
+        }
+    }
+
+    return result;
+}
+
 export function notify(title, message, level) {
     if (!['info', 'success', 'warning', 'critical'].includes(level)) {
         level = 'info';

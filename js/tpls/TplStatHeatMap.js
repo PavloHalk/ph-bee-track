@@ -1,13 +1,24 @@
 import Tpl from './Tpl.js';
 import Track from '../models/Track.js';
 import { t } from '../i18n.js';
-import { secondsToClock } from '../utils.js';
+import { secondsToClock, secondsPerDayOfYear } from '../utils.js';
 
 export default class TplStatHeatMap extends Tpl {
     static STEP = 17;
     #year = new Date().getFullYear();
     #userId = 0;
     #includeArchived = false;
+    #onYearChanged = null;
+
+    get year() {
+        return this.#year;
+    }
+
+    // Колбек, що викликається після навігації роком (сусідній звіт
+    // підв'язується через нього, щоб оновлюватися разом із картою).
+    setOnYearChanged(callback) {
+        this.#onYearChanged = callback;
+    }
     
     static get htmlPath() {
         return 'stat-heat-map';
@@ -24,13 +35,15 @@ export default class TplStatHeatMap extends Tpl {
         setTimeout(async () => {
             await this.#render();
 
-            document.getElementById('bp').addEventListener('click', () => {
+            document.getElementById('bp').addEventListener('click', async () => {
                 this.#year--;
-                this.#render();
+                await this.#render();
+                this.#onYearChanged?.(this.#year);
             });
-            document.getElementById('bn').addEventListener('click', () => {
+            document.getElementById('bn').addEventListener('click', async () => {
                 this.#year++;
-                this.#render();
+                await this.#render();
+                this.#onYearChanged?.(this.#year);
             });
         });
     }
@@ -86,7 +99,7 @@ export default class TplStatHeatMap extends Tpl {
         });
 
         const records = await Track.getYearRecords(this.#userId, this.#year, this.#includeArchived);
-        const secondsPerDay = this.#calcSecondsPerDay(records);
+        const secondsPerDay = secondsPerDayOfYear(records, this.#year);
         
         const max = Object.values(secondsPerDay).reduce((a, b) => Math.max(a, b), 0);
         
@@ -126,44 +139,6 @@ export default class TplStatHeatMap extends Tpl {
             weeks.push(w);
         }
         return weeks;
-    }
-
-    #calcSecondsPerDay(records) {
-        const isLeap = (y) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
-        const daysInYear = isLeap(this.#year) ? 366 : 365;
-
-        const result = {};
-        for (let i = 0; i < daysInYear; i++) {
-            const d = new Date(Date.UTC(this.#year, 0, 1 + i));
-            result[d.toISOString().slice(0, 10)] = 0;
-        }
-
-        const yearBegin = Date.UTC(this.#year, 0, 1);
-        const yearEnd   = Date.UTC(this.#year + 1, 0, 1);
-
-        for (const rec of records) {
-            const start = new Date(rec.started_at.replace(' ', 'T') + 'Z').getTime();
-            const stop  = new Date(rec.stopped_at.replace(' ', 'T') + 'Z').getTime();
-
-            const from = Math.max(start, yearBegin);
-            const to   = Math.min(stop, yearEnd);
-
-            if (from >= to) continue;
-
-            const firstDayMs = Math.floor(from / 86400_000) * 86400_000;
-
-            for (let dayMs = firstDayMs; dayMs < to; dayMs += 86400_000) {
-                const dayKey = new Date(dayMs).toISOString().slice(0, 10);
-                if (!(dayKey in result)) continue;
-
-                const dayFrom = Math.max(from, dayMs);
-                const dayTo   = Math.min(to, dayMs + 86400_000);
-
-                result[dayKey] += (dayTo - dayFrom) / 1000;
-            }
-        }
-
-        return result;
     }
 
     #getHeatColor(seconds, max) {

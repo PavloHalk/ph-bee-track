@@ -19,4 +19,37 @@
   .stat-nav-tab.active {
     text-decoration: underline;
   }
+
+  /* Вузьке вікно: карта і розподіл стовпцем, однакової ширини
+     (width:fit-content + stretch підганяє розподіл під ширину карти),
+     розподіл вищий приблизно вдвічі за карту. */
+  .stat-detailed-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .stat-detailed-row > .tpl-stat-heat-map { flex: 0 0 auto; }
+  .stat-detailed-row > .tpl-stat-weekday-dist {
+    flex: 0 0 auto;
+    height: 300px;
+  }
+
+  /* Широке вікно: карта зліва (фіксована ширина), розподіл справа
+     тягнеться на вільний простір і вирівнюється по висоті карти. */
+  @media (min-width: 1300px) {
+    .stat-detailed-row {
+      flex-direction: row;
+      align-items: stretch;
+      width: auto;
+    }
+    .stat-detailed-row > .tpl-stat-weekday-dist {
+      flex: 1 1 0;
+      min-width: 320px;
+      height: auto;
+    }
+  }
 </style>

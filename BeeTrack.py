@@ -129,8 +129,9 @@ html_file = get_resource_path('index.html')
 window = webview.create_window(
     'BeeTrack - трекер часу для зайнятих бджілок',
     html_file,
-    width=1000,
-    height=700,
+    width=1380,
+    height=800,
+    min_size=(900, 600),
     js_api=api
 )
 

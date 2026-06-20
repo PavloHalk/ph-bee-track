@@ -143,6 +143,11 @@ export default {
             months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             days: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
         },
+        weekdayDist: {
+            title: 'Distribution by weekday',
+            total: 'Total',
+            average: 'Average',
+        },
         week: {
             prevWeek: 'Previous week',
             nextWeek: 'Next week',
