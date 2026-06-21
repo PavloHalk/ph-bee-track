@@ -26,10 +26,12 @@ export default class Track extends Model {
         }
     }
     
+    // Tracks that overlap the local year [year-01-01, (year+1)-01-01).
+    // The boundaries are local dates converted to UTC, because
+    // started_at/stopped_at are stored in UTC.
     static async getYearRecords(userId, year, includeArchived = false) {
-
-        const stop = year + '-01-01 00:00:00';
-        const start = (year+1) + '-01-01 00:00:00';
+        const start = toSqlDateTime(new Date(year, 0, 1));
+        const end = toSqlDateTime(new Date(year + 1, 0, 1));
         const archivedFilter = includeArchived ? '' : ' AND tk.is_deleted = 0';
         const sql = `SELECT tr.* FROM tracks tr
                                 LEFT JOIN tasks tk ON tk.id = tr.task_id
@@ -37,7 +39,7 @@ export default class Track extends Model {
                                 AND tr.started_at < ?
                                 AND tr.stopped_at >= ?${archivedFilter}`;
 
-        return await executeSql(sql, [userId, start, stop]);
+        return await executeSql(sql, [userId, end, start]);
     }
 
     // Tracks that overlap the week [monday, monday + 7 days).

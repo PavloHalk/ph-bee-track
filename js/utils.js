@@ -54,38 +54,42 @@ export function toSqlDateTime(date = new Date()) {
 
 // Distributes tracked time across the days of the given year. Returns
 // { 'YYYY-MM-DD': seconds } for every day of the year (zeros included).
-// Tracks are stored in UTC, so day boundaries are computed in UTC too; a track
-// that crosses midnight is split between the adjacent days.
+// Tracks are stored in UTC but displayed in the user's local time, so day
+// boundaries are computed locally (DST-safe via Date arithmetic); a track that
+// crosses local midnight is split between the adjacent days.
 export function secondsPerDayOfYear(records, year) {
-    const DAY_MS = 86400_000;
-    const isLeap = (y) => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
-    const daysInYear = isLeap(year) ? 366 : 365;
+    const dayKey = (d) =>
+        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
     const result = {};
-    for (let i = 0; i < daysInYear; i++) {
-        const d = new Date(Date.UTC(year, 0, 1 + i));
-        result[d.toISOString().slice(0, 10)] = 0;
+    const cursor = new Date(year, 0, 1);
+    while (cursor.getFullYear() === year) {
+        result[dayKey(cursor)] = 0;
+        cursor.setDate(cursor.getDate() + 1);
     }
 
-    const yearBegin = Date.UTC(year, 0, 1);
-    const yearEnd = Date.UTC(year + 1, 0, 1);
+    const yearBegin = new Date(year, 0, 1).getTime();
+    const yearEnd = new Date(year + 1, 0, 1).getTime();
 
     for (const rec of records) {
         const start = new Date(rec.started_at.replace(' ', 'T') + 'Z').getTime();
         const stop = new Date(rec.stopped_at.replace(' ', 'T') + 'Z').getTime();
 
-        const from = Math.max(start, yearBegin);
+        let from = Math.max(start, yearBegin);
         const to = Math.min(stop, yearEnd);
         if (from >= to) continue;
 
-        const firstDayMs = Math.floor(from / DAY_MS) * DAY_MS;
-        for (let dayMs = firstDayMs; dayMs < to; dayMs += DAY_MS) {
-            const dayKey = new Date(dayMs).toISOString().slice(0, 10);
-            if (!(dayKey in result)) continue;
+        // Walk local day by local day, splitting time at each local midnight.
+        while (from < to) {
+            const nextMidnight = new Date(from);
+            nextMidnight.setHours(0, 0, 0, 0);
+            nextMidnight.setDate(nextMidnight.getDate() + 1);
+            const dayTo = Math.min(to, nextMidnight.getTime());
 
-            const dayFrom = Math.max(from, dayMs);
-            const dayTo = Math.min(to, dayMs + DAY_MS);
-            result[dayKey] += (dayTo - dayFrom) / 1000;
+            const key = dayKey(new Date(from));
+            if (key in result) result[key] += (dayTo - from) / 1000;
+
+            from = dayTo;
         }
     }
 

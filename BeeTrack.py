@@ -46,22 +46,6 @@ class API:
                                 stopped_at TEXT)''')
         conn.close()
 
-    '''def execute_sql(self, query, params=()):
-        """Runs an SQL query and returns data"""
-        try:
-            with sqlite3.connect(self.db_path) as conn:
-                conn.row_factory = sqlite3.Row # To get rows as dictionaries
-                cursor = conn.execute(query, params)
-
-                if query.strip().upper().startswith("SELECT"):
-                    # Convert the result into a list of plain JS objects
-                    return [dict(row) for row in cursor.fetchall()]
-                else:
-                    conn.commit()
-                    return {"status": "success"}
-        except Exception as e:
-            return {"status": "error", "message": str(e)}'''
-    
     def execute_sql(self, query, params=()):
         """Runs an SQL query and returns data or a status"""
         try:

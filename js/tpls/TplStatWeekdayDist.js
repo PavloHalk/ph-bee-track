@@ -59,7 +59,7 @@ export default class TplStatWeekdayDist extends Tpl {
 
         for (const key in perDay) {
             const seconds = perDay[key];
-            const weekday = (new Date(key + 'T00:00:00Z').getUTCDay() + 6) % 7;
+            const weekday = (new Date(key + 'T00:00:00').getDay() + 6) % 7;
             totals[weekday] += seconds;
             if (seconds > 0) activeDays[weekday] += 1;
         }
