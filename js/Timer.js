@@ -105,7 +105,7 @@ export default class Timer {
         if (this.#task.timeElapsed > this.#task.timeAim && !this.#taskNotified) {
             this.#taskNotified = true;
             osNotify(
-                'BeeTrack - ' + this.#task.name,
+                'BeeTrack - ' + this.#task.taskName,
                 t('timer.exceeded')
             );
 
