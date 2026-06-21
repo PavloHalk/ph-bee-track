@@ -1,5 +1,5 @@
 import Tpl from './Tpl.js';
-import User from '../Models/User.js';
+import User from '../models/User.js';
 import { showCreateUser } from "../tplFunctions.js";
 import {executeSql, loadConfig, saveConfig} from "../pyapi.js";
 

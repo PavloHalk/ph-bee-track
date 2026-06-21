@@ -1,5 +1,5 @@
 import Tpl from './Tpl.js';
-import User from '../Models/User.js';
+import User from '../models/User.js';
 import {notifySuccess, validateRequiredLine, MAX_NAME_LENGTH} from "../utils.js";
 import {showSelectUser} from "../tplFunctions.js";
 import { t } from '../i18n.js';

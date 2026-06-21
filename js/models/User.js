@@ -10,14 +10,14 @@ export default class User extends Model {
     async save() {
         const date = toSqlDateTime();
 
-        const result = { status: 'pending' }
+        let result;
         try {
             if (!this.id) {
-                const result = await executeSql(`INSERT INTO users (username, created_at) VALUES(?, ?)`, [this.username, date]);
+                result = await executeSql(`INSERT INTO users (username, created_at) VALUES(?, ?)`, [this.username, date]);
             } else {
-                const result = await executeSql(`UPDATE users SET username=? WHERE id=?`, [this.username, this.id]);
+                result = await executeSql(`UPDATE users SET username=? WHERE id=?`, [this.username, this.id]);
             }
-            
+
             return result.status === 'success';
         } catch (err) {
             throw err;

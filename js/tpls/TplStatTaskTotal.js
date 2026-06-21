@@ -1,5 +1,5 @@
 import Tpl from './Tpl.js';
-import Task from '../Models/Task.js';
+import Task from '../models/Task.js';
 import { t } from '../i18n.js';
 import { secondsToClock } from '../utils.js';
 
@@ -223,9 +223,10 @@ export default class TplStatTaskTotal extends Tpl {
         diagram.style.background = '';
         
         if (total === 0) {
-            container.querySelector('.diagram').innerHTML = `<p class="text-center text-danger">${t('stats.charts.noData')}</p>`;
+            diagram.innerHTML = `<p class="text-center text-danger">${t('stats.charts.noData')}</p>`;
+            return;
         }
-        
+
         let cumulative = 0;
         const segments = [];
 

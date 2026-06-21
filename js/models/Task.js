@@ -29,15 +29,15 @@ export default class Task extends Model {
     async save() {
         const date = toSqlDateTime();
 
-        const result = { status: 'pending' }
+        let result;
         try {
             if (!this.id) {
-                const result = await executeSql(
+                result = await executeSql(
                     `INSERT INTO tasks (user_id, name, description, color, play_sound, time_aim, time_elapsed, time_elapsed_total, created_at) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                     [this.userId, this.taskName, this.description, this.color, this.playSound, this.timeAim, this.timeElapsed, this.timeElapsedTotal, date]
                 );
             } else {
-                const result = await executeSql(
+                result = await executeSql(
                     `UPDATE tasks SET name=?, description=?, color=?, play_sound=?, time_aim=?, time_elapsed=?, time_elapsed_total=? WHERE id=?`,
                     [this.taskName, this.description, this.color, this.playSound, this.timeAim, this.timeElapsed, this.timeElapsedTotal, this.id]
                 );
