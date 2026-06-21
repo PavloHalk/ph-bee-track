@@ -13,6 +13,10 @@ export default {
         cancel: 'キャンセル',
         ok: 'OK',
     },
+    errors: {
+        unexpectedTitle: 'エラー',
+        unexpected: '予期しないエラーが発生しました。一部のデータが保存されていない可能性があります。',
+    },
     about: {
         title: 'BeeTrack について',
         author: '作者',

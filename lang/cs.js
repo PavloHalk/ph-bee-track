@@ -13,6 +13,10 @@ export default {
         cancel: 'Zrušit',
         ok: 'OK',
     },
+    errors: {
+        unexpectedTitle: 'Chyba',
+        unexpected: 'Došlo k neočekávané chybě. Některá data se možná neuložila.',
+    },
     about: {
         title: 'O BeeTrack',
         author: 'Autor',

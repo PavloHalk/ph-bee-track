@@ -13,6 +13,10 @@ export default {
         cancel: 'Скасувати',
         ok: 'Ок',
     },
+    errors: {
+        unexpectedTitle: 'Помилка',
+        unexpected: 'Сталася неочікувана помилка. Деякі дані могло не зберегтися.',
+    },
     about: {
         title: 'Про BeeTrack',
         author: 'Автор',

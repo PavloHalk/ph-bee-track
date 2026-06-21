@@ -5,7 +5,10 @@
       "date": "2026-06-21",
       "changes": [
         "Changelog added.",
-        "Fixed bug with app icon and timer sound."
+        "Fixed bug with app icon and timer sound.",
+        "Fixed timezone bugs.",
+        "Fixed various of small bugs.",
+        "Focus on invalid form fields."
       ]
     },
     {

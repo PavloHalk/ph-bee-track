@@ -13,6 +13,10 @@ export default {
         cancel: '취소',
         ok: '확인',
     },
+    errors: {
+        unexpectedTitle: '오류',
+        unexpected: '예기치 않은 오류가 발생했습니다. 일부 데이터가 저장되지 않았을 수 있습니다.',
+    },
     about: {
         title: 'BeeTrack 정보',
         author: '제작자',

@@ -1,6 +1,6 @@
 import Tpl from './Tpl.js';
 import User from '../models/User.js';
-import {notifySuccess, validateRequiredLine, MAX_NAME_LENGTH} from "../utils.js";
+import {notifySuccess, validateRequiredLine, focusFirstInvalid, MAX_NAME_LENGTH} from "../utils.js";
 import {showSelectUser} from "../tplFunctions.js";
 import { t } from '../i18n.js';
 
@@ -31,18 +31,15 @@ export default class TplNewUser extends Tpl {
                 empty: t('user.create.errors.empty'),
                 tooLong: t('user.create.errors.tooLong', { max: MAX_NAME_LENGTH }),
             });
-            if (username === null) return;
+            if (username === null) {
+                focusFirstInvalid(currentTarget);
+                return;
+            }
 
             let user = new User();
             user.username = username;
             user.save() //@todo: use async/await
                 .then(async () => {
-                    const ev = new CustomEvent(
-                        'user-created',
-                        { bubbles: true }
-                    );
-                    btnSubmit.closest('.tpl').dispatchEvent(ev);
-                    
                     const profile = document.querySelector('header .profile');
                     user = await User.getByUserName(user.username);
                     profile.querySelector('.username').innerText = user.username;
@@ -62,6 +59,7 @@ export default class TplNewUser extends Tpl {
                     console.error(err);
                     currentTarget.elements['username'].classList.add('invalid');
                     currentTarget.elements['username'].nextElementSibling.innerText = t('user.create.errors.exists');
+                    focusFirstInvalid(currentTarget);
                 });
         });
         

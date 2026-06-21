@@ -1,6 +1,6 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
-import {notifyCritical, notifySuccess, showConfirm, validateRequiredLine, secondsToParts, MAX_NAME_LENGTH, MAX_DESCRIPTION_LENGTH, MAX_AIM_HOURS} from '../utils.js';
+import {notifyCritical, notifySuccess, showConfirm, validateRequiredLine, focusFirstInvalid, secondsToParts, MAX_NAME_LENGTH, MAX_DESCRIPTION_LENGTH, MAX_AIM_HOURS} from '../utils.js';
 import { t } from '../i18n.js';
 
 export default class TplTasks extends Tpl {
@@ -120,13 +120,17 @@ export default class TplTasks extends Tpl {
                 empty: t('tasks.form.errors.noName'),
                 tooLong: t('tasks.form.errors.nameTooLong', { max: MAX_NAME_LENGTH }),
             });
-            if (name === null) return;
+            if (name === null) {
+                focusFirstInvalid(form);
+                return;
+            }
 
             const description = form.elements['description'].value.trim();
             form.elements['description'].value = description;
             if (description.length > MAX_DESCRIPTION_LENGTH) {
                 form.elements['description'].classList.add('invalid');
                 form.elements['description'].nextElementSibling.innerText = t('tasks.form.errors.descriptionTooLong', { max: MAX_DESCRIPTION_LENGTH });
+                focusFirstInvalid(form);
                 return;
             }
 
@@ -139,27 +143,32 @@ export default class TplTasks extends Tpl {
             if (!/^\d+$/.test(hours)) {
                 form.elements['time-aim-h'].classList.add('invalid');
                 timeError.innerText = t('tasks.form.errors.hoursNumeric');
+                focusFirstInvalid(form);
                 return;
             }
             if (!/^\d+$/.test(minutes)) {
                 form.elements['time-aim-m'].classList.add('invalid');
                 timeError.innerText = t('tasks.form.errors.minutesNumeric');
+                focusFirstInvalid(form);
                 return;
             }
             if (Number(hours) > MAX_AIM_HOURS) {
                 form.elements['time-aim-h'].classList.add('invalid');
                 timeError.innerText = t('tasks.form.errors.hoursMax', { max: MAX_AIM_HOURS });
+                focusFirstInvalid(form);
                 return;
             }
             if (Number(minutes) > 59 || Number(minutes) < 0) {
                 form.elements['time-aim-m'].classList.add('invalid');
                 timeError.innerText = t('tasks.form.errors.minutesRange');
+                focusFirstInvalid(form);
                 return;
             }
             if (Number(hours) * 3600 + Number(minutes) * 60 <= 0) {
                 form.elements['time-aim-h'].classList.add('invalid');
                 form.elements['time-aim-m'].classList.add('invalid');
                 timeError.innerText = t('tasks.form.errors.timeZero');
+                focusFirstInvalid(form);
                 return;
             }
 

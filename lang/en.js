@@ -13,6 +13,10 @@ export default {
         cancel: 'Cancel',
         ok: 'OK',
     },
+    errors: {
+        unexpectedTitle: 'Error',
+        unexpected: 'An unexpected error occurred. Some data may not have been saved.',
+    },
     about: {
         title: 'About BeeTrack',
         author: 'Author',

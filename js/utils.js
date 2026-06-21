@@ -32,6 +32,12 @@ export function validateRequiredLine(input, maxLength, messages) {
     return value;
 }
 
+// Moves focus to the first (topmost in DOM order) invalid field inside the
+// container, so the user can fix it right away. No-op if nothing is invalid.
+export function focusFirstInvalid(container) {
+    container.querySelector('.invalid')?.focus();
+}
+
 // Splits seconds into { h, m, s }.
 export function secondsToParts(sec) {
     return {

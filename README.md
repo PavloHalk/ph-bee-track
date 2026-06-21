@@ -17,8 +17,11 @@ In BeeTrack a user is affectionately called a **bee** ("бджілка") — tha
 - **Single-file build** — package everything into one standalone Windows `.exe` with PyInstaller.
 
 ## App data and storage
-- `beetrack.db` — local SQLite database, created automatically on first run.
+Writable user data lives in a per-user folder (`%APPDATA%\BeeTrack` on Windows, the home directory as a fallback), created automatically on first run — kept separate from the bundled app so it survives reinstalls and works regardless of where the executable is launched from:
+- `beetrack.db` — local SQLite database.
 - `config.json` — user settings (e.g. `last_logged_user_id`, selected `lang`).
+
+Bundled with the app:
 - `version-app.json` — single source of truth for the app version and changelog.
 - `index.html` — application shell loaded by `BeeTrack.py`.
 - `css/`, `js/`, `html/`, `img/`, `lang/` — frontend assets (styles, scripts, HTML fragments, images, and per-language translation dictionaries).

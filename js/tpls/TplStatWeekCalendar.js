@@ -5,7 +5,6 @@ import { t } from '../i18n.js';
 export default class TplStatWeekCalendar extends Tpl {
     static HOURS = 24;
     static HOUR_H = 48;
-    static DAY_MS = 86400000;
 
     #userId = 0;
     #currentMonday = null;
@@ -128,7 +127,10 @@ export default class TplStatWeekCalendar extends Tpl {
         if (this.#weekKey(this.#currentMonday) !== key) return;
 
         const weekStart = monday.getTime();
-        const weekEnd = weekStart + 7 * TplStatWeekCalendar.DAY_MS;
+        // Next local midnight after Sunday — DST-safe (a week is not always 7×24h).
+        const weekEndDate = new Date(weekDates[6]);
+        weekEndDate.setDate(weekEndDate.getDate() + 1);
+        const weekEnd = weekEndDate.getTime();
 
         for (const rec of records) {
             const start = this.#parseUtc(rec.started_at);
@@ -140,7 +142,10 @@ export default class TplStatWeekCalendar extends Tpl {
 
             for (let i = 0; i < 7; i++) {
                 const dayStart = weekDates[i].getTime();
-                const dayEnd = dayStart + TplStatWeekCalendar.DAY_MS;
+                // Next local midnight — DST-safe (a day is not always 24h).
+                const dayEndDate = new Date(weekDates[i]);
+                dayEndDate.setDate(dayEndDate.getDate() + 1);
+                const dayEnd = dayEndDate.getTime();
 
                 const segFrom = Math.max(from, dayStart);
                 const segTo = Math.min(to, dayEnd);

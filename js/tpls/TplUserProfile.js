@@ -1,7 +1,7 @@
 import Tpl from './Tpl.js';
 import User from '../models/User.js';
 import { showSelectUser } from '../tplFunctions.js';
-import { notifySuccess, validateRequiredLine, MAX_NAME_LENGTH } from '../utils.js';
+import { notifySuccess, validateRequiredLine, focusFirstInvalid, MAX_NAME_LENGTH } from '../utils.js';
 import { t } from '../i18n.js';
 
 export default class TplUserProfile extends Tpl {
@@ -67,7 +67,10 @@ export default class TplUserProfile extends Tpl {
                 empty: t('user.profile.errors.empty'),
                 tooLong: t('user.profile.errors.tooLong', { max: MAX_NAME_LENGTH }),
             });
-            if (username === null) return false;
+            if (username === null) {
+                focusFirstInvalid(form);
+                return false;
+            }
 
             const profileElement = document.querySelector('header .profile');
             const user = await User.getById(profileElement.dataset.userId);
@@ -86,6 +89,7 @@ export default class TplUserProfile extends Tpl {
             } catch {
                 form.elements['username'].classList.add('invalid');
                 form.elements['username'].nextElementSibling.innerText = t('user.profile.errors.exists');
+                focusFirstInvalid(form);
                 return false;
             }
         }

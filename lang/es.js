@@ -13,6 +13,10 @@ export default {
         cancel: 'Cancelar',
         ok: 'OK',
     },
+    errors: {
+        unexpectedTitle: 'Error',
+        unexpected: 'Se produjo un error inesperado. Es posible que algunos datos no se hayan guardado.',
+    },
     about: {
         title: 'Acerca de BeeTrack',
         author: 'Autor',

@@ -13,6 +13,10 @@ export default {
         cancel: 'বাতিল',
         ok: 'ঠিক আছে',
     },
+    errors: {
+        unexpectedTitle: 'ত্রুটি',
+        unexpected: 'একটি অপ্রত্যাশিত ত্রুটি ঘটেছে। কিছু তথ্য সংরক্ষিত না-ও হতে পারে।',
+    },
     about: {
         title: 'BeeTrack সম্পর্কে',
         author: 'লেখক',

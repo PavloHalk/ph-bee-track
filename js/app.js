@@ -3,10 +3,18 @@ import { initI18n, setLanguage, getLanguage, availableLanguages, t } from './i18
 import {showCreateUser, showSelectUser, showUserProfile, showTasks, showStats} from './tplFunctions.js';
 import User from './models/User.js';
 import Timer from './Timer.js';
-import { showAbout } from './utils.js';
+import { showAbout, notifyCritical } from './utils.js';
 import { APP_VERSION } from './version.js';
 
 await initI18n();
+
+// Safety net: surface otherwise-silent failures from async handlers (e.g. a failed
+// DB write that nobody awaited) instead of letting them vanish into the console.
+// Errors handled explicitly elsewhere don't reach here, since they aren't re-thrown.
+window.addEventListener('unhandledrejection', (event) => {
+    console.error(event.reason);
+    notifyCritical(t('errors.unexpectedTitle'), t('errors.unexpected'));
+});
 
 const config = await loadConfig();
 const timer = new Timer();
@@ -51,7 +59,7 @@ profileObserver.observe(profileElement, { attributes: true, attributeFilter: ['d
 
 const checkUsers = await executeSql("SELECT COUNT(*) AS users_count FROM users");
 if (!checkUsers[0].users_count) {
-    await showCreateUser(true);
+    await showCreateUser(false);
 } else {
     if (!config.last_logged_user_id) {
         await showSelectUser();

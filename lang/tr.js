@@ -13,6 +13,10 @@ export default {
         cancel: 'İptal',
         ok: 'Tamam',
     },
+    errors: {
+        unexpectedTitle: 'Hata',
+        unexpected: 'Beklenmeyen bir hata oluştu. Bazı veriler kaydedilmemiş olabilir.',
+    },
     about: {
         title: 'BeeTrack Hakkında',
         author: 'Yazar',

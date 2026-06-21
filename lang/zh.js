@@ -13,6 +13,10 @@ export default {
         cancel: '取消',
         ok: '确定',
     },
+    errors: {
+        unexpectedTitle: '错误',
+        unexpected: '发生了意外错误。部分数据可能未保存。',
+    },
     about: {
         title: '关于 BeeTrack',
         author: '作者',

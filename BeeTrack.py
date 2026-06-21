@@ -6,9 +6,28 @@ import json
 from plyer import notification
 from playsound import playsound
 
+
+# Correct getting file paths (important for exe).
+def get_resource_path(relative_path):
+    """Path to a bundled, read-only resource — works both in dev and in the frozen exe."""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
+
+def get_user_data_path(filename):
+    """Path for writable user data (DB, config) under %APPDATA%\\BeeTrack, creating the
+    folder if needed. Falls back to the home directory when APPDATA is unset (non-Windows)."""
+    base = os.environ.get('APPDATA') or os.path.expanduser('~')
+    data_dir = os.path.join(base, 'BeeTrack')
+    os.makedirs(data_dir, exist_ok=True)
+    return os.path.join(data_dir, filename)
+
+
 class API:
     def __init__(self):
-        self.db_path = "beetrack.db"
+        self.db_path = get_user_data_path("beetrack.db")
+        self.config_path = get_user_data_path("config.json")
         self._setup_db()
 
     def _setup_db(self):
@@ -78,13 +97,13 @@ class API:
             return {"content": "", "status": "error", "message": str(e)}
     
     def save_config(self, data_json):
-            with open("config.json", "w") as f:
+            with open(self.config_path, "w", encoding="utf-8") as f:
                 f.write(data_json)
             return "Збережено!"
-    
+
     def load_config(self):
-        if os.path.exists("config.json"):
-            with open("config.json", "r") as f:
+        if os.path.exists(self.config_path):
+            with open(self.config_path, "r", encoding="utf-8") as f:
                 return f.read()
         return "{}"
 
@@ -109,12 +128,6 @@ class API:
         playsound(get_resource_path('you-are-worked-to-hard.mp3'))
 
 api = API()
-
-# Correct getting file paths (important for exe)
-def get_resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
 
 html_file = get_resource_path('index.html')
 

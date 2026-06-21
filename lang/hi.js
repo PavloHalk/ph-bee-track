@@ -13,6 +13,10 @@ export default {
         cancel: 'रद्द करें',
         ok: 'ठीक है',
     },
+    errors: {
+        unexpectedTitle: 'त्रुटि',
+        unexpected: 'एक अप्रत्याशित त्रुटि हुई। हो सकता है कुछ डेटा सहेजा न गया हो।',
+    },
     about: {
         title: 'BeeTrack के बारे में',
         author: 'लेखक',
