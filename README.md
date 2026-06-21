@@ -2,15 +2,15 @@
 Desktop time tracker for busy bees 🐝
 
 ## Overview
-BeeTrack is a lightweight desktop time-tracking app built with Python, [`pywebview`](https://pywebview.flowmaker.io/), and SQLite. A thin Python shell wraps an embedded web UI served from local HTML/CSS/JS assets; all data (users, projects, categories, tasks, and time tracks) lives in a local SQLite database. The frontend is plain, dependency-free HTML/CSS/JS (vanilla ES modules, no framework or build step) with only Bootstrap's CSS vendored locally.
+BeeTrack is a lightweight desktop time-tracking app built with Python, [`pywebview`](https://pywebview.flowmaker.io/), and SQLite. A thin Python shell wraps an embedded web UI served from local HTML/CSS/JS assets; all data (users, tasks, and time tracks) lives in a local SQLite database. The frontend is plain, dependency-free HTML/CSS/JS (vanilla ES modules, no framework or build step) with only Bootstrap's CSS vendored locally.
 
 In BeeTrack a user is affectionately called a **bee** ("бджілка") — that's the intended product wording throughout the UI.
 
 ## Key features
 - **Task tracking** — start/stop per-task timers; elapsed time is recorded and persisted continuously.
 - **Time goals** — each task has a target time; when it's reached BeeTrack fires a native desktop notification and (optionally) plays a looping alarm sound until you stop.
-- **Task organization** — associate tasks with projects and categories, give them colors, and archive the ones you're done with.
-- **Statistics** — detailed per-user stats including a yearly activity heat map, a weekly calendar, weekday distribution, and per-task totals.
+- **Task management** — give tasks colors, edit them, reset their tracked time, and archive the ones you're done with.
+- **Statistics** — a general overview (per-task totals with charts) plus detailed views: a yearly activity heat map, a weekly calendar, and a weekday distribution.
 - **Multiple bees** — create and switch between users; the last active bee is remembered between launches.
 - **Multilingual UI** — 15 interface languages (Ukrainian is the default), switchable on the fly from the footer.
 - **Native notifications** via [`plyer`](https://github.com/kivy/plyer) and alarm sound via [`playsound`](https://github.com/TaylorSMarks/playsound).

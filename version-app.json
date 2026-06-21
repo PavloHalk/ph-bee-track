@@ -1,6 +1,28 @@
 {
   "releases": [
     {
+      "version": "1.0.0",
+      "date": "2026-06-21",
+      "changes": [
+        "Track time per task with start/stop timers; progress is saved continuously.",
+        "Set a time goal for each task and get a desktop notification (with an optional looping alarm sound) once it is reached.",
+        "Organize tasks with colors, edit them, reset their time, and archive the ones you are done with.",
+        "See general statistics: per-task totals (time spent, goal completeness, and involvement) shown in a table and pie charts.",
+        "Dig into detailed statistics: a yearly activity heat map, a weekly calendar, and a weekday distribution.",
+        "Create and switch between multiple bees; the last active bee is remembered between launches.",
+        "Use the interface in 15 languages, switchable on the fly.",
+        "All data is stored locally in a SQLite database under %APPDATA%/BeeTrack; the app works fully offline."
+      ]
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-06-21",
+      "changes": [
+        "Move database and config to the %APPDATA%/Beetrack folder.",
+        "Show critical notifications on failed requests."
+      ]
+    },
+    {
       "version": "0.6.1",
       "date": "2026-06-21",
       "changes": [
