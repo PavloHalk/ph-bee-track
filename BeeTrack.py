@@ -117,12 +117,12 @@ class API:
             title = title,
             message = message,
             app_name = 'BeeTrack',
-            app_icon = 'favicon.ico',
+            app_icon = get_resource_path('favicon.ico'),
             timeout = 15
         )
-        
+
     def play_sound(self):
-        playsound('you-are-worked-to-hard.mp3')
+        playsound(get_resource_path('you-are-worked-to-hard.mp3'))
 
 api = API()
 

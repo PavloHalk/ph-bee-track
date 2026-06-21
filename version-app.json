@@ -4,7 +4,8 @@
       "version": "0.6.1",
       "date": "2026-06-21",
       "changes": [
-        "Changelog added."
+        "Changelog added.",
+        "Fixed bug with app icon and timer sound."
       ]
     },
     {
