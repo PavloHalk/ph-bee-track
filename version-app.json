@@ -15,35 +15,6 @@
       ]
     },
     {
-      "version": "0.7.0",
-      "date": "2026-06-21",
-      "changes": [
-        "Move database and config to the %APPDATA%/Beetrack folder.",
-        "Show critical notifications on failed requests."
-      ]
-    },
-    {
-      "version": "0.6.1",
-      "date": "2026-06-21",
-      "changes": [
-        "Changelog added.",
-        "Fixed bug with app icon and timer sound.",
-        "Fixed timezone bugs.",
-        "Fixed various of small bugs.",
-        "Focus on invalid form fields."
-      ]
-    },
-    {
-      "version": "0.6.0",
-      "date": "2026-06-20",
-      "changes": [
-        "Added the \"About BeeTrack\" window with author info, version and a link to GitHub.",
-        "Added over a dozen interface languages.",
-        "Added weekday distribution to the detailed statistics.",
-        "Header and footer are now fixed in place, and the window opens maximized."
-      ]
-    },
-    {
       "version": "0.0.1",
       "date": "2026-04-18",
       "changes": [
