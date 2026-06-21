@@ -20,6 +20,9 @@ export default {
         license: 'ライセンス',
         contribute: 'BeeTrack はオープンソースです。よろしければ GitHub で開発に参加できます：',
     },
+    changelog: {
+        title: '変更履歴',
+    },
     user: {
         create: {
             title: '新しいミツバチを作成',

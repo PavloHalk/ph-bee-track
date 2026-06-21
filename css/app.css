@@ -28,6 +28,25 @@ header .logo {
 .about-modal .about-github img:hover {
     opacity: 1;
 }
+.changelog-modal {
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+}
+.changelog-modal .changelog-body {
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+.changelog-modal .changelog-release {
+    margin-bottom: 1.75rem;
+}
+.changelog-modal .changelog-version {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 0.25rem;
+}
 header .profile {
     cursor: pointer;
 }

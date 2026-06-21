@@ -20,6 +20,9 @@ export default {
         license: 'Licencia',
         contribute: 'BeeTrack es de código abierto — si lo deseas, puedes unirte a su desarrollo en GitHub:',
     },
+    changelog: {
+        title: 'Registro de cambios',
+    },
     user: {
         create: {
             title: 'Crear una nueva abejita',

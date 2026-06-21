@@ -20,6 +20,9 @@ export default {
         license: 'Lizenz',
         contribute: 'BeeTrack ist quelloffen — wenn du möchtest, kannst du dich auf GitHub an der Entwicklung beteiligen:',
     },
+    changelog: {
+        title: 'Änderungsprotokoll',
+    },
     user: {
         create: {
             title: 'Eine neue Biene erstellen',

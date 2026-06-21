@@ -20,6 +20,9 @@ export default {
         license: 'Licence',
         contribute: 'BeeTrack je open source — pokud chcete, můžete se zapojit do jeho vývoje na GitHubu:',
     },
+    changelog: {
+        title: 'Seznam změn',
+    },
     user: {
         create: {
             title: 'Vytvoření nové včelky',

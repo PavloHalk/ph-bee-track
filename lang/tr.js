@@ -20,6 +20,9 @@ export default {
         license: 'Lisans',
         contribute: 'BeeTrack açık kaynaklıdır — isterseniz GitHub üzerinden geliştirmesine katkıda bulunabilirsiniz:',
     },
+    changelog: {
+        title: 'Değişiklik günlüğü',
+    },
     user: {
         create: {
             title: 'Yeni bir arıcık oluştur',

@@ -20,6 +20,9 @@ export default {
         license: 'लाइसेंस',
         contribute: 'BeeTrack ओपन सोर्स है — यदि आप चाहें, तो GitHub पर इसके विकास में शामिल हो सकते हैं:',
     },
+    changelog: {
+        title: 'परिवर्तन सूची',
+    },
     user: {
         create: {
             title: 'एक नई मधुमक्खी बनाएँ',

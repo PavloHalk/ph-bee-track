@@ -20,6 +20,9 @@ export default {
         license: 'Licencja',
         contribute: 'BeeTrack jest oprogramowaniem open source — jeśli chcesz, możesz dołączyć do jego rozwoju na GitHubie:',
     },
+    changelog: {
+        title: 'Lista zmian',
+    },
     user: {
         create: {
             title: 'Tworzenie nowej pszczółki',

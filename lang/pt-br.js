@@ -20,6 +20,9 @@ export default {
         license: 'Licença',
         contribute: 'O BeeTrack é de código aberto — se quiser, você pode participar do seu desenvolvimento no GitHub:',
     },
+    changelog: {
+        title: 'Registro de alterações',
+    },
     user: {
         create: {
             title: 'Criar uma nova abelhinha',

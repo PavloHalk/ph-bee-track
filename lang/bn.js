@@ -20,6 +20,9 @@ export default {
         license: 'লাইসেন্স',
         contribute: 'BeeTrack একটি ওপেন সোর্স প্রকল্প — চাইলে আপনি GitHub-এ এর উন্নয়নে যোগ দিতে পারেন:',
     },
+    changelog: {
+        title: 'পরিবর্তন তালিকা',
+    },
     user: {
         create: {
             title: 'একটি নতুন মৌমাছি তৈরি করুন',

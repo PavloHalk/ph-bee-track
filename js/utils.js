@@ -1,5 +1,5 @@
 import { t } from './i18n.js';
-import { APP_VERSION, APP_RELEASE_DATE } from './version.js';
+import { APP_VERSION, APP_RELEASE_DATE, releaseHistory } from './version.js';
 
 // Form field length limits (in characters) and the upper bound for goal hours.
 export const MAX_NAME_LENGTH = 64;
@@ -259,15 +259,63 @@ export function showAbout() {
                 <img src="./img/github.png" alt="BeeTrack on GitHub" />
             </a>
         </p>
-        <p class="m-0"><span class="btn btn-primary btn-ok">${t('common.ok')}</span></p>`;
+        <p class="m-0">
+            <span class="btn btn-outline-primary btn-changelog me-2">${t('changelog.title')}</span>
+            <span class="btn btn-primary btn-ok">${t('common.ok')}</span></p>`;
 
     const close = () => aboutContainer.remove();
     form.querySelector('.btn-ok').addEventListener('click', close);
+    form.querySelector('.btn-changelog').addEventListener('click', showChangelog);
 
     aboutContainer.append(overlay);
     aboutContainer.append(form);
 
     document.body.append(aboutContainer);
+}
+
+// "Changelog" modal window: lists every release from version-app.json, newest first.
+// Each release shows its version and date, then a list of changes; the body scrolls
+// when the content is taller than the window.
+export function showChangelog() {
+    const changelogContainer = document.createElement('div');
+
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.bottom = '0';
+    overlay.style.left = '0';
+    overlay.style.right = '0';
+    overlay.style.backgroundColor = 'black';
+    overlay.style.opacity = '0.2';
+    overlay.style.zIndex = '10002';
+
+    const form = document.createElement('div');
+    form.className = 'position-fixed top-50 start-50 translate-middle p-4 changelog-modal';
+    form.style.zIndex = '10003';
+    form.style.backgroundColor = 'white';
+    form.style.border = '1px solid black';
+    form.style.borderRadius = '10px';
+    form.style.boxShadow = '0 0 30px black';
+
+    const releasesHtml = releaseHistory.map((release) => `
+        <div class="changelog-release">
+            <p class="changelog-version">${release.version} (${release.date})</p>
+            <hr>
+            <ol>${(release.changes ?? []).map((change) => `<li>${change}</li>`).join('')}</ol>
+        </div>`).join('');
+
+    form.innerHTML = `
+        <p class="h3 mb-3 text-center">${t('changelog.title')}</p>
+        <div class="changelog-body">${releasesHtml}</div>
+        <p class="m-0 text-center"><span class="btn btn-primary btn-ok">${t('common.ok')}</span></p>`;
+
+    const close = () => changelogContainer.remove();
+    form.querySelector('.btn-ok').addEventListener('click', close);
+
+    changelogContainer.append(overlay);
+    changelogContainer.append(form);
+
+    document.body.append(changelogContainer);
 }
 
 export function showConfirm(title, text, okCallback, cancelCallback) {

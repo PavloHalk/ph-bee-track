@@ -20,6 +20,9 @@ export default {
         license: 'Ліцензія',
         contribute: 'Проєкт із відкритим кодом — за бажання ви можете долучитися до його розробки на GitHub:',
     },
+    changelog: {
+        title: 'Список змін',
+    },
     user: {
         create: {
             title: 'Створення нової бджілки',
