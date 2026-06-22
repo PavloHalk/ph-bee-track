@@ -228,6 +228,8 @@ export default class TplStatWeekCalendar extends Tpl {
     }
 
     #formatTime(h, m) {
-        return `${this.#pad(h)}:${this.#pad(m)}`;
+        // A segment ending exactly at the next midnight yields hour 24,
+        // which is not a real clock time — show it as 00:00.
+        return `${this.#pad(h % 24)}:${this.#pad(m)}`;
     }
 }

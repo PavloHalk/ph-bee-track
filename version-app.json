@@ -4,7 +4,8 @@
       "version": "1.1.0",
       "date": "2026-06-22",
       "changes": [
-        "Added Swedish and Norwegian languages."
+        "Added Swedish and Norwegian languages.",
+        "Fixed bug with showing midnight time as \"24:00\" in the calendar. Not it is shown as \"00:00\"."
       ]
     },
     {
