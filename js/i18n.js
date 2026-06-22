@@ -6,6 +6,8 @@ export const DEFAULT_LANGUAGE = 'ua';
 export const availableLanguages = [
     { code: 'ua', name: 'Українська' },
     { code: 'en', name: 'English' },
+    { code: 'sv', name: 'Svenska' },
+    { code: 'no', name: 'Norsk' },
     { code: 'pl', name: 'Polski' },
     { code: 'de', name: 'Deutsch' },
     { code: 'cs', name: 'Čeština' },
