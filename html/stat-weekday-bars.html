@@ -1,9 +1,15 @@
 <div class="wd-dist-inner">
     <div class="wd-dist-header">
         <span class="wd-dist-title" data-i18n="stats.weekdayDist.title">Розподіл за днями тижня</span>
-        <span class="wd-dist-legend">
-            <span class="wd-leg"><i class="wd-swatch wd-swatch-total"></i><span data-i18n="stats.weekdayDist.total">Сумарно</span></span>
-            <span class="wd-leg"><i class="wd-swatch wd-swatch-avg"></i><span data-i18n="stats.weekdayDist.average">Середнє</span></span>
+        <span class="wd-dist-modes">
+            <label class="wd-mode">
+                <input type="radio" name="wd-mode" value="total" checked>
+                <span data-i18n="stats.weekdayDist.total">Сумарно</span>
+            </label>
+            <label class="wd-mode">
+                <input type="radio" name="wd-mode" value="average">
+                <span data-i18n="stats.weekdayDist.average">Середнє</span>
+            </label>
         </span>
     </div>
     <div class="wd-dist-chart"></div>
@@ -14,19 +20,24 @@
     .wd-dist-inner { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; padding: 1.25rem 1rem 1rem; box-sizing: border-box; }
     .wd-dist-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
     .wd-dist-title { font-size: 14px; font-weight: 500; color: var(--bs-body-color); }
-    .wd-dist-legend { display: flex; gap: 1rem; font-size: 11px; color: var(--bs-secondary-color); }
-    .wd-leg { display: inline-flex; align-items: center; gap: 5px; }
-    .wd-swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
-    .wd-swatch-total { background: rgb(30, 79, 200); }
-    .wd-swatch-avg { background: rgb(143, 186, 255); }
+    .wd-dist-modes { display: flex; gap: 1rem; font-size: 11px; color: var(--bs-secondary-color); }
+    .wd-mode { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+    .wd-mode input { cursor: pointer; margin: 0; }
     .wd-dist-chart { flex: 1 1 auto; min-height: 140px; display: flex; align-items: stretch; gap: 4px; }
+    .wd-axis { flex: 0 0 auto; display: flex; flex-direction: column; }
+    .wd-axis-scale { position: relative; flex: 1 1 auto; min-height: 0; min-width: 1.5rem; }
+    .wd-axis-label { position: absolute; right: 0; bottom: 0; transform: translateY(50%); padding-right: 6px; font-size: 10px; line-height: 1; color: var(--bs-tertiary-color); white-space: nowrap; }
+    .wd-plot { position: relative; flex: 1 1 auto; min-width: 0; display: flex; }
+    .wd-grid { position: absolute; inset: 0; display: flex; flex-direction: column; pointer-events: none; }
+    .wd-grid-lines { position: relative; flex: 1 1 auto; min-height: 0; }
+    .wd-grid-line { position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--bs-border-color-translucent); opacity: 0.6; }
+    .wd-days { position: relative; z-index: 1; flex: 1 1 auto; min-width: 0; display: flex; align-items: stretch; gap: 4px; }
     .wd-day { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
-    .wd-bars { flex: 1 1 auto; min-height: 0; display: flex; align-items: flex-end; justify-content: center; gap: 12%; }
-    .wd-bar { width: 32%; min-width: 4px; border-radius: 3px 3px 0 0; transition: height 0.15s; }
-    .wd-bar-total { background: rgb(30, 79, 200); }
-    .wd-bar-avg { background: rgb(143, 186, 255); }
-    .wd-day:hover .wd-bar-total { background: rgb(20, 58, 156); }
-    .wd-day:hover .wd-bar-avg { background: rgb(110, 162, 245); }
+    .wd-bars { flex: 1 1 auto; min-height: 0; display: flex; align-items: flex-end; justify-content: center; }
+    .wd-bar { width: 60%; min-width: 4px; border-radius: 3px 3px 0 0; transition: height 0.15s; background: rgb(30, 79, 200); }
+    .wd-day:hover .wd-bar { background: rgb(20, 58, 156); }
+    .wd-bar-avg { background: rgb(91, 140, 235); }
+    .wd-day:hover .wd-bar-avg { background: rgb(66, 115, 210); }
     .wd-day-label { text-align: center; font-size: 11px; color: var(--bs-tertiary-color); padding-top: 6px; }
     .wd-dist-empty { margin: auto; color: var(--bs-tertiary-color); font-size: 13px; }
 </style>

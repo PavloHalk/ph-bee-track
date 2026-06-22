@@ -6,7 +6,8 @@
       "changes": [
         "Added Swedish and Norwegian languages.",
         "Fixed bug with showing midnight time as \"24:00\" in the calendar. Now it is shown as \"00:00\".",
-        "Show task duration on the calendar."
+        "Show task duration on the calendar.",
+        "Rebuilt \"distribution by weekday\" widget. Now it is much clearer."
       ]
     },
     {
