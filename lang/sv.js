@@ -169,6 +169,7 @@ export default {
             nextWeek: 'Nästa vecka',
             today: 'Idag',
             task: 'Uppgift',
+            duration: 'Varaktighet',
             months: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
             days: ['Må', 'Ti', 'On', 'To', 'Fr', 'Lö', 'Sö'],
         },

@@ -169,6 +169,7 @@ export default {
             nextWeek: 'Neste uke',
             today: 'I dag',
             task: 'Oppgave',
+            duration: 'Varighet',
             months: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Des'],
             days: ['Ma', 'Ti', 'On', 'To', 'Fr', 'Lø', 'Sø'],
         },

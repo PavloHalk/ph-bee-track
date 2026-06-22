@@ -169,6 +169,7 @@ export default {
             nextWeek: 'Settimana successiva',
             today: 'Oggi',
             task: 'Attività',
+            duration: 'Durata',
             months: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
             days: ['Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa', 'Do'],
         },

@@ -169,6 +169,7 @@ export default {
             nextWeek: 'Semaine suivante',
             today: "Aujourd'hui",
             task: 'Tâche',
+            duration: 'Durée',
             months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
             days: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
         },

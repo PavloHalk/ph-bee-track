@@ -169,6 +169,7 @@ export default {
             nextWeek: 'Sonraki hafta',
             today: 'Bugün',
             task: 'Görev',
+            duration: 'Süre',
             months: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
             days: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
         },

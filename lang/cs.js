@@ -169,6 +169,7 @@ export default {
             nextWeek: 'Následující týden',
             today: 'Dnes',
             task: 'Úkol',
+            duration: 'Doba trvání',
             months: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'],
             days: ['Po', 'Út', 'St', 'Čt', 'Pá', 'So', 'Ne'],
         },

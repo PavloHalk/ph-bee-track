@@ -176,6 +176,8 @@ export default class TplStatWeekCalendar extends Tpl {
         const height = Math.max(endPx - startPx, 6);
 
         const timeStr = `${this.#formatTime(task.startHour, task.startMin)} – ${this.#formatTime(task.endHour, task.endMin)}`;
+        const durationMin = (task.endHour * 60 + task.endMin) - (task.startHour * 60 + task.startMin);
+        const durationStr = `${t('stats.week.duration')}: ${this.#formatDuration(durationMin)}`;
 
         const block = document.createElement('div');
         block.className = 'task-block';
@@ -183,11 +185,12 @@ export default class TplStatWeekCalendar extends Tpl {
         block.style.height = height + 'px';
         block.style.background = task.color;
         block.style.color = task.textColor || '#fff';
-        // Same as on the card (name + time) — so it is visible on short tracks,
-        // where the text does not fit inside the block.
-        block.title = `${task.name}\n${timeStr}`;
+        // Same as on the card (name + time + duration) — so it is visible on short
+        // tracks, where the text does not fit inside the block.
+        block.title = `${task.name}\n${timeStr}\n${durationStr}`;
         block.innerHTML = `<div class="task-name">${task.name}</div>`
-            + (height > 28 ? `<div class="task-time">${timeStr}</div>` : '');
+            + (height > 28 ? `<div class="task-time">${timeStr}</div>` : '')
+            + (height > 44 ? `<div class="task-time">${durationStr}</div>` : '');
         layer.appendChild(block);
     }
 
@@ -231,5 +234,12 @@ export default class TplStatWeekCalendar extends Tpl {
         // A segment ending exactly at the next midnight yields hour 24,
         // which is not a real clock time — show it as 00:00.
         return `${this.#pad(h % 24)}:${this.#pad(m)}`;
+    }
+
+    // Track duration as h:mm (hours unpadded, minutes padded) — no seconds.
+    #formatDuration(totalMin) {
+        const h = Math.floor(totalMin / 60);
+        const m = totalMin % 60;
+        return `${h}:${this.#pad(m)}`;
     }
 }
