@@ -67,6 +67,7 @@ header .header-timer-name {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
 }
 header .header-timer-clock {
     font-family: monospace;

@@ -55,9 +55,9 @@ export async function showTasks(userId, timer) {
     document.querySelector('header .btn-tasks').classList.add('d-none');
 }
 
-export async function showStats(userId) {
+export async function showStats(userId, taskId = null) {
     const tpls = document.querySelectorAll('.tpl');
-    
+
     for (const tpl of tpls) {
         if (tpl.classList.contains('tpl-tasks')) {
             tpl.classList.add('d-none');
@@ -65,8 +65,8 @@ export async function showStats(userId) {
             tpl.remove();
         }
     }
-    
-    const tpl = await TplStatContainer.create(userId);
+
+    const tpl = await TplStatContainer.create(userId, taskId);
     app.append(tpl.getElement());
 
     document.querySelector('header .btn-stat').classList.add('d-none');

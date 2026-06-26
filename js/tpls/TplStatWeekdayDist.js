@@ -2,6 +2,7 @@ import Tpl from './Tpl.js';
 import Track from '../models/Track.js';
 import { t, translateDom } from '../i18n.js';
 import { secondsToClock, secondsPerDayOfYear } from '../utils.js';
+import { hourAxis } from '../statCharts.js';
 
 // Distribution of tracked time by weekday (Mon–Sun) for the selected year.
 // One bar per day, showing either the total time over the year or the average
@@ -98,7 +99,7 @@ export default class TplStatWeekdayDist extends Tpl {
         const maxValue = this.#mode === 'average' ? maxAvg : maxTotal;
 
         // Whole-hour Y axis from 0 up to a "nice" ceiling; bars normalize to it.
-        const axis = this.#hourAxis(maxValue);
+        const axis = hourAxis(maxValue);
         const axisMaxSeconds = axis.axisMax * 3600;
         const hourUnit = t('tasks.form.hoursShort');
 
@@ -147,27 +148,5 @@ export default class TplStatWeekdayDist extends Tpl {
 
         plot.appendChild(daysWrap);
         chart.appendChild(plot);
-    }
-
-    // Build a whole-hour Y axis: 0 at the bottom up to a "nice" hour ceiling,
-    // with up to 6 evenly spaced ticks. The ceiling may sit slightly above the
-    // tallest bar so the ticks land on round hour values.
-    #hourAxis(maxSeconds) {
-        const maxHours = maxSeconds / 3600;
-        if (maxHours <= 0) return { axisMax: 0, ticks: [0] };
-
-        const maxTicks = 6; // including the 0 and the top tick
-        const niceSteps = [1, 2, 3, 5, 10, 15, 20, 25, 30, 50, 100, 150, 200, 250, 500, 1000];
-
-        // Smallest step keeping the tick count within the limit.
-        let step = niceSteps[niceSteps.length - 1];
-        for (const s of niceSteps) {
-            if (Math.ceil(maxHours / s) + 1 <= maxTicks) { step = s; break; }
-        }
-
-        const axisMax = Math.ceil(maxHours / step) * step;
-        const ticks = [];
-        for (let h = 0; h <= axisMax; h += step) ticks.push(h);
-        return { axisMax, ticks };
     }
 }

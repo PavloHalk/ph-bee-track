@@ -1,0 +1,135 @@
+<div class="text-center mb-3">
+    <select class="form-select form-select-sm d-inline-block w-auto task-report-select"></select>
+</div>
+
+<p class="task-report-empty text-center text-secondary" data-i18n="stats.taskReport.noTask">Задача не вибрана</p>
+
+<div class="task-report-content d-none">
+    <h5 class="text-center mb-1 task-report-title"></h5>
+    <p class="text-center text-secondary task-report-description mb-2"></p>
+    <hr class="task-report-divider" />
+
+    <div class="diagrams-container d-flex flex-wrap justify-content-center">
+        <div class="row row-template d-none">
+            <div class="col-1 px-2"><div class="legend-color"></div></div>
+            <div class="col-8 px-2"></div>
+            <div class="col-3 px-2 text-end"></div>
+        </div>
+
+        <div class="diagram-container diagram-container-goal mx-3 mb-4 p-2">
+            <h6 class="text-center h6" data-i18n="stats.taskReport.charts.goal">Виконання цілі</h6>
+            <div class="diagram"></div>
+            <div class="legend"></div>
+        </div>
+        <div class="diagram-container diagram-container-goal-total mx-3 mb-4 p-2">
+            <h6 class="text-center h6" data-i18n="stats.taskReport.charts.goalTotal">Загальне виконання цілі</h6>
+            <div class="diagram"></div>
+            <div class="legend"></div>
+        </div>
+        <div class="diagram-container diagram-container-share mx-3 mb-4 p-2">
+            <h6 class="text-center h6" data-i18n="stats.taskReport.charts.share">Частка задачі</h6>
+            <div class="diagram"></div>
+            <div class="legend"></div>
+        </div>
+        <div class="diagram-container diagram-container-share-total mx-3 mb-4 p-2">
+            <h6 class="text-center h6" data-i18n="stats.taskReport.charts.shareTotal">Повна частка задачі</h6>
+            <div class="diagram"></div>
+            <div class="legend"></div>
+        </div>
+        <div class="diagram-container diagram-container-share-aim mx-3 mb-4 p-2">
+            <h6 class="text-center h6" data-i18n="stats.taskReport.charts.shareAim">Цільова частка задачі</h6>
+            <div class="diagram"></div>
+            <div class="legend"></div>
+        </div>
+
+        <div class="diagram-container diagram-container-wide diagram-container-weekday mx-3 mb-4 p-2">
+            <h6 class="text-center h6" data-i18n="stats.taskReport.charts.weekday">Активність по дням тижня</h6>
+            <div class="sb-chart"></div>
+            <p class="text-center text-secondary sb-caption weekday-caption m-0"></p>
+        </div>
+        <div class="diagram-container diagram-container-wide diagram-container-hour mx-3 mb-4 p-2">
+            <h6 class="text-center h6" data-i18n="stats.taskReport.charts.hour">Активність по годинам</h6>
+            <div class="sb-chart"></div>
+            <p class="text-center text-secondary sb-caption hour-caption m-0"></p>
+        </div>
+    </div>
+
+    <table class="task-report-table">
+        <thead>
+            <tr>
+                <th data-i18n="stats.taskReport.table.indicator">Показник</th>
+                <th data-i18n="stats.taskReport.table.value">Значення</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<style>
+    .tpl-stat-task-report .task-report-divider {
+        height: 4px;
+        opacity: 1;
+        border: none;
+        border-radius: 2px;
+        margin: 0.5rem auto 1.5rem;
+        max-width: 1000px;
+    }
+
+    .tpl-stat-task-report .diagram {
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        margin: 10px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .tpl-stat-task-report .diagram-container {
+        width: 320px;
+        box-shadow: 0 0 10px grey;
+        border-radius: 10px;
+    }
+    .tpl-stat-task-report .diagram-container-wide {
+        width: 660px;
+        max-width: 100%;
+    }
+    .tpl-stat-task-report .diagram-container .legend-color {
+        position: relative;
+        top: 8px;
+        width: 20px;
+        height: 10px;
+        border-radius: 2px;
+        border: 1px solid black;
+    }
+    .tpl-stat-task-report .sb-caption {
+        font-size: 13px;
+        padding-top: 6px;
+    }
+
+    /* Bar chart (shared sb-* markup from statCharts.renderBars). */
+    .tpl-stat-task-report .sb-chart { height: 230px; display: flex; align-items: stretch; gap: 4px; padding: 8px 4px 0; }
+    .tpl-stat-task-report .sb-axis { flex: 0 0 auto; display: flex; flex-direction: column; }
+    .tpl-stat-task-report .sb-axis-scale { position: relative; flex: 1 1 auto; min-height: 0; min-width: 1.5rem; }
+    .tpl-stat-task-report .sb-axis-label { position: absolute; right: 0; bottom: 0; transform: translateY(50%); padding-right: 6px; font-size: 10px; line-height: 1; color: var(--bs-tertiary-color); white-space: nowrap; }
+    .tpl-stat-task-report .sb-plot { position: relative; flex: 1 1 auto; min-width: 0; display: flex; }
+    .tpl-stat-task-report .sb-grid { position: absolute; inset: 0; display: flex; flex-direction: column; pointer-events: none; }
+    .tpl-stat-task-report .sb-grid-lines { position: relative; flex: 1 1 auto; min-height: 0; }
+    .tpl-stat-task-report .sb-grid-line { position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid var(--bs-border-color-translucent); opacity: 0.6; }
+    .tpl-stat-task-report .sb-cols { position: relative; z-index: 1; flex: 1 1 auto; min-width: 0; display: flex; align-items: stretch; gap: 4px; }
+    .tpl-stat-task-report .sb-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+    .tpl-stat-task-report .sb-bars { flex: 1 1 auto; min-height: 0; display: flex; align-items: flex-end; justify-content: center; }
+    .tpl-stat-task-report .sb-bar { width: 70%; min-width: 3px; border-radius: 3px 3px 0 0; transition: height 0.15s; background: rgb(30, 79, 200); }
+    .tpl-stat-task-report .sb-col:hover .sb-bar { background: rgb(20, 58, 156); }
+    .tpl-stat-task-report .sb-col-label { text-align: center; font-size: 10px; color: var(--bs-tertiary-color); padding-top: 6px; }
+    .tpl-stat-task-report .sb-empty { margin: auto; color: var(--bs-tertiary-color); font-size: 13px; }
+
+    .tpl-stat-task-report .task-report-table {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    .tpl-stat-task-report .task-report-table th:nth-child(2),
+    .tpl-stat-task-report .task-report-table td:nth-child(2) {
+        width: 240px;
+        text-align: right;
+    }
+</style>

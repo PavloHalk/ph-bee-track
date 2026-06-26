@@ -1,6 +1,7 @@
 import Tpl from './Tpl.js';
 import Track from '../models/Track.js';
 import { t } from '../i18n.js';
+import { openTaskReport } from '../utils.js';
 
 export default class TplStatWeekCalendar extends Tpl {
     static HOURS = 24;
@@ -155,6 +156,7 @@ export default class TplStatWeekCalendar extends Tpl {
                 const toMin = (segTo - dayStart) / 60000;
 
                 this.#addTask({
+                    taskId: rec.task_id,
                     name: rec.task_name || t('stats.week.task'),
                     color: rec.task_color || '#6c757d',
                     dayIndex: i,
@@ -191,6 +193,11 @@ export default class TplStatWeekCalendar extends Tpl {
         block.innerHTML = `<div class="task-name">${task.name}</div>`
             + (height > 28 ? `<div class="task-time">${timeStr}</div>` : '')
             + (height > 44 ? `<div class="task-time">${durationStr}</div>` : '');
+        // A click anywhere on the card opens that task's report.
+        if (task.taskId != null) {
+            block.style.cursor = 'pointer';
+            block.addEventListener('click', () => openTaskReport(task.taskId));
+        }
         layer.appendChild(block);
     }
 

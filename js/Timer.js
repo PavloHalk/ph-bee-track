@@ -171,7 +171,10 @@ export default class Timer {
 
         header.classList.remove('d-none');
         header.querySelector('.header-timer-color').style.backgroundColor = this.#task.color;
-        header.querySelector('.header-timer-name').innerText = this.#task.taskName;
+        const nameEl = header.querySelector('.header-timer-name');
+        nameEl.innerText = this.#task.taskName;
+        // Carries the active task id so the header name can open its report.
+        nameEl.dataset.taskId = this.#task.id;
         this.#setClock(header.querySelector('.timer'), this.#task.timeElapsed);
         this.#syncButtons(!!this.#interval);
     }

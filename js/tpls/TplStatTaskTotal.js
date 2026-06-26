@@ -1,7 +1,7 @@
 import Tpl from './Tpl.js';
 import Task from '../models/Task.js';
 import { t } from '../i18n.js';
-import { secondsToClock } from '../utils.js';
+import { secondsToClock, openTaskReport } from '../utils.js';
 
 export default class TplStatTaskTotal extends Tpl {
     static get htmlPath() {
@@ -50,6 +50,7 @@ export default class TplStatTaskTotal extends Tpl {
 
         for (const task of tasks) {
             data.body.push({
+                id: task.id,
                 color: task.color,
                 title: task.name,
                 time_aim: task.time_aim,
@@ -82,6 +83,9 @@ export default class TplStatTaskTotal extends Tpl {
             rowEl.classList.remove('template');
             rowEl.cells[0].querySelector('div.color-box').style.backgroundColor = row.color;
             rowEl.cells[1].textContent = row.title;
+            // The task name opens that task's report (cursor hint via .task-link).
+            rowEl.cells[1].classList.add('task-link');
+            rowEl.cells[1].addEventListener('click', () => openTaskReport(row.id));
             rowEl.cells[2].textContent = secondsToClock(row.time_aim);
             rowEl.cells[3].textContent = secondsToClock(row.time_elapsed_total);
             rowEl.cells[4].textContent = row.time_percent.toFixed(2) + ' %';
@@ -104,6 +108,7 @@ export default class TplStatTaskTotal extends Tpl {
         
         for (const row of dataForChart) {
             chartData.push({
+                id: row.id,
                 color: row.color,
                 label: row.title,
                 value: row.time_elapsed_total,
@@ -134,6 +139,7 @@ export default class TplStatTaskTotal extends Tpl {
 
         for (const row of dataForChart) {
             chartData.push({
+                id: row.id,
                 color: row.color,
                 label: row.title,
                 value: row.involvement,
@@ -164,6 +170,7 @@ export default class TplStatTaskTotal extends Tpl {
 
         for (const row of dataForChart) {
             chartData.push({
+                id: row.id,
                 color: row.color,
                 label: row.title,
                 value: row.time_aim,
@@ -194,6 +201,7 @@ export default class TplStatTaskTotal extends Tpl {
 
         for (const row of dataForChart) {
             chartData.push({
+                id: row.id,
                 color: row.color,
                 label: row.title,
                 value: row.time_percent,
@@ -249,6 +257,13 @@ export default class TplStatTaskTotal extends Tpl {
             rowEl.querySelector('.legend-color').style.backgroundColor = row.color;
             rowEl.children[1].textContent = row.label;
             rowEl.children[2].textContent = row.valueText;
+
+            // A real task's name in the legend opens its report; the aggregated
+            // "Others" slice has no id, so it stays inert.
+            if (row.id != null) {
+                rowEl.children[1].classList.add('task-link');
+                rowEl.children[1].addEventListener('click', () => openTaskReport(row.id));
+            }
 
             rowEl.classList.remove('row-template');
             rowEl.classList.remove('d-none');

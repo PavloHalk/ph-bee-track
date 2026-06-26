@@ -102,6 +102,44 @@ export function secondsPerDayOfYear(records, year) {
     return result;
 }
 
+// Distributes tracked time of the given records across weekdays (Mon..Sun) and
+// hours of day (0..23), over the entire span of each track (no year/period limit).
+// Tracks are stored in UTC but displayed in local time, so each track is walked
+// local-hour by local-hour (DST-safe via Date arithmetic); every hour segment is
+// attributed to the local weekday and local hour of its start.
+export function accumulateTrackTime(records) {
+    const byWeekday = new Array(7).fill(0);
+    const byHour = new Array(24).fill(0);
+
+    for (const rec of records) {
+        let from = new Date(rec.started_at.replace(' ', 'T') + 'Z').getTime();
+        const to = new Date(rec.stopped_at.replace(' ', 'T') + 'Z').getTime();
+        if (from >= to) continue;
+
+        while (from < to) {
+            const cursor = new Date(from);
+            const nextHour = new Date(cursor);
+            nextHour.setMinutes(0, 0, 0);
+            nextHour.setHours(nextHour.getHours() + 1);
+            const segTo = Math.min(to, nextHour.getTime());
+
+            const seconds = (segTo - from) / 1000;
+            const weekday = (cursor.getDay() + 6) % 7; // Monday = 0
+            byWeekday[weekday] += seconds;
+            byHour[cursor.getHours()] += seconds;
+
+            from = segTo;
+        }
+    }
+
+    return { byWeekday, byHour };
+}
+
+// Formats seconds as a signed clock: negative values get a leading "-".
+export function signedSecondsToClock(sec) {
+    return (sec < 0 ? '-' : '') + secondsToClock(Math.abs(sec));
+}
+
 export function notify(title, message, level) {
     if (!['info', 'success', 'warning', 'critical'].includes(level)) {
         level = 'info';
@@ -206,6 +244,13 @@ export function notify(title, message, level) {
             }
         }, 5);
     }
+}
+
+// Opens the per-task statistics report for the given task. Dispatched as a
+// document-level event so any view (header timer, general stats, calendar) can
+// trigger it without importing the view-switching layer (avoids import cycles).
+export function openTaskReport(taskId) {
+    document.dispatchEvent(new CustomEvent('open-task-report', { detail: { taskId } }));
 }
 
 export function notifyInfo(title, message) {
