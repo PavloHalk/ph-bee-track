@@ -6,6 +6,7 @@ import json
 from plyer import notification
 from playsound import playsound
 
+is_test_mode = True
 
 # Correct getting file paths (important for exe).
 def get_resource_path(relative_path):
@@ -26,8 +27,8 @@ def get_user_data_path(filename):
 
 class API:
     def __init__(self):
-        self.db_path = get_user_data_path("beetrack.db")
-        self.config_path = get_user_data_path("config.json")
+        self.db_path = get_user_data_path("beetrack_test.db" if is_test_mode else "beetrack.db")
+        self.config_path = get_user_data_path("config_test.json" if is_test_mode else "config.json")
         self._setup_db()
 
     def _setup_db(self):
@@ -141,4 +142,4 @@ window = webview.create_window(
     js_api=api
 )
 
-webview.start(http_server=True, debug=False, user_agent='pywebview-client')
+webview.start(http_server=True, debug=is_test_mode, user_agent='pywebview-client')
