@@ -55,7 +55,7 @@ export async function showTasks(userId, timer) {
     document.querySelector('header .btn-tasks').classList.add('d-none');
 }
 
-export async function showStats(userId, taskId = null) {
+export async function showStats(userId, taskId = null, timer = null) {
     const tpls = document.querySelectorAll('.tpl');
 
     for (const tpl of tpls) {
@@ -66,7 +66,7 @@ export async function showStats(userId, taskId = null) {
         }
     }
 
-    const tpl = await TplStatContainer.create(userId, taskId);
+    const tpl = await TplStatContainer.create(userId, taskId, timer);
     app.append(tpl.getElement());
 
     document.querySelector('header .btn-stat').classList.add('d-none');

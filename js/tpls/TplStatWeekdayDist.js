@@ -49,6 +49,11 @@ export default class TplStatWeekdayDist extends Tpl {
         await this.#render();
     }
 
+    // Re-query and re-render the current year (fresh data).
+    async refresh() {
+        await this.#render();
+    }
+
     onLanguageChanged() {
         translateDom(this.getElement());
         this.#render();

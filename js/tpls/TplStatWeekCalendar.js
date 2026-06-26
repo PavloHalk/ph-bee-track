@@ -49,6 +49,12 @@ export default class TplStatWeekCalendar extends Tpl {
         this.#buildGrid();
     }
 
+    // Drop the cache so the visible week is re-fetched with fresh data.
+    refresh() {
+        this.#cache.clear();
+        this.#buildGrid();
+    }
+
     onLanguageChanged() {
         this.#buildGrid();
     }

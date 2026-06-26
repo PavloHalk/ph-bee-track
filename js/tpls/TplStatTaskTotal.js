@@ -27,6 +27,11 @@ export default class TplStatTaskTotal extends Tpl {
         await this.#getDataAndRender();
     }
 
+    // Re-query and re-render with the current settings (fresh data).
+    async refresh() {
+        await this.#getDataAndRender();
+    }
+
     onLanguageChanged() {
         this.#getDataAndRender();
     }

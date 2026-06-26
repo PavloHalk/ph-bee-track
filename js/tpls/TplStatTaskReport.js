@@ -58,6 +58,11 @@ export default class TplStatTaskReport extends Tpl {
         this.#render();
     }
 
+    // Re-query and re-render the selected task's report (fresh data).
+    async refresh() {
+        await this.#render();
+    }
+
     onLanguageChanged() {
         translateDom(this.getElement());
         // Refilling rewrites the placeholder text and re-renders the report.

@@ -83,7 +83,7 @@ document.querySelector('header .profile').addEventListener('click', async () => 
 });
 
 document.querySelector('header .btn-stat').addEventListener('click', async () => {
-    await showStats(document.querySelector('header .profile').dataset.userId);
+    await showStats(document.querySelector('header .profile').dataset.userId, null, timer);
 });
 document.querySelector('header .btn-tasks').addEventListener('click', async () => {
     await showTasks(document.querySelector('header .profile').dataset.userId, timer);
@@ -94,7 +94,7 @@ document.querySelector('header .btn-tasks').addEventListener('click', async () =
 document.addEventListener('open-task-report', async (event) => {
     const userId = document.querySelector('header .profile').dataset.userId;
     if (!Number(userId)) return;
-    await showStats(userId, Number(event.detail.taskId));
+    await showStats(userId, Number(event.detail.taskId), timer);
 });
 document.querySelector('header .btn-about').addEventListener('click', () => {
     showAbout();

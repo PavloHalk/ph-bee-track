@@ -6,7 +6,7 @@ import json
 from plyer import notification
 from playsound import playsound
 
-is_test_mode = True
+is_test_mode = False
 
 # Correct getting file paths (important for exe).
 def get_resource_path(relative_path):

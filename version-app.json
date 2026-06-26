@@ -2,10 +2,11 @@
   "releases": [
     {
       "version": "1.1.0",
-      "date": "2026-06-22",
+      "date": "2026-06-26",
       "changes": [
-        "Added a per-task statistics report (new \"By specific task\" tab) with goal-completion and task-share pie charts, weekday/hour activity bars, and a summary table, all computed over the whole tracking period.",
+        "Added a per-task statistics report.",
         "Open a task's report by clicking its name in the header timer, in the general statistics table or chart legends, or by clicking its card in the calendar.",
+        "Add statistics auto refreshing when timer runs or after clicking stop button.",
         "Show the running timer in the header from any screen: task color, name, elapsed time, and Start/Stop buttons synced with the tasks page.",
         "Stopping a timer keeps the task in the header so it can be resumed later.",
         "The goal-exceeded alarm can now also be muted from the header overlay.",
