@@ -212,10 +212,6 @@ export default class TplTasks extends Tpl {
             const task = await Task.getById(event.target.closest('.task').dataset.taskId);
             this.#timer.setTask(task);
             this.#timer.start();
-            
-            event.target.closest('.btn-start').classList.add('disabled');
-            event.target.closest('.task').querySelector('.btn-stop').classList.remove('disabled');
-            event.target.closest('.task').classList.add('active');
         });
     }
     
@@ -225,10 +221,6 @@ export default class TplTasks extends Tpl {
             if (event.target.closest('.btn-stop').classList.contains('disabled')) return;
 
             this.#timer.stop();
-            
-            event.target.closest('.btn-stop').classList.add('disabled');
-            event.target.closest('.task').querySelector('.btn-start').classList.remove('disabled');
-            event.target.closest('.task').classList.remove('active');
         });
     }
     
@@ -243,6 +235,9 @@ export default class TplTasks extends Tpl {
                 const task = await Task.getById(event.target.closest('.task').dataset.taskId);
                 task.timeElapsed = 0;
                 await task.save();
+
+                // Keep the header widget in sync if it currently shows this task.
+                this.#timer.resetHeaderClock(task.id);
 
                 const taskEl = event.target.closest('.task');
 
@@ -277,6 +272,9 @@ export default class TplTasks extends Tpl {
 
                 const task = await Task.getById(event.target.closest('.task').dataset.taskId);
                 await task.archive();
+
+                // Drop the task from the header widget if it is shown there.
+                this.#timer.clearForTask(task.id);
 
                 event.target.closest('.task').remove();
                 notifySuccess(t('tasks.notifications.archivedTitle'), t('tasks.notifications.archivedMessage', { name: task.taskName }));
@@ -328,10 +326,9 @@ export default class TplTasks extends Tpl {
     #listenBtnStopAlarm() {
         this.#tplTasks.addEventListener('click', async (event) => {
             if (!event.target.closest('.btn-stop-alarm')) return;
-            
-            this.#timer.stopAlarm();
-            event.target.closest('.btn-stop-alarm').classList.add('d-none');
-        });   
+
+            this.#timer.dismissAlarm();
+        });
     }
     
     #renderTasks() {

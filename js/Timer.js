@@ -6,7 +6,6 @@ import { t } from './i18n.js';
 
 export default class Timer {
     #task = null;
-    #taskEl = null;
     #interval = null;
     #alarmInterval = null;
     #lastStartDate = null;
@@ -14,46 +13,42 @@ export default class Timer {
     #elapsedTotalOnLastStart = 0;
     #taskNotified = false;
     #track = null;
-    
+
     setTask(task) {
         if (!(task instanceof Task)) throw new TypeError('Timer requires an instance of Task.');
-        
-        if (this.#task) {
-            // Stop the previous task only if it is actually present in the DOM
-            // (otherwise it is a task from a past session — after logout/switching the bee
-            // its element is gone, and there is nothing to stop).
-            const prevStopBtn = document.querySelector('.task[data-task-id="'+this.#task.id+'"] .btn-stop');
-            if (prevStopBtn) {
-                const click = new Event('click', { bubbles: true, cancelable: true });
-                prevStopBtn.dispatchEvent(click);
-            }
-        }
-        
+
+        // Switching to another task stops the one currently running; its buttons are
+        // synced back to the stopped state across every view before we move on.
+        if (this.#interval) this.stop();
+
         this.#task = task;
         this.#taskNotified = false;
+        this.#renderHeader();
     }
-    
+
     start() {
         if (this.#interval || !this.#task) return;
 
         this.#lastStartDate = new Date();
         this.#elapsedOnLastStart = this.#task.timeElapsed;
         this.#elapsedTotalOnLastStart = this.#task.timeElapsedTotal;
-        this.#taskEl = document.querySelector('.task[data-task-id="'+this.#task.id+'"]');
         this.#interval = setInterval(this.#tick.bind(this), 1000);
-        
+
         this.#track = new Track();
         this.#track.userId = this.#task.userId;
         this.#track.taskId = this.#task.id;
         this.#track.startedAt = toSqlDateTime();
         this.#track.stoppedAt = toSqlDateTime();
-        
+
+        // Paint the header from the current task and flip every view to the running state.
+        this.#renderHeader();
+
         notifySuccess(
             t('timer.started.title'),
             t('timer.started.message', { name: this.#task.taskName })
         );
     }
-    
+
     stop() {
         if (!this.#interval) return;
 
@@ -67,41 +62,62 @@ export default class Timer {
 
         this.#track = null;
 
-        // Stop the audible alarm and hide its button, so the signal does not keep
-        // sounding after the task is stopped or the profile is exited.
-        this.stopAlarm();
-        this.#taskEl?.querySelector('.btn-stop-alarm')?.classList.add('d-none');
-        this.#taskEl = null;
+        // Silence any audible alarm and drop its overlay in every view.
+        this.dismissAlarm();
+        // Sync the buttons back to the stopped state while #task is still set — the
+        // task stays in the header so the bee can resume tracking it later.
+        this.#syncButtons(false);
 
         notifySuccess(
             t('timer.stopped.title'),
             t('timer.stopped.message', { name: this.#task.taskName })
         );
+    }
 
-        // Reset the task reference so it does not linger between sessions.
+    // Stop timing and drop the task from the header entirely (logout / bee switch).
+    clear() {
+        this.stop();
         this.#task = null;
         this.#taskNotified = false;
+
+        document.querySelector('header .header-timer')?.classList.add('d-none');
     }
-    
-    stopAlarm() {
-        if (!this.#alarmInterval) return;
-        
-        clearInterval(this.#alarmInterval);
-        this.#alarmInterval = null;
+
+    // Remove the task from the header if it is the one shown there (e.g. archived).
+    clearForTask(taskId) {
+        if (this.#task && String(this.#task.id) === String(taskId)) this.clear();
     }
-    
+
+    // Reflect a reset (elapsed -> 0) in the header if it currently shows that task.
+    resetHeaderClock(taskId) {
+        if (!this.#task || String(this.#task.id) !== String(taskId)) return;
+        this.#task.timeElapsed = 0;
+        this.#renderHeader();
+    }
+
+    // Silence the looping alarm sound and hide its overlay across every view.
+    dismissAlarm() {
+        if (this.#alarmInterval) {
+            clearInterval(this.#alarmInterval);
+            this.#alarmInterval = null;
+        }
+        for (const view of this.#getViews()) {
+            view.querySelector('.btn-stop-alarm')?.classList.add('d-none');
+        }
+    }
+
     #tick() {
         const diff = Math.floor(((new Date()) - this.#lastStartDate) / 1000);
         this.#task.timeElapsed = this.#elapsedOnLastStart + diff;
         this.#task.timeElapsedTotal = this.#elapsedTotalOnLastStart + diff;
-        
+
         if (this.#task.timeElapsed % 5 === 0) {
             this.#task.save();
 
             this.#track.stoppedAt = toSqlDateTime();
             this.#track.save();
         }
-        
+
         if (this.#task.timeElapsed > this.#task.timeAim && !this.#taskNotified) {
             this.#taskNotified = true;
             osNotify(
@@ -110,26 +126,81 @@ export default class Timer {
             );
 
             if (this.#task.playSound) {
-                this.#taskEl.querySelector('.btn-stop-alarm').classList.remove('d-none');
+                for (const view of this.#getViews()) {
+                    view.querySelector('.btn-stop-alarm')?.classList.remove('d-none');
+                }
                 this.#alarmInterval = setInterval(() => {
                     playSound();
                 }, 1600);
             }
         }
-        
-        const tElapsed = secondsToParts(this.#task.timeElapsed);
-        const tLeft = secondsToParts(Math.abs(this.#task.timeAim - this.#task.timeElapsed));
-        const percentage = this.#task.timeElapsed / this.#task.timeAim * 100;
-        const sign = this.#task.timeElapsed > this.#task.timeAim ? '-' : '';
 
-        this.#taskEl.querySelector('.timer .h').innerText = tElapsed.h.toString();
-        this.#taskEl.querySelector('.timer .m').innerText = tElapsed.m.toString().padStart(2, '0');
-        this.#taskEl.querySelector('.timer .s').innerText = tElapsed.s.toString().padStart(2, '0');
+        this.#renderClocks();
+    }
 
-        this.#taskEl.querySelector('.time-left .h').innerText = sign + tLeft.h.toString();
-        this.#taskEl.querySelector('.time-left .m').innerText = tLeft.m.toString().padStart(2, '0');
-        this.#taskEl.querySelector('.time-left .s').innerText = tLeft.s.toString().padStart(2, '0');
+    // Build the list of DOM views mirroring the running task: the always-present header
+    // widget plus the task card on the tasks page (only while that page is mounted).
+    #getViews() {
+        const views = [];
 
-        this.#taskEl.querySelector('.clock-percentage .percentage').innerText = percentage.toFixed(2);
+        const header = document.querySelector('header .header-timer');
+        if (header) views.push(header);
+
+        if (this.#task) {
+            const card = document.querySelector('.task[data-task-id="' + this.#task.id + '"]');
+            if (card) views.push(card);
+        }
+
+        return views;
+    }
+
+    // Toggle the Start/Stop buttons (and the card's active outline) in every view.
+    #syncButtons(running) {
+        for (const view of this.#getViews()) {
+            view.querySelector('.btn-start')?.classList.toggle('disabled', running);
+            view.querySelector('.btn-stop')?.classList.toggle('disabled', !running);
+            // The active outline only exists on the task card.
+            if (view.classList.contains('task')) view.classList.toggle('active', running);
+        }
+    }
+
+    // Paint the header widget from the current task (color, name, clock, buttons).
+    #renderHeader() {
+        const header = document.querySelector('header .header-timer');
+        if (!header || !this.#task) return;
+
+        header.classList.remove('d-none');
+        header.querySelector('.header-timer-color').style.backgroundColor = this.#task.color;
+        header.querySelector('.header-timer-name').innerText = this.#task.taskName;
+        this.#setClock(header.querySelector('.timer'), this.#task.timeElapsed);
+        this.#syncButtons(!!this.#interval);
+    }
+
+    // Update the elapsed clock (and the card-only fields) across every view.
+    #renderClocks() {
+        for (const view of this.#getViews()) {
+            this.#setClock(view.querySelector('.timer'), this.#task.timeElapsed);
+
+            const timeLeft = view.querySelector('.time-left');
+            if (timeLeft) {
+                const tLeft = secondsToParts(Math.abs(this.#task.timeAim - this.#task.timeElapsed));
+                const sign = this.#task.timeElapsed > this.#task.timeAim ? '-' : '';
+                timeLeft.querySelector('.h').innerText = sign + tLeft.h.toString();
+                timeLeft.querySelector('.m').innerText = tLeft.m.toString().padStart(2, '0');
+                timeLeft.querySelector('.s').innerText = tLeft.s.toString().padStart(2, '0');
+            }
+
+            const percentage = view.querySelector('.clock-percentage .percentage');
+            if (percentage) {
+                percentage.innerText = (this.#task.timeElapsed / this.#task.timeAim * 100).toFixed(2);
+            }
+        }
+    }
+
+    #setClock(el, seconds) {
+        const parts = secondsToParts(seconds);
+        el.querySelector('.h').innerText = parts.h.toString();
+        el.querySelector('.m').innerText = parts.m.toString().padStart(2, '0');
+        el.querySelector('.s').innerText = parts.s.toString().padStart(2, '0');
     }
 }

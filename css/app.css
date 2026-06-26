@@ -47,6 +47,59 @@ header .logo {
     font-size: 1.2em;
     margin-bottom: 0.25rem;
 }
+header .header-timer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    min-width: 0;
+}
+header .header-timer-color {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+header .header-timer-name {
+    max-width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+header .header-timer-clock {
+    font-family: monospace;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+header .header-timer .btn {
+    flex-shrink: 0;
+    font-size: 12px;
+    padding: 2px 8px;
+}
+header .header-timer .btn-stop-alarm {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+header .header-timer .btn-stop-alarm:hover {
+    box-shadow: 0 0 10px black;
+}
+header .header-timer .btn-stop-alarm img {
+    width: 28px;
+}
+
 header .profile {
     cursor: pointer;
 }

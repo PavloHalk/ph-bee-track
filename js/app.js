@@ -46,8 +46,11 @@ translateProfilePlaceholder();
 document.addEventListener('language-changed', translateProfilePlaceholder);
 
 const profileObserver = new MutationObserver(async (mutations) => {
+    // Logging out or switching to another bee resets the header timer entirely —
+    // the running task belongs to the previous session and must not linger.
+    timer.clear();
+
     if (Number(mutations[0].target.dataset.userId) === 0) {
-        timer.stop();
         document.querySelector('header .btn-stat').classList.add('d-none');
         document.querySelector('header .btn-tasks').classList.add('d-none');
         return;
@@ -87,4 +90,19 @@ document.querySelector('header .btn-tasks').addEventListener('click', async () =
 });
 document.querySelector('header .btn-about').addEventListener('click', () => {
     showAbout();
+});
+
+// Header timer widget — mirrors the running task and stays usable from any screen.
+// Start/Stop drive the same Timer as the tasks page, so both views stay in sync.
+const headerTimer = document.querySelector('header .header-timer');
+headerTimer.querySelector('.btn-start').addEventListener('click', () => {
+    if (headerTimer.querySelector('.btn-start').classList.contains('disabled')) return;
+    timer.start();
+});
+headerTimer.querySelector('.btn-stop').addEventListener('click', () => {
+    if (headerTimer.querySelector('.btn-stop').classList.contains('disabled')) return;
+    timer.stop();
+});
+headerTimer.querySelector('.btn-stop-alarm').addEventListener('click', () => {
+    timer.dismissAlarm();
 });

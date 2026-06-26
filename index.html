@@ -13,8 +13,19 @@
 <body class="d-flex flex-column vh-100">
 <header class="bg-light text-dark-emphasis py-2 shadow flex-shrink-0">
     <div class="row m-0">
-        <div class="col col-9">
-            <h1 class="m-0"><img class="logo" src="./img/logo.png" alt="BeeTrack logo" /> BeeTrack</h1>
+        <div class="col col-9 d-flex align-items-center">
+            <h1 class="m-0 flex-shrink-0"><img class="logo" src="./img/logo.png" alt="BeeTrack logo" /> BeeTrack</h1>
+            <div class="header-timer d-none ms-3">
+                <span class="header-timer-color"></span>
+                <span class="header-timer-name"></span>
+                <span class="header-timer-clock timer"><span class="h">0</span>:<span class="m">00</span>:<span class="s">00</span></span>
+                <span class="btn btn-sm btn-success btn-start disabled" data-i18n="tasks.card.start">Старт</span>
+                <span class="btn btn-sm btn-danger btn-stop disabled" data-i18n="tasks.card.stop">Стоп</span>
+                <div class="btn-stop-alarm d-none">
+                    <img src="./img/logo.png" alt="Alarm" />
+                    <span data-i18n="tasks.card.stopAlarm">Вимкнути сповіщення</span>
+                </div>
+            </div>
         </div>
         <div class="col col-3 d-flex justify-content-end">
             <div class="profile" hidden>
