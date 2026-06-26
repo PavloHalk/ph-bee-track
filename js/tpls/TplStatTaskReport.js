@@ -10,8 +10,8 @@ import { renderPie, renderLegend, renderBars } from '../statCharts.js';
 // filter; opened either from the stats tab or programmatically with a task id.
 export default class TplStatTaskReport extends Tpl {
     // Neutral fills for the synthetic chart slices (not a real task color).
-    static REMAINING_COLOR = '#d0d0d0';
-    static OTHERS_COLOR = '#6c757d';
+    static REMAINING_COLOR = '#dde0e3';
+    static OTHERS_COLOR = '#dde0e3';
 
     #userId = 0;
     #includeArchived = false;
@@ -138,7 +138,7 @@ export default class TplStatTaskReport extends Tpl {
         this.#renderShareChart('.diagram-container-share-aim', task, tasks, 'time_aim');
 
         const activity = accumulateTrackTime(tracks);
-        this.#renderActivity(activity);
+        this.#renderActivity(activity, task.color);
         this.#renderTable(task, tasks, activity);
     }
 
@@ -217,19 +217,19 @@ export default class TplStatTaskReport extends Tpl {
         renderLegend(container.querySelector('.legend'), rowTemplate, rows);
     }
 
-    #renderActivity({ byWeekday, byHour }) {
+    #renderActivity({ byWeekday, byHour }, barColor) {
         const dayNames = t('stats.heatmap.days');
         const hourUnit = t('tasks.form.hoursShort');
         const noData = t('stats.charts.noData');
 
         renderBars(
             this.getElement().querySelector('.diagram-container-weekday .sb-chart'),
-            dayNames, byWeekday, { hourUnit, noDataText: noData }
+            dayNames, byWeekday, { hourUnit, noDataText: noData, barColor }
         );
         renderBars(
             this.getElement().querySelector('.diagram-container-hour .sb-chart'),
             Array.from({ length: 24 }, (_, h) => String(h).padStart(2, '0')),
-            byHour, { hourUnit, noDataText: noData }
+            byHour, { hourUnit, noDataText: noData, barColor }
         );
 
         const weekdayCaption = this.getElement().querySelector('.weekday-caption');

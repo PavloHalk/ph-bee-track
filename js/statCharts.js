@@ -69,8 +69,9 @@ export function renderLegend(legendEl, rowTemplate, rows) {
 
 // Draws a vertical bar chart (whole-hour Y axis) into `container`.
 // labels/values — parallel arrays (one entry per bar); values are seconds.
+// barColor — optional fill for the bars (defaults to the CSS color).
 // The chart uses the `sb-*` classes; the host template must provide their CSS.
-export function renderBars(container, labels, values, { hourUnit, noDataText }) {
+export function renderBars(container, labels, values, { hourUnit, noDataText, barColor }) {
     container.innerHTML = '';
 
     const maxValue = Math.max(...values, 0);
@@ -120,7 +121,8 @@ export function renderBars(container, labels, values, { hourUnit, noDataText }) 
         const col = document.createElement('div');
         col.className = 'sb-col';
         col.title = `${labels[i]}: ${secondsToClock(Math.round(values[i]))}`;
-        col.innerHTML = `<div class="sb-bars"><div class="sb-bar" style="height:${pct}%"></div></div>`
+        const barStyle = `height:${pct}%` + (barColor ? `;background:${barColor}` : '');
+        col.innerHTML = `<div class="sb-bars"><div class="sb-bar" style="${barStyle}"></div></div>`
             + `<div class="sb-col-label">${labels[i]}</div>`;
         colsWrap.appendChild(col);
     }

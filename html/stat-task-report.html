@@ -12,8 +12,8 @@
     <div class="diagrams-container d-flex flex-wrap justify-content-center">
         <div class="row row-template d-none">
             <div class="col-1 px-2"><div class="legend-color"></div></div>
-            <div class="col-8 px-2"></div>
-            <div class="col-3 px-2 text-end"></div>
+            <div class="col-6 px-2"></div>
+            <div class="col-5 px-2 text-end"></div>
         </div>
 
         <div class="diagram-container diagram-container-goal mx-3 mb-4 p-2">
@@ -76,8 +76,8 @@
     }
 
     .tpl-stat-task-report .diagram {
-        width: 170px;
-        height: 170px;
+        width: 210px;
+        height: 210px;
         border-radius: 50%;
         margin: 10px auto;
         display: flex;
@@ -85,9 +85,13 @@
         justify-content: center;
     }
     .tpl-stat-task-report .diagram-container {
-        width: 320px;
+        width: 390px;
         box-shadow: 0 0 10px grey;
         border-radius: 10px;
+    }
+    /* Keep each legend value (time + percent) on a single line. */
+    .tpl-stat-task-report .diagram-container .legend > .row > .col-5 {
+        white-space: nowrap;
     }
     .tpl-stat-task-report .diagram-container-wide {
         width: 660px;
@@ -119,7 +123,9 @@
     .tpl-stat-task-report .sb-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
     .tpl-stat-task-report .sb-bars { flex: 1 1 auto; min-height: 0; display: flex; align-items: flex-end; justify-content: center; }
     .tpl-stat-task-report .sb-bar { width: 70%; min-width: 3px; border-radius: 3px 3px 0 0; transition: height 0.15s; background: rgb(30, 79, 200); }
-    .tpl-stat-task-report .sb-col:hover .sb-bar { background: rgb(20, 58, 156); }
+    /* Bars are filled with the task color inline, so hover uses a filter (which
+       works over any inline background) instead of a fixed background color. */
+    .tpl-stat-task-report .sb-col:hover .sb-bar { filter: brightness(0.9); }
     .tpl-stat-task-report .sb-col-label { text-align: center; font-size: 10px; color: var(--bs-tertiary-color); padding-top: 6px; }
     .tpl-stat-task-report .sb-empty { margin: auto; color: var(--bs-tertiary-color); font-size: 13px; }
 
