@@ -55,10 +55,14 @@ export default class Timer {
         clearInterval(this.#interval);
         this.#interval = null;
 
-        this.#task.save();
+        // Captured locally so a concurrent setTask() reassigning #task/#track does
+        // not affect the final writes or the refresh dispatched once they land.
+        const task = this.#task;
+        const track = this.#track;
+        track.stoppedAt = toSqlDateTime();
 
-        this.#track.stoppedAt = toSqlDateTime();
-        this.#track.save();
+        const taskSaved = task.save();
+        const trackSaved = track.save();
 
         this.#track = null;
 
@@ -70,8 +74,19 @@ export default class Timer {
 
         notifySuccess(
             t('timer.stopped.title'),
-            t('timer.stopped.message', { name: this.#task.taskName })
+            t('timer.stopped.message', { name: task.taskName })
         );
+
+        // Once the final writes have committed, let an open stats page refresh so
+        // it shows the just-finalized data.
+        Promise.all([taskSaved, trackSaved]).then(() => {
+            document.dispatchEvent(new CustomEvent('timer-stopped'));
+        });
+    }
+
+    // Whether the timer is currently counting (a task is being tracked).
+    isRunning() {
+        return !!this.#interval;
     }
 
     // Stop timing and drop the task from the header entirely (logout / bee switch).
@@ -171,7 +186,10 @@ export default class Timer {
 
         header.classList.remove('d-none');
         header.querySelector('.header-timer-color').style.backgroundColor = this.#task.color;
-        header.querySelector('.header-timer-name').innerText = this.#task.taskName;
+        const nameEl = header.querySelector('.header-timer-name');
+        nameEl.innerText = this.#task.taskName;
+        // Carries the active task id so the header name can open its report.
+        nameEl.dataset.taskId = this.#task.id;
         this.#setClock(header.querySelector('.timer'), this.#task.timeElapsed);
         this.#syncButtons(!!this.#interval);
     }

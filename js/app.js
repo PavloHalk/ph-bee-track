@@ -3,7 +3,7 @@ import { initI18n, setLanguage, getLanguage, availableLanguages, t } from './i18
 import {showCreateUser, showSelectUser, showUserProfile, showTasks, showStats} from './tplFunctions.js';
 import User from './models/User.js';
 import Timer from './Timer.js';
-import { showAbout, notifyCritical } from './utils.js';
+import { showAbout, notifyCritical, openTaskReport } from './utils.js';
 import { APP_VERSION } from './version.js';
 
 await initI18n();
@@ -83,10 +83,18 @@ document.querySelector('header .profile').addEventListener('click', async () => 
 });
 
 document.querySelector('header .btn-stat').addEventListener('click', async () => {
-    await showStats(document.querySelector('header .profile').dataset.userId);
+    await showStats(document.querySelector('header .profile').dataset.userId, null, timer);
 });
 document.querySelector('header .btn-tasks').addEventListener('click', async () => {
     await showTasks(document.querySelector('header .profile').dataset.userId, timer);
+});
+
+// Opening a per-task report from any screen (header timer, general stats table /
+// chart legends, the calendar card) goes through this single document-level event.
+document.addEventListener('open-task-report', async (event) => {
+    const userId = document.querySelector('header .profile').dataset.userId;
+    if (!Number(userId)) return;
+    await showStats(userId, Number(event.detail.taskId), timer);
 });
 document.querySelector('header .btn-about').addEventListener('click', () => {
     showAbout();
@@ -105,4 +113,9 @@ headerTimer.querySelector('.btn-stop').addEventListener('click', () => {
 });
 headerTimer.querySelector('.btn-stop-alarm').addEventListener('click', () => {
     timer.dismissAlarm();
+});
+// Clicking the running task's name in the header opens its statistics report.
+headerTimer.querySelector('.header-timer-name').addEventListener('click', () => {
+    const taskId = headerTimer.querySelector('.header-timer-name').dataset.taskId;
+    if (taskId) openTaskReport(taskId);
 });
